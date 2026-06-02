@@ -1,0 +1,4997 @@
+﻿[
+    {
+        "Timestamp":  "2026-06-02T15:24:19.3431548+08:00",
+        "ServerCpuPct":  1.28,
+        "ServerWorkingSetMB":  140.87,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.35
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.12
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0.94,
+                             "WorkingSetMB":  17.7
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  24.26
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.27,
+                             "WorkingSetMB":  48.44
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:20.4077420+08:00",
+        "ServerCpuPct":  1.54,
+        "ServerWorkingSetMB":  140.93,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.35
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  25.12
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0.87,
+                             "WorkingSetMB":  17.7
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  24.26
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.53,
+                             "WorkingSetMB":  48.5
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:21.4427232+08:00",
+        "ServerCpuPct":  2.2,
+        "ServerWorkingSetMB":  140.98,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  25.35
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.12
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.24,
+                             "WorkingSetMB":  17.7
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  24.26
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.82,
+                             "WorkingSetMB":  48.55
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:22.4996872+08:00",
+        "ServerCpuPct":  2.56,
+        "ServerWorkingSetMB":  141.05,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  25.35
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  25.12
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.28,
+                             "WorkingSetMB":  17.7
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.27,
+                             "WorkingSetMB":  24.26
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.87,
+                             "WorkingSetMB":  48.62
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:23.5388779+08:00",
+        "ServerCpuPct":  1.92,
+        "ServerWorkingSetMB":  141.13,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.35
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.12
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0.96,
+                             "WorkingSetMB":  17.7
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  24.26
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.89,
+                             "WorkingSetMB":  48.7
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:24.5752177+08:00",
+        "ServerCpuPct":  1.72,
+        "ServerWorkingSetMB":  141.18,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.35
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  25.12
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.03,
+                             "WorkingSetMB":  17.7
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.14,
+                             "WorkingSetMB":  24.26
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.48,
+                             "WorkingSetMB":  48.75
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:25.6085768+08:00",
+        "ServerCpuPct":  2.48,
+        "ServerWorkingSetMB":  141.22,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.35
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.12
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.24,
+                             "WorkingSetMB":  17.7
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  24.26
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  1.17,
+                             "WorkingSetMB":  48.79
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:26.6417131+08:00",
+        "ServerCpuPct":  2.14,
+        "ServerWorkingSetMB":  141.25,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0.21,
+                             "WorkingSetMB":  25.35
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  25.12
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.24,
+                             "WorkingSetMB":  17.7
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.26
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.62,
+                             "WorkingSetMB":  48.82
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:27.6760900+08:00",
+        "ServerCpuPct":  1.85,
+        "ServerWorkingSetMB":  141.32,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.35
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.12
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.17,
+                             "WorkingSetMB":  17.7
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.27,
+                             "WorkingSetMB":  24.27
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.41,
+                             "WorkingSetMB":  48.88
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:28.7070876+08:00",
+        "ServerCpuPct":  1.72,
+        "ServerWorkingSetMB":  141.47,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.12
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.03,
+                             "WorkingSetMB":  17.7
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.14,
+                             "WorkingSetMB":  24.27
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.55,
+                             "WorkingSetMB":  48.94
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:29.7417540+08:00",
+        "ServerCpuPct":  2.4,
+        "ServerWorkingSetMB":  141.62,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.12
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.3,
+                             "WorkingSetMB":  17.7
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.14,
+                             "WorkingSetMB":  24.27
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.96,
+                             "WorkingSetMB":  49.09
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:30.7749700+08:00",
+        "ServerCpuPct":  1.92,
+        "ServerWorkingSetMB":  141.68,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  25.12
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.03,
+                             "WorkingSetMB":  17.7
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.27,
+                             "WorkingSetMB":  24.27
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.55,
+                             "WorkingSetMB":  49.15
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:31.8087918+08:00",
+        "ServerCpuPct":  2.27,
+        "ServerWorkingSetMB":  141.73,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.12
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.58,
+                             "WorkingSetMB":  17.7
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.27
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.62,
+                             "WorkingSetMB":  49.2
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:32.8584239+08:00",
+        "ServerCpuPct":  1.89,
+        "ServerWorkingSetMB":  141.8,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.22,
+                             "WorkingSetMB":  17.7
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.2,
+                             "WorkingSetMB":  24.27
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.47,
+                             "WorkingSetMB":  49.26
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:33.8883211+08:00",
+        "ServerCpuPct":  1.45,
+        "ServerWorkingSetMB":  141.88,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0.9,
+                             "WorkingSetMB":  17.7
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.27
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.48,
+                             "WorkingSetMB":  49.34
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:34.9311661+08:00",
+        "ServerCpuPct":  1.78,
+        "ServerWorkingSetMB":  141.92,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.23,
+                             "WorkingSetMB":  17.7
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.14,
+                             "WorkingSetMB":  24.27
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.41,
+                             "WorkingSetMB":  49.38
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:35.9650219+08:00",
+        "ServerCpuPct":  1.99,
+        "ServerWorkingSetMB":  141.95,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.51,
+                             "WorkingSetMB":  17.7
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  24.27
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.41,
+                             "WorkingSetMB":  49.41
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:37.0084757+08:00",
+        "ServerCpuPct":  2.12,
+        "ServerWorkingSetMB":  141.99,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.16,
+                             "WorkingSetMB":  17.7
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  24.27
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.82,
+                             "WorkingSetMB":  49.45
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:38.0417151+08:00",
+        "ServerCpuPct":  1.58,
+        "ServerWorkingSetMB":  142.03,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.03,
+                             "WorkingSetMB":  17.7
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  24.27
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.41,
+                             "WorkingSetMB":  49.49
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:39.0738027+08:00",
+        "ServerCpuPct":  1.79,
+        "ServerWorkingSetMB":  142.07,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.03,
+                             "WorkingSetMB":  17.71
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.21,
+                             "WorkingSetMB":  24.27
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.55,
+                             "WorkingSetMB":  49.52
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:40.1093775+08:00",
+        "ServerCpuPct":  2.06,
+        "ServerWorkingSetMB":  142.14,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.71,
+                             "WorkingSetMB":  17.71
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.14,
+                             "WorkingSetMB":  24.27
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.21,
+                             "WorkingSetMB":  49.59
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:41.1425513+08:00",
+        "ServerCpuPct":  2.07,
+        "ServerWorkingSetMB":  142.21,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.31,
+                             "WorkingSetMB":  17.71
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.27
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.76,
+                             "WorkingSetMB":  49.66
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:42.1799663+08:00",
+        "ServerCpuPct":  1.71,
+        "ServerWorkingSetMB":  142.27,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0.82,
+                             "WorkingSetMB":  17.71
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.21,
+                             "WorkingSetMB":  24.28
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.68,
+                             "WorkingSetMB":  49.71
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:43.2168002+08:00",
+        "ServerCpuPct":  1.78,
+        "ServerWorkingSetMB":  142.33,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.23,
+                             "WorkingSetMB":  17.71
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.28
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.55,
+                             "WorkingSetMB":  49.77
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:44.2565776+08:00",
+        "ServerCpuPct":  2.26,
+        "ServerWorkingSetMB":  142.38,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.5,
+                             "WorkingSetMB":  17.71
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.14,
+                             "WorkingSetMB":  24.28
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.55,
+                             "WorkingSetMB":  49.82
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:45.2986470+08:00",
+        "ServerCpuPct":  1.98,
+        "ServerWorkingSetMB":  142.5,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.64,
+                             "WorkingSetMB":  17.71
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.28
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.34,
+                             "WorkingSetMB":  49.94
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:46.3317713+08:00",
+        "ServerCpuPct":  2.48,
+        "ServerWorkingSetMB":  142.59,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.17,
+                             "WorkingSetMB":  17.71
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  24.28
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  1.1,
+                             "WorkingSetMB":  50.03
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:47.3748743+08:00",
+        "ServerCpuPct":  1.57,
+        "ServerWorkingSetMB":  142.64,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.23,
+                             "WorkingSetMB":  17.71
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  24.28
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.27,
+                             "WorkingSetMB":  50.08
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:48.4077631+08:00",
+        "ServerCpuPct":  2.2,
+        "ServerWorkingSetMB":  142.71,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.1,
+                             "WorkingSetMB":  17.71
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.14,
+                             "WorkingSetMB":  24.28
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.89,
+                             "WorkingSetMB":  50.15
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:49.4368479+08:00",
+        "ServerCpuPct":  2.56,
+        "ServerWorkingSetMB":  142.77,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.73,
+                             "WorkingSetMB":  17.71
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.14,
+                             "WorkingSetMB":  24.28
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.69,
+                             "WorkingSetMB":  50.21
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:50.4725153+08:00",
+        "ServerCpuPct":  2.13,
+        "ServerWorkingSetMB":  142.85,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.3,
+                             "WorkingSetMB":  17.71
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  24.29
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.69,
+                             "WorkingSetMB":  50.28
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:51.5102102+08:00",
+        "ServerCpuPct":  1.85,
+        "ServerWorkingSetMB":  142.91,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.3,
+                             "WorkingSetMB":  17.71
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.14,
+                             "WorkingSetMB":  24.29
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.41,
+                             "WorkingSetMB":  50.34
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:52.5502714+08:00",
+        "ServerCpuPct":  1.43,
+        "ServerWorkingSetMB":  143.1,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.02,
+                             "WorkingSetMB":  17.82
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.29
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.34,
+                             "WorkingSetMB":  50.42
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:53.5834333+08:00",
+        "ServerCpuPct":  1.37,
+        "ServerWorkingSetMB":  143.29,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0.96,
+                             "WorkingSetMB":  17.82
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  24.29
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.27,
+                             "WorkingSetMB":  50.61
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:54.6170866+08:00",
+        "ServerCpuPct":  1.65,
+        "ServerWorkingSetMB":  143.35,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0.14,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0.89,
+                             "WorkingSetMB":  17.82
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.29
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.62,
+                             "WorkingSetMB":  50.67
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:55.6512966+08:00",
+        "ServerCpuPct":  1.79,
+        "ServerWorkingSetMB":  143.41,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.03,
+                             "WorkingSetMB":  17.82
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  24.29
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.62,
+                             "WorkingSetMB":  50.73
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:56.6883942+08:00",
+        "ServerCpuPct":  1.85,
+        "ServerWorkingSetMB":  143.47,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.03,
+                             "WorkingSetMB":  17.82
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.14,
+                             "WorkingSetMB":  24.29
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.68,
+                             "WorkingSetMB":  50.79
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:57.7204168+08:00",
+        "ServerCpuPct":  1.79,
+        "ServerWorkingSetMB":  143.52,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.24,
+                             "WorkingSetMB":  17.82
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  24.29
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.48,
+                             "WorkingSetMB":  50.84
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:58.7572817+08:00",
+        "ServerCpuPct":  1.85,
+        "ServerWorkingSetMB":  143.59,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.03,
+                             "WorkingSetMB":  17.82
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.14,
+                             "WorkingSetMB":  24.29
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.68,
+                             "WorkingSetMB":  50.91
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:24:59.7968316+08:00",
+        "ServerCpuPct":  1.78,
+        "ServerWorkingSetMB":  143.7,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.23,
+                             "WorkingSetMB":  17.84
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  24.29
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.48,
+                             "WorkingSetMB":  51
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:00.8333185+08:00",
+        "ServerCpuPct":  1.65,
+        "ServerWorkingSetMB":  143.79,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0.89,
+                             "WorkingSetMB":  17.84
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  24.29
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.69,
+                             "WorkingSetMB":  51.09
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:01.8732071+08:00",
+        "ServerCpuPct":  2.33,
+        "ServerWorkingSetMB":  143.84,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.37,
+                             "WorkingSetMB":  17.84
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  24.29
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.82,
+                             "WorkingSetMB":  51.14
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:02.9084736+08:00",
+        "ServerCpuPct":  1.44,
+        "ServerWorkingSetMB":  143.89,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0.96,
+                             "WorkingSetMB":  17.84
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.14,
+                             "WorkingSetMB":  24.29
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.34,
+                             "WorkingSetMB":  51.19
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:03.9403048+08:00",
+        "ServerCpuPct":  1.86,
+        "ServerWorkingSetMB":  143.93,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0.14,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.31,
+                             "WorkingSetMB":  17.84
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.3
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.41,
+                             "WorkingSetMB":  51.22
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:04.9747955+08:00",
+        "ServerCpuPct":  2.33,
+        "ServerWorkingSetMB":  143.97,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.37,
+                             "WorkingSetMB":  17.84
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.14,
+                             "WorkingSetMB":  24.3
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.82,
+                             "WorkingSetMB":  51.26
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:06.0157762+08:00",
+        "ServerCpuPct":  1.63,
+        "ServerWorkingSetMB":  144.02,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.02,
+                             "WorkingSetMB":  17.84
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.3
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.61,
+                             "WorkingSetMB":  51.31
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:07.0487000+08:00",
+        "ServerCpuPct":  1.93,
+        "ServerWorkingSetMB":  144.11,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0.14,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.1,
+                             "WorkingSetMB":  17.84
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.3
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.69,
+                             "WorkingSetMB":  51.4
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:08.0831943+08:00",
+        "ServerCpuPct":  1.51,
+        "ServerWorkingSetMB":  144.13,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0.96,
+                             "WorkingSetMB":  17.84
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  24.3
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.48,
+                             "WorkingSetMB":  51.42
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:09.1143860+08:00",
+        "ServerCpuPct":  1.31,
+        "ServerWorkingSetMB":  144.16,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0.55,
+                             "WorkingSetMB":  17.85
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.14,
+                             "WorkingSetMB":  24.3
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.62,
+                             "WorkingSetMB":  51.44
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:10.1498685+08:00",
+        "ServerCpuPct":  1.51,
+        "ServerWorkingSetMB":  144.18,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0.89,
+                             "WorkingSetMB":  17.85
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  24.3
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.55,
+                             "WorkingSetMB":  51.46
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:11.1817983+08:00",
+        "ServerCpuPct":  2,
+        "ServerWorkingSetMB":  144.21,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.1,
+                             "WorkingSetMB":  17.85
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.14,
+                             "WorkingSetMB":  24.3
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.76,
+                             "WorkingSetMB":  51.49
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:12.2227326+08:00",
+        "ServerCpuPct":  2.19,
+        "ServerWorkingSetMB":  144.25,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.09,
+                             "WorkingSetMB":  17.85
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  24.3
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.96,
+                             "WorkingSetMB":  51.53
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:13.2662314+08:00",
+        "ServerCpuPct":  1.98,
+        "ServerWorkingSetMB":  144.27,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.23,
+                             "WorkingSetMB":  17.85
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  24.3
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.68,
+                             "WorkingSetMB":  51.55
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:14.3023587+08:00",
+        "ServerCpuPct":  2.06,
+        "ServerWorkingSetMB":  144.31,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.23,
+                             "WorkingSetMB":  17.85
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  24.3
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.69,
+                             "WorkingSetMB":  51.59
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:15.3408722+08:00",
+        "ServerCpuPct":  1.71,
+        "ServerWorkingSetMB":  144.34,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.16,
+                             "WorkingSetMB":  17.85
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.14,
+                             "WorkingSetMB":  24.3
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.41,
+                             "WorkingSetMB":  51.62
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:16.3803109+08:00",
+        "ServerCpuPct":  1.44,
+        "ServerWorkingSetMB":  144.36,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0.89,
+                             "WorkingSetMB":  17.85
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.3
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.55,
+                             "WorkingSetMB":  51.64
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:17.4196790+08:00",
+        "ServerCpuPct":  1.92,
+        "ServerWorkingSetMB":  144.42,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.3,
+                             "WorkingSetMB":  17.85
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  24.31
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.55,
+                             "WorkingSetMB":  51.69
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:18.4577090+08:00",
+        "ServerCpuPct":  2.26,
+        "ServerWorkingSetMB":  144.46,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0.21,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.16,
+                             "WorkingSetMB":  17.85
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  24.31
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.82,
+                             "WorkingSetMB":  51.73
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:19.4998027+08:00",
+        "ServerCpuPct":  2.19,
+        "ServerWorkingSetMB":  144.49,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.5,
+                             "WorkingSetMB":  17.85
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  24.31
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.55,
+                             "WorkingSetMB":  51.76
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:20.5342865+08:00",
+        "ServerCpuPct":  2,
+        "ServerWorkingSetMB":  144.51,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.24,
+                             "WorkingSetMB":  17.85
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.31
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.76,
+                             "WorkingSetMB":  51.78
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:21.5638655+08:00",
+        "ServerCpuPct":  2.97,
+        "ServerWorkingSetMB":  144.53,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.59,
+                             "WorkingSetMB":  17.85
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.21,
+                             "WorkingSetMB":  24.31
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  1.1,
+                             "WorkingSetMB":  51.8
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:22.6080566+08:00",
+        "ServerCpuPct":  1.71,
+        "ServerWorkingSetMB":  144.56,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.16,
+                             "WorkingSetMB":  17.85
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.14,
+                             "WorkingSetMB":  24.31
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.41,
+                             "WorkingSetMB":  51.83
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:23.6373508+08:00",
+        "ServerCpuPct":  2.07,
+        "ServerWorkingSetMB":  144.59,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.38,
+                             "WorkingSetMB":  17.85
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.14,
+                             "WorkingSetMB":  24.31
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.55,
+                             "WorkingSetMB":  51.86
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:24.6790030+08:00",
+        "ServerCpuPct":  1.64,
+        "ServerWorkingSetMB":  144.61,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.16,
+                             "WorkingSetMB":  17.85
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.31
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.48,
+                             "WorkingSetMB":  51.88
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:25.7090416+08:00",
+        "ServerCpuPct":  1.31,
+        "ServerWorkingSetMB":  144.62,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0.9,
+                             "WorkingSetMB":  17.85
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.31
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.41,
+                             "WorkingSetMB":  51.89
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:26.7414609+08:00",
+        "ServerCpuPct":  2.14,
+        "ServerWorkingSetMB":  144.67,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.24,
+                             "WorkingSetMB":  17.85
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  24.32
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.83,
+                             "WorkingSetMB":  51.93
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:27.7811038+08:00",
+        "ServerCpuPct":  1.91,
+        "ServerWorkingSetMB":  144.8,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.44
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.16,
+                             "WorkingSetMB":  17.86
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.14,
+                             "WorkingSetMB":  24.32
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.61,
+                             "WorkingSetMB":  52.05
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:28.8267006+08:00",
+        "ServerCpuPct":  2.92,
+        "ServerWorkingSetMB":  144.85,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  25.47
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.49,
+                             "WorkingSetMB":  17.86
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.14,
+                             "WorkingSetMB":  24.32
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  1.22,
+                             "WorkingSetMB":  52.07
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:29.8664080+08:00",
+        "ServerCpuPct":  1.71,
+        "ServerWorkingSetMB":  144.87,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.47
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0.96,
+                             "WorkingSetMB":  17.86
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.32
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.75,
+                             "WorkingSetMB":  52.09
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:30.8993011+08:00",
+        "ServerCpuPct":  1.86,
+        "ServerWorkingSetMB":  144.93,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  25.47
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.03,
+                             "WorkingSetMB":  17.86
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  24.32
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.69,
+                             "WorkingSetMB":  52.15
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:31.9321829+08:00",
+        "ServerCpuPct":  1.99,
+        "ServerWorkingSetMB":  144.96,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.47
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.44,
+                             "WorkingSetMB":  17.86
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.14,
+                             "WorkingSetMB":  24.32
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.41,
+                             "WorkingSetMB":  52.18
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:32.9741837+08:00",
+        "ServerCpuPct":  2.18,
+        "ServerWorkingSetMB":  144.99,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.47
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.23,
+                             "WorkingSetMB":  17.86
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.32
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.95,
+                             "WorkingSetMB":  52.21
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:34.0074629+08:00",
+        "ServerCpuPct":  1.78,
+        "ServerWorkingSetMB":  145.03,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.47
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0.96,
+                             "WorkingSetMB":  17.86
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.32
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.82,
+                             "WorkingSetMB":  52.25
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:35.0397726+08:00",
+        "ServerCpuPct":  1.79,
+        "ServerWorkingSetMB":  145.07,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.47
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0.96,
+                             "WorkingSetMB":  17.86
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  24.32
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.76,
+                             "WorkingSetMB":  52.29
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:36.0738771+08:00",
+        "ServerCpuPct":  1.65,
+        "ServerWorkingSetMB":  145.14,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.47
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0.89,
+                             "WorkingSetMB":  17.86
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  24.32
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.69,
+                             "WorkingSetMB":  52.36
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:37.0962464+08:00",
+        "ServerCpuPct":  1.67,
+        "ServerWorkingSetMB":  145.16,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.47
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.25,
+                             "WorkingSetMB":  17.86
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.32
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.42,
+                             "WorkingSetMB":  52.38
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:38.1402450+08:00",
+        "ServerCpuPct":  2.31,
+        "ServerWorkingSetMB":  145.19,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.47
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.43,
+                             "WorkingSetMB":  17.86
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.32
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.88,
+                             "WorkingSetMB":  52.41
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:39.1663072+08:00",
+        "ServerCpuPct":  2.08,
+        "ServerWorkingSetMB":  145.22,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.47
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.04,
+                             "WorkingSetMB":  17.87
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.14,
+                             "WorkingSetMB":  24.32
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.9,
+                             "WorkingSetMB":  52.43
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:40.1886190+08:00",
+        "ServerCpuPct":  2.08,
+        "ServerWorkingSetMB":  145.67,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0.14,
+                             "WorkingSetMB":  25.47
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0.21,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0.9,
+                             "WorkingSetMB":  17.87
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.33
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.83,
+                             "WorkingSetMB":  52.87
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:41.2070183+08:00",
+        "ServerCpuPct":  1.54,
+        "ServerWorkingSetMB":  145.79,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.47
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0.98,
+                             "WorkingSetMB":  17.87
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  24.33
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.49,
+                             "WorkingSetMB":  52.99
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:42.2395057+08:00",
+        "ServerCpuPct":  1.66,
+        "ServerWorkingSetMB":  145.83,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.47
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0.69,
+                             "WorkingSetMB":  17.87
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.14,
+                             "WorkingSetMB":  24.33
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.83,
+                             "WorkingSetMB":  53.03
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:43.2795148+08:00",
+        "ServerCpuPct":  2.46,
+        "ServerWorkingSetMB":  145.87,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.47
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.57,
+                             "WorkingSetMB":  17.87
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.33
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.89,
+                             "WorkingSetMB":  53.07
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:44.3227573+08:00",
+        "ServerCpuPct":  1.78,
+        "ServerWorkingSetMB":  145.92,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.47
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.16,
+                             "WorkingSetMB":  17.87
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.14,
+                             "WorkingSetMB":  24.33
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.48,
+                             "WorkingSetMB":  53.12
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:45.3493939+08:00",
+        "ServerCpuPct":  1.52,
+        "ServerWorkingSetMB":  145.94,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.47
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0.62,
+                             "WorkingSetMB":  17.87
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  24.33
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.83,
+                             "WorkingSetMB":  53.14
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:46.3716553+08:00",
+        "ServerCpuPct":  1.53,
+        "ServerWorkingSetMB":  146,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0.14,
+                             "WorkingSetMB":  25.47
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0.9,
+                             "WorkingSetMB":  17.87
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  24.33
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.42,
+                             "WorkingSetMB":  53.2
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:47.4211099+08:00",
+        "ServerCpuPct":  2.04,
+        "ServerWorkingSetMB":  146.03,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  25.47
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.29,
+                             "WorkingSetMB":  17.87
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  24.33
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.54,
+                             "WorkingSetMB":  53.23
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:48.4657976+08:00",
+        "ServerCpuPct":  1.5,
+        "ServerWorkingSetMB":  146.06,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.47
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.02,
+                             "WorkingSetMB":  17.87
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  24.33
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.41,
+                             "WorkingSetMB":  53.26
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:49.4979039+08:00",
+        "ServerCpuPct":  2.28,
+        "ServerWorkingSetMB":  146.09,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  25.47
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.24,
+                             "WorkingSetMB":  17.87
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.14,
+                             "WorkingSetMB":  24.34
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.83,
+                             "WorkingSetMB":  53.28
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:50.5325345+08:00",
+        "ServerCpuPct":  1.65,
+        "ServerWorkingSetMB":  146.12,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.47
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  1.17,
+                             "WorkingSetMB":  17.87
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.34
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.48,
+                             "WorkingSetMB":  53.31
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:51.5658948+08:00",
+        "ServerCpuPct":  2.89,
+        "ServerWorkingSetMB":  146.32,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0.41,
+                             "WorkingSetMB":  25.64
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0.55,
+                             "WorkingSetMB":  25.13
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0.76,
+                             "WorkingSetMB":  17.87
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.14,
+                             "WorkingSetMB":  24.34
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  1.03,
+                             "WorkingSetMB":  53.34
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:52.5988215+08:00",
+        "ServerCpuPct":  6.53,
+        "ServerWorkingSetMB":  146.68,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  2.68,
+                             "WorkingSetMB":  25.87
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  2.2,
+                             "WorkingSetMB":  25.24
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  17.87
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.55,
+                             "WorkingSetMB":  24.36
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  1.03,
+                             "WorkingSetMB":  53.34
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:53.6240073+08:00",
+        "ServerCpuPct":  7.68,
+        "ServerWorkingSetMB":  147.3,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  2.63,
+                             "WorkingSetMB":  26.21
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  2.7,
+                             "WorkingSetMB":  25.47
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  17.87
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.69,
+                             "WorkingSetMB":  24.38
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  1.59,
+                             "WorkingSetMB":  53.37
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:54.6567744+08:00",
+        "ServerCpuPct":  7.29,
+        "ServerWorkingSetMB":  147.88,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  2.48,
+                             "WorkingSetMB":  26.51
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  3.09,
+                             "WorkingSetMB":  25.73
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  17.87
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.55,
+                             "WorkingSetMB":  24.4
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  1.17,
+                             "WorkingSetMB":  53.37
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:55.6987650+08:00",
+        "ServerCpuPct":  7.16,
+        "ServerWorkingSetMB":  148.56,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  2.25,
+                             "WorkingSetMB":  26.86
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  2.18,
+                             "WorkingSetMB":  26.04
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0.14,
+                             "WorkingSetMB":  17.87
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.61,
+                             "WorkingSetMB":  24.42
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  1.98,
+                             "WorkingSetMB":  53.37
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:56.7369061+08:00",
+        "ServerCpuPct":  7.65,
+        "ServerWorkingSetMB":  149.33,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  2.39,
+                             "WorkingSetMB":  27.25
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  2.8,
+                             "WorkingSetMB":  26.39
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  17.87
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.68,
+                             "WorkingSetMB":  24.45
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  1.78,
+                             "WorkingSetMB":  53.37
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:57.7737747+08:00",
+        "ServerCpuPct":  7.46,
+        "ServerWorkingSetMB":  150.07,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  2.74,
+                             "WorkingSetMB":  27.62
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  3.15,
+                             "WorkingSetMB":  26.74
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  17.87
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.27,
+                             "WorkingSetMB":  24.47
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  1.3,
+                             "WorkingSetMB":  53.37
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:58.8072934+08:00",
+        "ServerCpuPct":  7.21,
+        "ServerWorkingSetMB":  150.73,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  3.02,
+                             "WorkingSetMB":  27.89
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  2.61,
+                             "WorkingSetMB":  27.1
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  17.87
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.55,
+                             "WorkingSetMB":  24.49
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  1.03,
+                             "WorkingSetMB":  53.38
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:25:59.8347465+08:00",
+        "ServerCpuPct":  6.43,
+        "ServerWorkingSetMB":  151.36,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  2.14,
+                             "WorkingSetMB":  28.23
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  1.66,
+                             "WorkingSetMB":  27.37
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  17.87
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  1.04,
+                             "WorkingSetMB":  24.51
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  1.52,
+                             "WorkingSetMB":  53.38
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:26:00.8680891+08:00",
+        "ServerCpuPct":  7.83,
+        "ServerWorkingSetMB":  152.32,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  2.54,
+                             "WorkingSetMB":  28.67
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  3.16,
+                             "WorkingSetMB":  27.79
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  17.88
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.82,
+                             "WorkingSetMB":  24.54
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  1.24,
+                             "WorkingSetMB":  53.44
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:26:01.8989447+08:00",
+        "ServerCpuPct":  7.31,
+        "ServerWorkingSetMB":  152.79,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  2.76,
+                             "WorkingSetMB":  28.83
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  3.17,
+                             "WorkingSetMB":  28.08
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  17.88
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.28,
+                             "WorkingSetMB":  24.56
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  1.1,
+                             "WorkingSetMB":  53.44
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:26:02.9157775+08:00",
+        "ServerCpuPct":  7.19,
+        "ServerWorkingSetMB":  153.36,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  2.3,
+                             "WorkingSetMB":  29.08
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  2.86,
+                             "WorkingSetMB":  28.38
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  17.88
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.49,
+                             "WorkingSetMB":  24.58
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  1.54,
+                             "WorkingSetMB":  53.44
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:26:03.9487791+08:00",
+        "ServerCpuPct":  7.57,
+        "ServerWorkingSetMB":  154.12,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  3.03,
+                             "WorkingSetMB":  29.3
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  2.89,
+                             "WorkingSetMB":  28.84
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  17.88
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.41,
+                             "WorkingSetMB":  24.6
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  1.24,
+                             "WorkingSetMB":  53.5
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:26:04.9914541+08:00",
+        "ServerCpuPct":  7.07,
+        "ServerWorkingSetMB":  154.86,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  2.86,
+                             "WorkingSetMB":  29.63
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  2.72,
+                             "WorkingSetMB":  29.23
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  17.88
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.54,
+                             "WorkingSetMB":  24.62
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.95,
+                             "WorkingSetMB":  53.5
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:26:06.0227636+08:00",
+        "ServerCpuPct":  6.55,
+        "ServerWorkingSetMB":  155.72,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  2.34,
+                             "WorkingSetMB":  29.98
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  2.69,
+                             "WorkingSetMB":  29.7
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  17.88
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.21,
+                             "WorkingSetMB":  24.64
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  1.24,
+                             "WorkingSetMB":  53.52
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:26:07.0572121+08:00",
+        "ServerCpuPct":  7.61,
+        "ServerWorkingSetMB":  156.31,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  3.36,
+                             "WorkingSetMB":  30.38
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  3.36,
+                             "WorkingSetMB":  29.87
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  17.88
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.27,
+                             "WorkingSetMB":  24.66
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.62,
+                             "WorkingSetMB":  53.52
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:26:08.0893586+08:00",
+        "ServerCpuPct":  7.78,
+        "ServerWorkingSetMB":  156.37,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  4.06,
+                             "WorkingSetMB":  30.42
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  3.58,
+                             "WorkingSetMB":  29.89
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  17.88
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.14,
+                             "WorkingSetMB":  24.66
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  53.52
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:26:09.1218687+08:00",
+        "ServerCpuPct":  6.95,
+        "ServerWorkingSetMB":  156.45,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  3.92,
+                             "WorkingSetMB":  30.46
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  2.82,
+                             "WorkingSetMB":  29.93
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  17.88
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.21,
+                             "WorkingSetMB":  24.66
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  53.52
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:26:10.1614683+08:00",
+        "ServerCpuPct":  7.66,
+        "ServerWorkingSetMB":  156.53,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  3.83,
+                             "WorkingSetMB":  30.5
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  3.83,
+                             "WorkingSetMB":  29.96
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  17.89
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.66
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  53.52
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:26:11.1947362+08:00",
+        "ServerCpuPct":  7.69,
+        "ServerWorkingSetMB":  156.64,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  4.12,
+                             "WorkingSetMB":  30.57
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  3.3,
+                             "WorkingSetMB":  30
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  17.89
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.27,
+                             "WorkingSetMB":  24.66
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  53.52
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:26:12.2306489+08:00",
+        "ServerCpuPct":  7.47,
+        "ServerWorkingSetMB":  156.68,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  3.36,
+                             "WorkingSetMB":  30.57
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  4.11,
+                             "WorkingSetMB":  30.04
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  17.89
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.66
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  53.52
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:26:13.2717894+08:00",
+        "ServerCpuPct":  7.98,
+        "ServerWorkingSetMB":  156.88,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  3.75,
+                             "WorkingSetMB":  30.67
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  4.09,
+                             "WorkingSetMB":  30.14
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  17.89
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  24.66
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  53.52
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:26:14.3055123+08:00",
+        "ServerCpuPct":  7.42,
+        "ServerWorkingSetMB":  156.9,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  3.5,
+                             "WorkingSetMB":  30.67
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  3.85,
+                             "WorkingSetMB":  30.16
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  17.89
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  24.66
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  53.52
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:26:15.3402574+08:00",
+        "ServerCpuPct":  8.1,
+        "ServerWorkingSetMB":  157.03,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  4.05,
+                             "WorkingSetMB":  30.74
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  3.91,
+                             "WorkingSetMB":  30.22
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  17.89
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.14,
+                             "WorkingSetMB":  24.66
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  53.52
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:26:16.3813556+08:00",
+        "ServerCpuPct":  7.7,
+        "ServerWorkingSetMB":  157.03,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  3.82,
+                             "WorkingSetMB":  30.74
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  3.68,
+                             "WorkingSetMB":  30.22
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  17.89
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.2,
+                             "WorkingSetMB":  24.66
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  53.52
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:26:17.4235961+08:00",
+        "ServerCpuPct":  6.41,
+        "ServerWorkingSetMB":  157.04,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  3.41,
+                             "WorkingSetMB":  30.74
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  2.86,
+                             "WorkingSetMB":  30.23
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  17.89
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.14,
+                             "WorkingSetMB":  24.66
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  53.52
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:26:18.4820116+08:00",
+        "ServerCpuPct":  0.13,
+        "ServerWorkingSetMB":  157.04,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0.13,
+                             "WorkingSetMB":  30.74
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  30.23
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  17.89
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.66
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  53.52
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:26:19.5217444+08:00",
+        "ServerCpuPct":  0.55,
+        "ServerWorkingSetMB":  157.05,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0.14,
+                             "WorkingSetMB":  30.75
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0.41,
+                             "WorkingSetMB":  30.23
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  17.89
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.66
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  53.52
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:26:20.5725366+08:00",
+        "ServerCpuPct":  0.07,
+        "ServerWorkingSetMB":  157.05,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  30.75
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  30.23
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  17.89
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.66
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  53.52
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:26:21.6068154+08:00",
+        "ServerCpuPct":  0.07,
+        "ServerWorkingSetMB":  157.05,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  30.75
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  30.23
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  17.89
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.66
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  53.52
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:26:22.6478426+08:00",
+        "ServerCpuPct":  0.28,
+        "ServerWorkingSetMB":  157.05,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  30.75
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  30.23
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  17.89
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.66
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  53.52
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:26:23.6810856+08:00",
+        "ServerCpuPct":  0.21,
+        "ServerWorkingSetMB":  157.05,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  30.75
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0.14,
+                             "WorkingSetMB":  30.23
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  17.89
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.66
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  53.52
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:26:24.7320744+08:00",
+        "ServerCpuPct":  0.07,
+        "ServerWorkingSetMB":  157.05,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  30.75
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  30.23
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  17.89
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.66
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  53.52
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:26:25.7735508+08:00",
+        "ServerCpuPct":  0,
+        "ServerWorkingSetMB":  157.05,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  30.75
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  30.23
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  17.89
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.66
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  53.52
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:26:26.8151914+08:00",
+        "ServerCpuPct":  0,
+        "ServerWorkingSetMB":  157.05,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  30.75
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  30.23
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  17.89
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.66
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  53.52
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:26:27.8575552+08:00",
+        "ServerCpuPct":  0.14,
+        "ServerWorkingSetMB":  157.05,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  30.75
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  30.23
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  17.89
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.66
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  53.52
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:26:28.8986140+08:00",
+        "ServerCpuPct":  0,
+        "ServerWorkingSetMB":  157.05,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  30.75
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  30.23
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  17.89
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.66
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  53.52
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:26:29.9460614+08:00",
+        "ServerCpuPct":  0.07,
+        "ServerWorkingSetMB":  157.05,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  30.75
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  30.23
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  17.89
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.66
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  53.52
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:26:30.9820106+08:00",
+        "ServerCpuPct":  0.14,
+        "ServerWorkingSetMB":  157.05,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  30.75
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  30.23
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  17.89
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.66
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  53.52
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:26:32.0233670+08:00",
+        "ServerCpuPct":  0,
+        "ServerWorkingSetMB":  157.05,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  30.75
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  30.23
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  17.89
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.66
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  53.52
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:26:33.0565836+08:00",
+        "ServerCpuPct":  0.14,
+        "ServerWorkingSetMB":  157.05,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  30.75
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  30.23
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  17.89
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  24.66
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  53.52
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:26:34.1068267+08:00",
+        "ServerCpuPct":  0,
+        "ServerWorkingSetMB":  157.05,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  30.75
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  30.23
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  17.89
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.66
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  53.52
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:26:35.1493441+08:00",
+        "ServerCpuPct":  0.21,
+        "ServerWorkingSetMB":  157.05,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  30.75
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  30.23
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  17.89
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.66
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  53.52
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:26:36.1894703+08:00",
+        "ServerCpuPct":  0.07,
+        "ServerWorkingSetMB":  157.05,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  30.75
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0.07,
+                             "WorkingSetMB":  30.23
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  17.89
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.66
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  53.52
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:26:37.2296390+08:00",
+        "ServerCpuPct":  0,
+        "ServerWorkingSetMB":  157.05,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  30.75
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  30.23
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  17.89
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  24.66
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  53.52
+                         }
+                     ]
+    },
+    {
+        "Timestamp":  "2026-06-02T15:26:38.2644595+08:00",
+        "ServerCpuPct":  8.09,
+        "ServerWorkingSetMB":  157.05,
+        "Services":  [
+                         {
+                             "Name":  "ChatServer1",
+                             "Id":  29636,
+                             "CpuPct":  3.77,
+                             "WorkingSetMB":  30.75
+                         },
+                         {
+                             "Name":  "ChatServer2",
+                             "Id":  21848,
+                             "CpuPct":  4.05,
+                             "WorkingSetMB":  30.23
+                         },
+                         {
+                             "Name":  "GateServer",
+                             "Id":  31288,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  17.89
+                         },
+                         {
+                             "Name":  "Redis",
+                             "Id":  6276,
+                             "CpuPct":  0.27,
+                             "WorkingSetMB":  24.66
+                         },
+                         {
+                             "Name":  "MySQL",
+                             "Id":  5080,
+                             "CpuPct":  0,
+                             "WorkingSetMB":  53.52
+                         }
+                     ]
+    }
+]

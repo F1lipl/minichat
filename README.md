@@ -2,6 +2,20 @@
 
 这是一个基于 C++、Node.js、gRPC、MySQL 和 Redis 的仿微信即时通讯项目。系统支持邮箱验证码注册、登录、好友搜索、好友申请、好友认证、实时文本聊天、跨 ChatServer 消息转发、离线消息拉取和心跳保活。
 
+## 性能压测结论
+
+当前本地单机双 ChatServer Debug 环境下，系统可实时支撑 `10000` 条 TCP 长连接、约 `200 msg/s` 消息吞吐，ACK/通知成功率 `100%`，P95 延迟约 `20-30ms`。当实际吞吐提升到约 `250 msg/s` 以上时，消息仍可可靠投递，但 P95 延迟上升到秒级，已不适合作为实时聊天可用指标。
+
+| 指标 | 结果 |
+| --- | --- |
+| 极限可用连接数 | `10000` TCP 长连接 |
+| 极限可用吞吐 | 约 `200 msg/s` |
+| 可用样本延迟 | ACK P95 `26ms`，Notify P95 `23ms` |
+| 可靠性 | ACK/Notify 成功率 `100%` |
+| 不可用边界 | 约 `254 msg/s` 时 P95 升至 `3.7s` 左右 |
+
+详细压测报告见：[MiniChat 极限可用压测报告](load_results/usable_limit_report_20260602.md)。
+
 ## 项目结构
 
 | 目录 | 说明 |
@@ -13,11 +27,13 @@
 | `ChatSever` | C++ 聊天服务实例 chatserver1 |
 | `ChatServer2` | C++ 聊天服务实例 chatserver2 |
 | `docs` | 项目文档和架构图 |
+| `load_results` | 压测结果、采样数据和压测报告 |
 
 ## 文档
 
 - [项目文档](docs/project-documentation.md)
 - [架构图](docs/architecture.md)
+- [极限可用压测报告](load_results/usable_limit_report_20260602.md)
 
 ## 默认端口
 
@@ -57,4 +73,3 @@ npm start
 ```text
 http://127.0.0.1:5174
 ```
-

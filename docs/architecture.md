@@ -29,8 +29,8 @@ flowchart LR
   Verify -->|code_email<br/>验证码 TTL 60s| Redis[("Redis<br/>验证码 token 在线映射 缓存 离线消息")]
   Gate -->|读取 code_email| Redis
   Status -->|utoken_uid<br/>写入登录 token| Redis
-  Chat1 -->|uip_uid / ubaseinfo_uid<br/>offline_msg_uid| Redis
-  Chat2 -->|uip_uid / ubaseinfo_uid<br/>offline_msg_uid| Redis
+  Chat1 -->|uip_uid Set / ubaseinfo_uid<br/>offline_msg_uid| Redis
+  Chat2 -->|uip_uid Set / ubaseinfo_uid<br/>offline_msg_uid| Redis
 
   subgraph AccountFlow["账号链路"]
     Gate
@@ -59,4 +59,20 @@ GateServer 负责账号类 HTTP 接口。它通过 gRPC 调用 VarifyServer 生�
 
 StatusServer 负责聊天服务发现和 token 管理。用户登录成功后，StatusServer 选择一个 ChatServer，生成 token，并写入 Redis 的 `utoken_<uid>`。
 
-ChatServer1 和 ChatServer2 构成聊天服务集群。用户登录聊天服务后，ChatServer 会把 `uip_<uid>` 写入 Redis，表示该用户当前在哪个聊天服务器。发送好友申请或文本消息时，如果目标用户在另一台 ChatServer，则通过 gRPC 跨服通知；如果目标用户离线，则写入 `offline_msg_<uid>`，下次登录时拉取。
+ChatServer1 和 ChatServer2 构成聊天服务集群。用户登录聊天服务后，ChatServer 会把所在服务名写入 Redis 的 `uip_<uid>` Set，表示该用户当前在线的 ChatServer 集合，用于支持多端登录和跨服消息 fan-out。发送好友申请或文本消息时，如果目标用户在另一台 ChatServer，则通过 gRPC 跨服通知；如果目标用户离线，则写入 `offline_msg_<uid>`，下次登录时拉取。
+
+## 性能压测结论
+
+当前架构在本地单机双 ChatServer Debug 环境下完成了极限可用压测：
+
+| 指标 | 结果 |
+| --- | --- |
+| 极限可用连接数 | `10000` TCP 长连接 |
+| 极限可用吞吐 | 约 `200 msg/s` |
+| 可用样本 | `10000` 连接，实际 `202.70 msg/s` |
+| ACK P95 | `26ms` |
+| Notify P95 | `23ms` |
+| ACK/Notify 成功率 | `100%` |
+| 不可用边界 | 实际约 `254 msg/s` 后 P95 升至 `3.7s` 左右 |
+
+详细压测报告见：`load_results/usable_limit_report_20260602.md`。

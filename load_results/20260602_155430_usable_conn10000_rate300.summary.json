@@ -1,0 +1,103 @@
+﻿{
+    "Label":  "usable_conn10000_rate300",
+    "ExitCode":  0,
+    "StartedAt":  "2026-06-02T15:56:39.5088025+08:00",
+    "EndedAt":  "2026-06-02T16:03:45.8312247+08:00",
+    "WallSeconds":  426.32,
+    "LogicalProcessors":  22,
+    "Targets":  [
+                    {
+                        "Name":  "ChatServer1",
+                        "Port":  8090,
+                        "Id":  29636
+                    },
+                    {
+                        "Name":  "ChatServer2",
+                        "Port":  8091,
+                        "Id":  21848
+                    },
+                    {
+                        "Name":  "GateServer",
+                        "Port":  8080,
+                        "Id":  31288
+                    },
+                    {
+                        "Name":  "Redis",
+                        "Port":  6380,
+                        "Id":  6276
+                    },
+                    {
+                        "Name":  "MySQL",
+                        "Port":  3308,
+                        "Id":  5080
+                    }
+                ],
+    "ServerCpuPct":  {
+                         "Avg":  2.58,
+                         "Max":  11.01
+                     },
+    "ServerWorkingSetMB":  {
+                               "Avg":  137.62,
+                               "Max":  181.59
+                           },
+    "LoadReport":  {
+                       "runId":  "mpwcg8zp",
+                       "config":  {
+                                      "users":  5000,
+                                      "sessionsPerUser":  2,
+                                      "totalConnections":  10000,
+                                      "durationSec":  8,
+                                      "targetRate":  300,
+                                      "chatPorts":  [
+                                                        8090,
+                                                        8091
+                                                    ]
+                                  },
+                       "accounts":  {
+                                        "firstUid":  32219,
+                                        "lastUid":  37218
+                                    },
+                       "throughput":  {
+                                          "elapsedSec":  424.52,
+                                          "trafficElapsedSec":  9.45,
+                                          "attempted":  2400,
+                                          "sent":  2400,
+                                          "actualMsgPerSec":  254.1
+                                      },
+                       "reliability":  {
+                                           "sendErrors":  0,
+                                           "socketErrors":  0,
+                                           "acked":  2400,
+                                           "missingAck":  0,
+                                           "ackSuccessRate":  1,
+                                           "expectedNotify":  4800,
+                                           "notified":  4800,
+                                           "missingNotify":  0,
+                                           "notifySuccessRate":  1
+                                       },
+                       "latencyMs":  {
+                                         "ack":  {
+                                                     "count":  2400,
+                                                     "avg":  1871.89,
+                                                     "p50":  1900,
+                                                     "p95":  3741,
+                                                     "p99":  4471,
+                                                     "max":  5648
+                                                 },
+                                         "notify":  {
+                                                        "count":  4800,
+                                                        "avg":  1886.27,
+                                                        "p50":  1927,
+                                                        "p95":  3751,
+                                                        "p99":  4627,
+                                                        "max":  6942
+                                                    }
+                                     }
+                   },
+    "StdoutPath":  "D:\\workspace\\project\\load_results\\20260602_155430_usable_conn10000_rate300.stdout.log",
+    "StderrPath":  "D:\\workspace\\project\\load_results\\20260602_155430_usable_conn10000_rate300.stderr.log",
+    "SamplesPath":  "D:\\workspace\\project\\load_results\\20260602_155430_usable_conn10000_rate300.samples.json",
+    "Stderr":  {
+
+               }
+}
