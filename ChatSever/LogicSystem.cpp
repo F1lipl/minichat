@@ -7,6 +7,7 @@
 #include "ChatGrpcClient.h"
 //#include "DistLock.h"
 #include <string>
+#include <algorithm>
 #include "CServer.h"
 using namespace std;
 
@@ -22,6 +23,44 @@ namespace {
 		offline_msg["touid"] = touid;
 		offline_msg["text_array"] = text_array;
 		RedisMgr::GetInstance()->RPush(OfflineMsgKey(touid), offline_msg.toStyledString());
+	}
+
+	std::vector<std::string> ParseOnlineServers(const std::string& value) {
+		std::vector<std::string> servers;
+		if (value.empty()) {
+			return servers;
+		}
+
+		Json::Reader reader;
+		Json::Value root;
+		if (reader.parse(value, root) && root.isArray()) {
+			for (const auto& item : root) {
+				if (!item.isString()) {
+					continue;
+				}
+				auto server = item.asString();
+				if (!server.empty() && std::find(servers.begin(), servers.end(), server) == servers.end()) {
+					servers.push_back(server);
+				}
+			}
+			return servers;
+		}
+
+		servers.push_back(value);
+		return servers;
+	}
+
+	void SaveOnlineServers(const std::string& key, const std::vector<std::string>& servers) {
+		if (servers.empty()) {
+			RedisMgr::GetInstance()->Del(key);
+			return;
+		}
+
+		Json::Value root(Json::arrayValue);
+		for (const auto& server : servers) {
+			root.append(server);
+		}
+		RedisMgr::GetInstance()->Set(key, root.toStyledString());
 	}
 }
 
@@ -51,6 +90,51 @@ void LogicSystem::SetServer(std::shared_ptr<CServer> pserver) {
 	_p_server = pserver;
 }
 
+std::vector<std::string> LogicSystem::GetOnlineServers(int uid) {
+	auto key = std::string(USERIPPREFIX) + std::to_string(uid);
+	auto servers = RedisMgr::GetInstance()->SMembers(key);
+	if (!servers.empty()) {
+		return servers;
+	}
+
+	std::string value;
+	if (!RedisMgr::GetInstance()->Get(key, value)) {
+		return {};
+	}
+	return ParseOnlineServers(value);
+}
+
+void LogicSystem::AddOnlineServer(int uid) {
+	auto server_name = ConfigMgr::Inst().GetValue("SelfServer", "Name");
+	auto key = std::string(USERIPPREFIX) + std::to_string(uid);
+	if (RedisMgr::GetInstance()->SAdd(key, server_name)) {
+		return;
+	}
+
+	auto servers = GetOnlineServers(uid);
+	if (std::find(servers.begin(), servers.end(), server_name) == servers.end()) {
+		servers.push_back(server_name);
+	}
+	RedisMgr::GetInstance()->Del(key);
+	for (const auto& server : servers) {
+		RedisMgr::GetInstance()->SAdd(key, server);
+	}
+}
+
+void LogicSystem::RemoveOnlineServer(int uid) {
+	auto server_name = ConfigMgr::Inst().GetValue("SelfServer", "Name");
+	auto key = std::string(USERIPPREFIX) + std::to_string(uid);
+	if (RedisMgr::GetInstance()->SRem(key, server_name)) {
+		return;
+	}
+
+	auto servers = GetOnlineServers(uid);
+	servers.erase(std::remove(servers.begin(), servers.end(), server_name), servers.end());
+	RedisMgr::GetInstance()->Del(key);
+	for (const auto& server : servers) {
+		RedisMgr::GetInstance()->SAdd(key, server);
+	}
+}
 
 void LogicSystem::DealMsg() {
 	for (;;) {
@@ -228,8 +312,7 @@ void LogicSystem::LoginHandler(shared_ptr<CSession> session, const short& msg_id
 	session->SetUserId(uid);
 
 	//为用户设置登录ip server的名字
-	std::string  ipkey = USERIPPREFIX + uid_str;
-	RedisMgr::GetInstance()->Set(ipkey, server_name);
+	AddOnlineServer(uid);
 
 	//uid和session绑定管理,方便以后踢人操作
 	UserMgr::GetInstance()->SetUserSession(uid, session);
@@ -280,49 +363,29 @@ void LogicSystem::AddFriendApply(std::shared_ptr<CSession> session, const short&
 		session->Send(return_str, ID_ADD_FRIEND_RSP);
 		});
 
-	//先更新数据库
 	MysqlMgr::GetInstance()->AddFriendApply(uid, touid);
 
-	//查询redis 查找touid对应的server ip
-	auto to_str = std::to_string(touid);
-	auto to_ip_key = USERIPPREFIX + to_str;
-	std::string to_ip_value = "";
-	bool b_ip = RedisMgr::GetInstance()->Get(to_ip_key, to_ip_value);
-	if (!b_ip) {
+	auto online_servers = GetOnlineServers(touid);
+	if (online_servers.empty()) {
 		return;
 	}
 
-
-	auto& cfg = ConfigMgr::Inst();
-	auto self_name = cfg["SelfServer"]["Name"];
-
-
+	auto self_name = ConfigMgr::Inst()["SelfServer"]["Name"];
 	std::string base_key = USER_BASE_INFO + std::to_string(uid);
 	auto apply_info = std::make_shared<UserInfo>();
 	bool b_info = GetBaseInfo(base_key, uid, apply_info);
 
-	//直接通知对方有申请消息
-	if (to_ip_value == self_name) {
-		auto session = UserMgr::GetInstance()->GetSession(touid);
-		if (session) {
-			//在内存中则直接发送通知对方
-			Json::Value  notify;
-			notify["error"] = ErrorCodes::Success;
-			notify["applyuid"] = uid;
-			notify["name"] = applyname;
-			notify["desc"] = "";
-			if (b_info) {
-				notify["icon"] = apply_info->icon;
-				notify["sex"] = apply_info->sex;
-				notify["nick"] = apply_info->nick;
-			}
-			std::string return_str = notify.toStyledString();
-			session->Send(return_str, ID_NOTIFY_ADD_FRIEND_REQ);
-		}
-
-		return;
+	Json::Value notify;
+	notify["error"] = ErrorCodes::Success;
+	notify["applyuid"] = uid;
+	notify["name"] = applyname;
+	notify["desc"] = "";
+	if (b_info) {
+		notify["icon"] = apply_info->icon;
+		notify["sex"] = apply_info->sex;
+		notify["nick"] = apply_info->nick;
 	}
-
+	std::string notify_str = notify.toStyledString();
 
 	AddFriendReq add_req;
 	add_req.set_applyuid(uid);
@@ -335,9 +398,22 @@ void LogicSystem::AddFriendApply(std::shared_ptr<CSession> session, const short&
 		add_req.set_nick(apply_info->nick);
 	}
 
-	//发送通知
-	ChatGrpcClient::GetInstance()->NotifyAddFriend(to_ip_value, add_req);
-
+	for (const auto& server_name : online_servers) {
+		if (server_name == self_name) {
+			auto sessions = UserMgr::GetInstance()->GetSessions(touid);
+			if (sessions.empty()) {
+				RemoveOnlineServer(touid);
+				continue;
+			}
+			for (auto& recv_session : sessions) {
+				if (recv_session) {
+					recv_session->Send(notify_str, ID_NOTIFY_ADD_FRIEND_REQ);
+				}
+			}
+			continue;
+		}
+		ChatGrpcClient::GetInstance()->NotifyAddFriend(server_name, add_req);
+	}
 }
 
 void LogicSystem::AuthFriendApply(std::shared_ptr<CSession> session, const short& msg_id, const string& msg_data) {
@@ -368,66 +444,58 @@ void LogicSystem::AuthFriendApply(std::shared_ptr<CSession> session, const short
 		rtvalue["error"] = ErrorCodes::UidInvalid;
 	}
 
-
 	Defer defer([this, &rtvalue, session]() {
 		std::string return_str = rtvalue.toStyledString();
 		session->Send(return_str, ID_AUTH_FRIEND_RSP);
 		});
 
-	//先更新数据库
 	MysqlMgr::GetInstance()->AuthFriendApply(uid, touid);
-
-	//更新数据库添加好友
 	MysqlMgr::GetInstance()->AddFriend(uid, touid, back_name);
 
-	//查询redis 查找touid对应的server ip
-	auto to_str = std::to_string(touid);
-	auto to_ip_key = USERIPPREFIX + to_str;
-	std::string to_ip_value = "";
-	bool b_ip = RedisMgr::GetInstance()->Get(to_ip_key, to_ip_value);
-	if (!b_ip) {
+	auto online_servers = GetOnlineServers(touid);
+	if (online_servers.empty()) {
 		return;
 	}
 
-	auto& cfg = ConfigMgr::Inst();
-	auto self_name = cfg["SelfServer"]["Name"];
-	//直接通知对方有认证通过消息
-	if (to_ip_value == self_name) {
-		auto session = UserMgr::GetInstance()->GetSession(touid);
-		if (session) {
-			//在内存中则直接发送通知对方
-			Json::Value  notify;
-			notify["error"] = ErrorCodes::Success;
-			notify["fromuid"] = uid;
-			notify["touid"] = touid;
-			std::string base_key = USER_BASE_INFO + std::to_string(uid);
-			auto user_info = std::make_shared<UserInfo>();
-			bool b_info = GetBaseInfo(base_key, uid, user_info);
-			if (b_info) {
-				notify["name"] = user_info->name;
-				notify["nick"] = user_info->nick;
-				notify["icon"] = user_info->icon;
-				notify["sex"] = user_info->sex;
-			}
-			else {
-				notify["error"] = ErrorCodes::UidInvalid;
-			}
-
-
-			std::string return_str = notify.toStyledString();
-			session->Send(return_str, ID_NOTIFY_AUTH_FRIEND_REQ);
-		}
-
-		return;
+	auto self_name = ConfigMgr::Inst()["SelfServer"]["Name"];
+	Json::Value notify;
+	notify["error"] = ErrorCodes::Success;
+	notify["fromuid"] = uid;
+	notify["touid"] = touid;
+	std::string apply_base_key = USER_BASE_INFO + std::to_string(uid);
+	auto apply_user_info = std::make_shared<UserInfo>();
+	bool b_apply_info = GetBaseInfo(apply_base_key, uid, apply_user_info);
+	if (b_apply_info) {
+		notify["name"] = apply_user_info->name;
+		notify["nick"] = apply_user_info->nick;
+		notify["icon"] = apply_user_info->icon;
+		notify["sex"] = apply_user_info->sex;
 	}
-
+	else {
+		notify["error"] = ErrorCodes::UidInvalid;
+	}
+	std::string notify_str = notify.toStyledString();
 
 	AuthFriendReq auth_req;
 	auth_req.set_fromuid(uid);
 	auth_req.set_touid(touid);
 
-	//发送通知
-	ChatGrpcClient::GetInstance()->NotifyAuthFriend(to_ip_value, auth_req);
+	for (const auto& server_name : online_servers) {
+		if (server_name == self_name) {
+			auto sessions = UserMgr::GetInstance()->GetSessions(touid);
+			if (sessions.empty()) {
+				RemoveOnlineServer(touid);
+				continue;
+			}
+			for (auto& recv_session : sessions) {
+				if (recv_session) {
+					recv_session->Send(notify_str, ID_NOTIFY_AUTH_FRIEND_REQ);
+				}
+			}
+			continue;
+		}
+		ChatGrpcClient::GetInstance()->NotifyAuthFriend(server_name, auth_req);
+	}
 }
 
 void LogicSystem::DealChatTextMsg(std::shared_ptr<CSession> session, const short& msg_id, const string& msg_data) {
@@ -451,34 +519,11 @@ void LogicSystem::DealChatTextMsg(std::shared_ptr<CSession> session, const short
 		session->Send(return_str, ID_TEXT_CHAT_MSG_RSP);
 		});
 
-
-	//查询redis 查找touid对应的server ip
-	auto to_str = std::to_string(touid);
-	auto to_ip_key = USERIPPREFIX + to_str;
-	std::string to_ip_value = "";
-	bool b_ip = RedisMgr::GetInstance()->Get(to_ip_key, to_ip_value);
-	if (!b_ip) {
+	auto online_servers = GetOnlineServers(touid);
+	if (online_servers.empty()) {
 		SaveOfflineTextMsg(uid, touid, arrays);
 		return;
 	}
-
-	auto& cfg = ConfigMgr::Inst();
-	auto self_name = cfg["SelfServer"]["Name"];
-	//直接通知对方有认证通过消息
-	if (to_ip_value == self_name) {
-		auto session = UserMgr::GetInstance()->GetSession(touid);
-		if (session) {
-			//在内存中则直接发送通知对方
-			std::string return_str = rtvalue.toStyledString();
-			session->Send(return_str, ID_NOTIFY_TEXT_CHAT_MSG_REQ);
-		}
-		else {
-			SaveOfflineTextMsg(uid, touid, arrays);
-		}
-
-		return;
-	}
-
 
 	TextChatMsgReq text_msg_req;
 	text_msg_req.set_fromuid(uid);
@@ -493,10 +538,32 @@ void LogicSystem::DealChatTextMsg(std::shared_ptr<CSession> session, const short
 		text_msg->set_msgcontent(content);
 	}
 
+	auto self_name = ConfigMgr::Inst()["SelfServer"]["Name"];
+	std::string notify_str = rtvalue.toStyledString();
+	bool delivered = false;
+	for (const auto& server_name : online_servers) {
+		if (server_name == self_name) {
+			auto sessions = UserMgr::GetInstance()->GetSessions(touid);
+			if (sessions.empty()) {
+				RemoveOnlineServer(touid);
+				continue;
+			}
+			for (auto& recv_session : sessions) {
+				if (recv_session) {
+					recv_session->Send(notify_str, ID_NOTIFY_TEXT_CHAT_MSG_REQ);
+					delivered = true;
+				}
+			}
+			continue;
+		}
 
-	//发送通知 todo...
-	auto grpc_rsp = ChatGrpcClient::GetInstance()->NotifyTextChatMsg(to_ip_value, text_msg_req, rtvalue);
-	if (grpc_rsp.error() != ErrorCodes::Success) {
+		auto grpc_rsp = ChatGrpcClient::GetInstance()->NotifyTextChatMsg(server_name, text_msg_req, rtvalue);
+		if (grpc_rsp.error() == ErrorCodes::Success) {
+			delivered = true;
+		}
+	}
+
+	if (!delivered) {
 		SaveOfflineTextMsg(uid, touid, arrays);
 	}
 }
@@ -711,3 +778,5 @@ bool LogicSystem::GetFriendList(int self_id, std::vector<std::shared_ptr<UserInf
 	//从mysql获取好友列表
 	return MysqlMgr::GetInstance()->GetFriendList(self_id, user_list);
 }
+
+

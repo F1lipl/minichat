@@ -2,6 +2,7 @@
 #include "ConfigMgr.h"
 #include"const.h"
 #include <iostream>
+#include <iterator>
 
 RedisMgr::RedisMgr() {
 	auto& gCfgMgr = ConfigMgr::Inst();
@@ -126,6 +127,44 @@ bool RedisMgr::RPop(const std::string& key, std::string& value)
 	}
 }
 
+bool RedisMgr::SAdd(const std::string& key, const std::string& member)
+{
+	try {
+		redis_->sadd(key, member);
+		std::cout << "Execut command [ SADD " << key << " " << member << " ] success ! " << std::endl;
+		return true;
+	}
+	catch (const sw::redis::Error& e) {
+		std::cerr << "Execute command [ SADD " << key << " " << member << " ] failure! Error: " << e.what() << std::endl;
+		return false;
+	}
+}
+
+bool RedisMgr::SRem(const std::string& key, const std::string& member)
+{
+	try {
+		redis_->srem(key, member);
+		std::cout << "Execut command [ SREM " << key << " " << member << " ] success ! " << std::endl;
+		return true;
+	}
+	catch (const sw::redis::Error& e) {
+		std::cerr << "Execute command [ SREM " << key << " " << member << " ] failure! Error: " << e.what() << std::endl;
+		return false;
+	}
+}
+
+std::vector<std::string> RedisMgr::SMembers(const std::string& key)
+{
+	std::vector<std::string> members;
+	try {
+		redis_->smembers(key, std::back_inserter(members));
+		std::cout << "Execut command [ SMEMBERS " << key << " ] success ! " << std::endl;
+	}
+	catch (const sw::redis::Error& e) {
+		std::cerr << "Execute command [ SMEMBERS " << key << " ] failure! Error: " << e.what() << std::endl;
+	}
+	return members;
+}
 bool RedisMgr::HSet(const std::string& key, const std::string& hkey, const std::string& value)
 {
 	long long i=redis_->hset(key, hkey,value);
@@ -282,6 +321,8 @@ void RedisMgr::close_connect()
 {
 	redis_.reset();
 }
+
+
 
 
 

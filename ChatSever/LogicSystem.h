@@ -22,6 +22,9 @@ public:
 	~LogicSystem();
 	void PostMsgToQue(shared_ptr < LogicNode> msg);
 	void SetServer(std::shared_ptr<CServer> pserver);
+	void AddOnlineServer(int uid);
+	void RemoveOnlineServer(int uid);
+	std::vector<std::string> GetOnlineServers(int uid);
 private:
 	LogicSystem();
 	void DealMsg();

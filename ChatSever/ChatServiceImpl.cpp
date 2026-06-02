@@ -42,14 +42,14 @@ ChatServiceImpl::ChatServiceImpl()
 Status ChatServiceImpl::NotifyAddFriend(ServerContext* context, const AddFriendReq* request, AddFriendRsp* reply)
 {
 	auto touid = request->touid();
-	auto session = UserMgr::GetInstance()->GetSession(touid);
+	auto sessions = UserMgr::GetInstance()->GetSessions(touid);
 	Defer defer([request, reply]() {
 		reply->set_error(ErrorCodes::Success);
 		reply->set_applyuid(request->applyuid());
 		reply->set_touid(request->touid());
 		});
 
-	if (session == nullptr) {
+	if (sessions.empty()) {
 		return Status::OK;
 	}
 
@@ -63,19 +63,23 @@ Status ChatServiceImpl::NotifyAddFriend(ServerContext* context, const AddFriendR
 	rtvalue["sex"] = request->sex();
 
 	std::string return_str = rtvalue.toStyledString();
-	session->Send(return_str, ID_NOTIFY_ADD_FRIEND_REQ);
+	for (auto& session : sessions) {
+	if (session) {
+		session->Send(return_str, ID_NOTIFY_ADD_FRIEND_REQ);
+	}
+}
 	return Status::OK;
 }
 
 Status ChatServiceImpl::NotifyAuthFriend(ServerContext* context, const AuthFriendReq* request, AuthFriendRsp* reply)
 {
 	auto touid = request->touid();
-	auto session = UserMgr::GetInstance()->GetSession(touid);
+	auto sessions = UserMgr::GetInstance()->GetSessions(touid);
 	reply->set_error(ErrorCodes::Success);
 	reply->set_fromuid(request->fromuid());
 	reply->set_touid(request->touid());
 
-	if (session == nullptr) {
+	if (sessions.empty()) {
 		return Status::OK;
 	}
 
@@ -98,14 +102,18 @@ Status ChatServiceImpl::NotifyAuthFriend(ServerContext* context, const AuthFrien
 	}
 
 	std::string return_str = rtvalue.toStyledString();
-	session->Send(return_str, ID_NOTIFY_AUTH_FRIEND_REQ);
+	for (auto& session : sessions) {
+	if (session) {
+		session->Send(return_str, ID_NOTIFY_AUTH_FRIEND_REQ);
+	}
+}
 	return Status::OK;
 }
 
 Status ChatServiceImpl::NotifyTextChatMsg(::grpc::ServerContext* context, const TextChatMsgReq* request, TextChatMsgRsp* reply)
 {
 	auto touid = request->touid();
-	auto session = UserMgr::GetInstance()->GetSession(touid);
+	auto sessions = UserMgr::GetInstance()->GetSessions(touid);
 	reply->set_error(ErrorCodes::Success);
 	reply->set_fromuid(request->fromuid());
 	reply->set_touid(request->touid());
@@ -117,13 +125,17 @@ Status ChatServiceImpl::NotifyTextChatMsg(::grpc::ServerContext* context, const 
 		text_msg->set_msgcontent(msg.msgcontent());
 	}
 
-	if (session == nullptr) {
-		SaveOfflineTextMsg(rtvalue);
+	if (sessions.empty()) {
+		reply->set_error(ErrorCodes::UidInvalid);
 		return Status::OK;
 	}
 
 	std::string return_str = rtvalue.toStyledString();
-	session->Send(return_str, ID_NOTIFY_TEXT_CHAT_MSG_REQ);
+	for (auto& session : sessions) {
+	if (session) {
+		session->Send(return_str, ID_NOTIFY_TEXT_CHAT_MSG_REQ);
+	}
+}
 	return Status::OK;
 }
 
@@ -170,3 +182,4 @@ void ChatServiceImpl::RegisterServer(std::shared_ptr<CServer> pServer)
 {
 	_p_server = pServer;
 }
+

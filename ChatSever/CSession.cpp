@@ -205,6 +205,7 @@ void CSession::HandleWrite(const boost::system::error_code& ec, std::shared_ptr<
 		if (ec) {
 			std::cout << "handle write failed, error is " << ec.what() << endl;
 			Close();
+			_server->ClearSession(_uuid);
 			return;
 		}
 		else {

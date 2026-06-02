@@ -3,6 +3,7 @@
 #include"AsioIOServicePool.h"
 #include"CSession.h"
 #include"UserMgr.h"
+#include"LogicSystem.h"
 CServer::CServer(boost::asio::io_context& io_context, short port) :_io_context(io_context), _port(port),
 _acceptor(io_context, tcp::endpoint(tcp::v4(), port))
 {
@@ -17,9 +18,20 @@ CServer::~CServer()
 
 void CServer::ClearSession(std::string session_id) {
 
-    if (_sessions.find(session_id) != _sessions.end()) {
-        //移除用户和session的关联
-        UserMgr::GetInstance()->RmvUserSession(_sessions[session_id]->GetUserId(),session_id);
+    int uid = 0;
+    {
+        lock_guard<mutex> lock(_mutex);
+        auto iter = _sessions.find(session_id);
+        if (iter != _sessions.end() && iter->second) {
+            uid = iter->second->GetUserId();
+        }
+    }
+
+    if (uid > 0) {
+        UserMgr::GetInstance()->RmvUserSession(uid, session_id);
+        if (UserMgr::GetInstance()->GetSessions(uid).empty()) {
+            LogicSystem::GetInstance()->RemoveOnlineServer(uid);
+        }
     }
 
     {
@@ -48,4 +60,5 @@ void CServer::StartAccept()
     std::shared_ptr<CSession>new_session = std::make_shared<CSession>(io_content, this);
     _acceptor.async_accept(new_session->GetSocket(), std::bind(&CServer::HandleAccept, this, new_session, std::placeholders::_1));
 }
+
 
