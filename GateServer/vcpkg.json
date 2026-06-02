@@ -1,0 +1,16 @@
+{
+  "name": "mysql-cpp-project",
+  "version": "0.1.0",
+  "builtin-baseline": "5bf0c55239da398b8c6f450818c9e28d36bf9966",
+  "dependencies": [
+    {
+      "name": "mysql-connector-cpp"
+    }
+  ],
+  "overrides": [
+    {
+      "name": "mysql-connector-cpp",
+      "version": "8.0.32"
+    }
+  ]
+}
