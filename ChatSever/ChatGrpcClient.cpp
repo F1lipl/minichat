@@ -1,7 +1,23 @@
-#include "ChatGrpcClient.h"
+ï»¿#include "ChatGrpcClient.h"
 #include"ConfigMgr.h"
 #include"MysqlMgr.h"
 #include"RedisMgr.h"
+#include <algorithm>
+#include <cstdlib>
+
+namespace {
+	size_t ReadSizeEnv(const char* name, size_t default_value, size_t max_value) {
+		char value[32] = {};
+		size_t required = 0;
+		if (getenv_s(&required, value, sizeof(value), name) == 0 && required > 1) {
+			auto parsed = static_cast<size_t>(std::atoi(value));
+			if (parsed > 0) {
+				return std::min(parsed, max_value);
+			}
+		}
+		return default_value;
+	}
+}
 std::unique_ptr<ChatService::Stub> ChatConPool::GetConnection()
 {
 	std::unique_lock<std::mutex>lock(mutex_);
@@ -28,6 +44,7 @@ void ChatConPool::close() {
 ChatGrpcClient::ChatGrpcClient() {
 	auto& cfg=ConfigMgr::Inst();
 	auto server_list = cfg["PeerServer"]["Servers"];
+	auto grpc_pool_size = ReadSizeEnv("MINICHAT_CHAT_GRPC_POOL_SIZE", 32, 128);
 
 	std::vector<std::string> words;
 
@@ -42,7 +59,7 @@ ChatGrpcClient::ChatGrpcClient() {
 		if (cfg[word]["Name"].empty()) {
 			continue;
 		}
-		_pools[cfg[word]["Name"]] = std::make_unique<ChatConPool>(5, cfg[word]["Host"], cfg[word]["Port"]);
+		_pools[cfg[word]["Name"]] = std::make_unique<ChatConPool>(grpc_pool_size, cfg[word]["Host"], cfg[word]["Port"]);
 	}
 }
 
@@ -145,7 +162,7 @@ TextChatMsgRsp ChatGrpcClient::NotifyTextChatMsg(std::string server_ip, const Te
 }
 
 bool ChatGrpcClient::GetBaseInfo(std::string base_key, int uid, std::shared_ptr<UserInfo>& userinfo) {
-	//ÓÅÏÈ²éredisÖÐ²éÑ¯ÓÃ»§ÐÅÏ¢
+	//ä¼˜å…ˆæŸ¥redisä¸­æŸ¥è¯¢ç”¨æˆ·ä¿¡æ¯
 	std::string info_str = "";
 	bool b_base = RedisMgr::GetInstance()->Get(base_key, info_str);
 	if (b_base) {
@@ -164,8 +181,8 @@ bool ChatGrpcClient::GetBaseInfo(std::string base_key, int uid, std::shared_ptr<
 			<< userinfo->name << " pwd is " << userinfo->pwd << " email is " << userinfo->email << std::endl;
 	}
 	else {
-		//redisÖÐÃ»ÓÐÔò²éÑ¯mysql
-		//²éÑ¯Êý¾Ý¿â
+		//redisä¸­æ²¡æœ‰åˆ™æŸ¥è¯¢mysql
+		//æŸ¥è¯¢æ•°æ®åº“
 		std::shared_ptr<UserInfo> user_info = nullptr;
 		user_info = MysqlMgr::GetInstance()->GetUser(uid);
 		if (user_info == nullptr) {
@@ -174,7 +191,7 @@ bool ChatGrpcClient::GetBaseInfo(std::string base_key, int uid, std::shared_ptr<
 
 		userinfo = user_info;
 
-		//½«Êý¾Ý¿âÄÚÈÝÐ´Èëredis»º´æ
+		//å°†æ•°æ®åº“å†…å®¹å†™å…¥redisç¼“å­˜
 		Json::Value redis_root;
 		redis_root["uid"] = uid;
 		redis_root["pwd"] = userinfo->pwd;

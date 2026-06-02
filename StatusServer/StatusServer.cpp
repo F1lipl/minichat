@@ -1,5 +1,7 @@
 ﻿#include <iostream>
 #include <json/json.h>
+#include <cstdlib>
+#include <streambuf>
 #include <json/value.h>
 #include <json/reader.h>
 #include "const.h"
@@ -12,6 +14,31 @@
 #include <thread>
 #include <boost/asio.hpp>
 #include "StatusServiceImpl.h"
+
+namespace {
+class NullBuffer : public std::streambuf {
+protected:
+	std::streambuf::int_type overflow(std::streambuf::int_type ch) override
+	{
+		return traits_type::not_eof(ch);
+	}
+};
+
+void DisableStdLogIfRequested()
+{
+	char flag[8] = {};
+	size_t required = 0;
+	getenv_s(&required, flag, sizeof(flag), "MINICHAT_DISABLE_STD_LOG");
+	if (required == 0 || flag[0] == '\0' || (flag[0] == '0' && flag[1] == '\0')) {
+		return;
+	}
+
+	static NullBuffer null_buffer;
+	std::cout.rdbuf(&null_buffer);
+	std::cerr.rdbuf(&null_buffer);
+}
+}
+
 void RunServer() {
 	auto& cfg = ConfigMgr::Inst();
 
@@ -50,6 +77,7 @@ void RunServer() {
 }
 
 int main(int argc, char** argv) {
+	DisableStdLogIfRequested();
 	try {
 		RunServer();
 		RedisMgr::GetInstance()->close_connect();

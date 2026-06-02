@@ -1,0 +1,236 @@
+﻿{
+    "Label":  "optstable_conn10000_steps500_3000",
+    "ExitCode":  0,
+    "StartedAt":  "2026-06-02T23:02:20.9745462+08:00",
+    "EndedAt":  "2026-06-02T23:05:06.6092259+08:00",
+    "WallSeconds":  165.63,
+    "LogicalProcessors":  22,
+    "Targets":  [
+                    {
+                        "Name":  "ChatServer1",
+                        "Port":  8090,
+                        "Id":  14160
+                    },
+                    {
+                        "Name":  "ChatServer2",
+                        "Port":  8091,
+                        "Id":  22592
+                    },
+                    {
+                        "Name":  "GateServer",
+                        "Port":  8080,
+                        "Id":  24824
+                    },
+                    {
+                        "Name":  "Redis",
+                        "Port":  6380,
+                        "Id":  6276
+                    },
+                    {
+                        "Name":  "MySQL",
+                        "Port":  3308,
+                        "Id":  5080
+                    }
+                ],
+    "ServerCpuPct":  {
+                         "Avg":  17.07,
+                         "Max":  73.15
+                     },
+    "ServerWorkingSetMB":  {
+                               "Avg":  492.46,
+                               "Max":  500.01
+                           },
+    "LoadReport":  {
+                       "runId":  "mpwrnour",
+                       "mode":  "rateSteps",
+                       "config":  {
+                                      "users":  100,
+                                      "sessionsPerUser":  100,
+                                      "totalConnections":  10000,
+                                      "durationSec":  6,
+                                      "rateSteps":  [
+                                                        500,
+                                                        1500,
+                                                        3000
+                                                    ],
+                                      "chatPorts":  [
+                                                        8090,
+                                                        8091
+                                                    ]
+                                  },
+                       "accounts":  {
+                                        "firstUid":  57607,
+                                        "lastUid":  57706
+                                    },
+                       "stages":  [
+                                      {
+                                          "runId":  "mpwrnour-r500",
+                                          "config":  {
+                                                         "users":  100,
+                                                         "sessionsPerUser":  100,
+                                                         "totalConnections":  10000,
+                                                         "durationSec":  6,
+                                                         "targetRate":  500,
+                                                         "chatPorts":  [
+                                                                           8090,
+                                                                           8091
+                                                                       ]
+                                                     },
+                                          "accounts":  {
+                                                           "firstUid":  57607,
+                                                           "lastUid":  57706
+                                                       },
+                                          "throughput":  {
+                                                             "elapsedSec":  51.02,
+                                                             "trafficElapsedSec":  6,
+                                                             "attempted":  3000,
+                                                             "sent":  3000,
+                                                             "actualMsgPerSec":  500
+                                                         },
+                                          "reliability":  {
+                                                              "sendErrors":  0,
+                                                              "socketErrors":  0,
+                                                              "acked":  3000,
+                                                              "missingAck":  0,
+                                                              "ackSuccessRate":  1,
+                                                              "expectedNotify":  300000,
+                                                              "notified":  300000,
+                                                              "missingNotify":  0,
+                                                              "notifySuccessRate":  1
+                                                          },
+                                          "latencyMs":  {
+                                                            "ack":  {
+                                                                        "count":  3000,
+                                                                        "avg":  245.17,
+                                                                        "p50":  224,
+                                                                        "p95":  584,
+                                                                        "p99":  823,
+                                                                        "max":  1019
+                                                                    },
+                                                            "notify":  {
+                                                                           "count":  300000,
+                                                                           "avg":  279.03,
+                                                                           "p50":  268,
+                                                                           "p95":  641,
+                                                                           "p99":  897,
+                                                                           "max":  1049
+                                                                       }
+                                                        }
+                                      },
+                                      {
+                                          "runId":  "mpwrnour-r1500",
+                                          "config":  {
+                                                         "users":  100,
+                                                         "sessionsPerUser":  100,
+                                                         "totalConnections":  10000,
+                                                         "durationSec":  6,
+                                                         "targetRate":  1500,
+                                                         "chatPorts":  [
+                                                                           8090,
+                                                                           8091
+                                                                       ]
+                                                     },
+                                          "accounts":  {
+                                                           "firstUid":  57607,
+                                                           "lastUid":  57706
+                                                       },
+                                          "throughput":  {
+                                                             "elapsedSec":  51.02,
+                                                             "trafficElapsedSec":  6,
+                                                             "attempted":  9000,
+                                                             "sent":  9000,
+                                                             "actualMsgPerSec":  1500
+                                                         },
+                                          "reliability":  {
+                                                              "sendErrors":  0,
+                                                              "socketErrors":  0,
+                                                              "acked":  9000,
+                                                              "missingAck":  0,
+                                                              "ackSuccessRate":  1,
+                                                              "expectedNotify":  900000,
+                                                              "notified":  900000,
+                                                              "missingNotify":  0,
+                                                              "notifySuccessRate":  1
+                                                          },
+                                          "latencyMs":  {
+                                                            "ack":  {
+                                                                        "count":  9000,
+                                                                        "avg":  2627.4,
+                                                                        "p50":  2513,
+                                                                        "p95":  5383,
+                                                                        "p99":  5740,
+                                                                        "max":  5856
+                                                                    },
+                                                            "notify":  {
+                                                                           "count":  900000,
+                                                                           "avg":  2651.96,
+                                                                           "p50":  2536,
+                                                                           "p95":  5386,
+                                                                           "p99":  5745,
+                                                                           "max":  5864
+                                                                       }
+                                                        }
+                                      },
+                                      {
+                                          "runId":  "mpwrnour-r3000",
+                                          "config":  {
+                                                         "users":  100,
+                                                         "sessionsPerUser":  100,
+                                                         "totalConnections":  10000,
+                                                         "durationSec":  6,
+                                                         "targetRate":  3000,
+                                                         "chatPorts":  [
+                                                                           8090,
+                                                                           8091
+                                                                       ]
+                                                     },
+                                          "accounts":  {
+                                                           "firstUid":  57607,
+                                                           "lastUid":  57706
+                                                       },
+                                          "throughput":  {
+                                                             "elapsedSec":  51.03,
+                                                             "trafficElapsedSec":  6.01,
+                                                             "attempted":  18000,
+                                                             "sent":  18000,
+                                                             "actualMsgPerSec":  2997
+                                                         },
+                                          "reliability":  {
+                                                              "sendErrors":  0,
+                                                              "socketErrors":  0,
+                                                              "acked":  18000,
+                                                              "missingAck":  0,
+                                                              "ackSuccessRate":  1,
+                                                              "expectedNotify":  1800000,
+                                                              "notified":  1800000,
+                                                              "missingNotify":  0,
+                                                              "notifySuccessRate":  1
+                                                          },
+                                          "latencyMs":  {
+                                                            "ack":  {
+                                                                        "count":  18000,
+                                                                        "avg":  12011.76,
+                                                                        "p50":  11150,
+                                                                        "p95":  25793,
+                                                                        "p99":  27897,
+                                                                        "max":  28672
+                                                                    },
+                                                            "notify":  {
+                                                                           "count":  1800000,
+                                                                           "avg":  12046.07,
+                                                                           "p50":  11188,
+                                                                           "p95":  25800,
+                                                                           "p99":  27905,
+                                                                           "max":  28679
+                                                                       }
+                                                        }
+                                      }
+                                  ]
+                   },
+    "StdoutPath":  "D:\\workspace\\project\\load_results\\20260602_230208_optstable_conn10000_steps500_3000.stdout.log",
+    "StderrPath":  "D:\\workspace\\project\\load_results\\20260602_230208_optstable_conn10000_steps500_3000.stderr.log",
+    "SamplesPath":  "D:\\workspace\\project\\load_results\\20260602_230208_optstable_conn10000_steps500_3000.samples.json",
+    "Stderr":  {
+
+               }
+}

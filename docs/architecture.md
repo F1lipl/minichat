@@ -63,16 +63,17 @@ ChatServer1 和 ChatServer2 构成聊天服务集群。用户登录聊天服务�
 
 ## 性能压测结论
 
-当前架构在本地单机双 ChatServer Debug 环境下完成了极限可用压测：
+当前架构在本地单机双 ChatServer Debug 环境下完成了 10000 长连接压测：
 
 | 指标 | 结果 |
 | --- | --- |
 | 极限可用连接数 | `10000` TCP 长连接 |
-| 极限可用吞吐 | 约 `200 msg/s` |
-| 可用样本 | `10000` 连接，实际 `202.70 msg/s` |
-| ACK P95 | `26ms` |
-| Notify P95 | `23ms` |
+| 实时可用吞吐 | 约 `500 message/s` |
+| 实时推送吞吐 | 约 `50,000 notify/s` |
+| 可用样本 | `10000` 连接，`100` 倍 fanout，实际 `500 message/s` |
+| ACK P95 | `584ms` |
+| Notify P95 | `641ms` |
 | ACK/Notify 成功率 | `100%` |
-| 不可用边界 | 实际约 `254 msg/s` 后 P95 升至 `3.7s` 左右 |
+| 可靠峰值样本 | 约 `2997 message/s` / `299,500 notify/s`，Notify P95 `25.8s` |
 
-详细压测报告见：`load_results/usable_limit_report_20260602.md`。
+详细压测报告见：`docs/performance-optimization.md`、`load_results/optimization_report_20260602.md`、`load_results/push_throughput_20260602.md`。

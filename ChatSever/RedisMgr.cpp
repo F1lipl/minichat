@@ -1,8 +1,24 @@
-#include "RedisMgr.h"
+ï»¿#include "RedisMgr.h"
 #include "ConfigMgr.h"
 #include"const.h"
 #include <iostream>
 #include <iterator>
+#include <algorithm>
+#include <cstdlib>
+
+namespace {
+	size_t ReadSizeEnv(const char* name, size_t default_value, size_t max_value) {
+		char value[32] = {};
+		size_t required = 0;
+		if (getenv_s(&required, value, sizeof(value), name) == 0 && required > 1) {
+			auto parsed = static_cast<size_t>(std::atoi(value));
+			if (parsed > 0) {
+				return std::min(parsed, max_value);
+			}
+		}
+		return default_value;
+	}
+}
 
 RedisMgr::RedisMgr() {
 	auto& gCfgMgr = ConfigMgr::Inst();
@@ -26,9 +42,11 @@ RedisMgr::RedisMgr() {
 	if (!password.empty()) conn_opt.password = password;
 	conn_opt.connect_timeout = std::chrono::seconds(3);
 	conn_opt.socket_timeout = std::chrono::seconds(10);
+	sw::redis::ConnectionPoolOptions pool_opt;
+	pool_opt.size = ReadSizeEnv("MINICHAT_REDIS_POOL_SIZE", 16, 64);
 
 	try {
-		redis_.reset(new sw::redis::Redis(conn_opt));
+		redis_.reset(new sw::redis::Redis(conn_opt, pool_opt));
 		std::cout << "Connected to Redis " << conn_opt.host << ":" << conn_opt.port << std::endl;
 	}
 	catch (const std::exception& e) {
@@ -180,21 +198,21 @@ bool RedisMgr::HSet(const std::string& key, const std::string& hkey, const std::
 
 bool RedisMgr::HSet(const char* key, const char* hkey, const char* hvalue, size_t hvaluelen) {
 	try {
-		// Ê¹ÓÃ¶ş½øÖÆ°²È«µÄ·½Ê½ÉèÖÃ¹şÏ£×Ö¶Î
+		// ä½¿ç”¨äºŒè¿›åˆ¶å®‰å…¨çš„æ–¹å¼è®¾ç½®å“ˆå¸Œå­—æ®µ
 		redis_->hset(
 			std::string(key),
 			std::string(hkey, hkey ? strlen(hkey) : 0),
 			std::string(hvalue, hvaluelen)
 		);
 
-		// ´òÓ¡³É¹¦ÈÕÖ¾£¨¿ÉÑ¡£©
+		// æ‰“å°æˆåŠŸæ—¥å¿—ï¼ˆå¯é€‰ï¼‰
 		std::cout << "Execute command [ HSet " << key << " " << hkey
 			<< " " << std::string(hvalue, std::min(hvaluelen, static_cast<size_t>(10)))
 			<< (hvaluelen > 10 ? "..." : "") << " ] success!" << std::endl;
 		return true;
 	}
 	catch (const sw::redis::Error& e) {
-		// ´òÓ¡´íÎóÈÕÖ¾
+		// æ‰“å°é”™è¯¯æ—¥å¿—
 		std::cerr << "Execute command [ HSet " << key << " " << hkey
 			<< " " << std::string(hvalue, std::min(hvaluelen, static_cast<size_t>(10)))
 			<< (hvaluelen > 10 ? "..." : "") << " ] failure: "
@@ -205,29 +223,29 @@ bool RedisMgr::HSet(const char* key, const char* hkey, const char* hvalue, size_
 
 std::string RedisMgr::HGet(const std::string& key, const std::string& hkey) {
 	try {
-		// Ê¹ÓÃredis++µÄhget·½·¨
+		// ä½¿ç”¨redis++çš„hgetæ–¹æ³•
 		auto value = redis_->hget(key, hkey);
 
 		if (!value) {
-			// ×Ö¶Î²»´æÔÚµÄÇé¿ö
+			// å­—æ®µä¸å­˜åœ¨çš„æƒ…å†µ
 			std::cout << "Execute command [ HGet " << key << " " << hkey
 				<< " ]: field not found!" << std::endl;
 			return "";
 		}
 
-		// ³É¹¦»ñÈ¡µ½Öµ
+		// æˆåŠŸè·å–åˆ°å€¼
 		std::cout << "Execute command [ HGet " << key << " " << hkey
 			<< " ] success! Value: " << *value << std::endl;
 		return *value;
 	}
 	catch (const sw::redis::Error& e) {
-		// ´¦ÀíRedis²Ù×÷´íÎó
+		// å¤„ç†Redisæ“ä½œé”™è¯¯
 		std::cerr << "Execute command [ HGet " << key << " " << hkey
 			<< " ] failure! Error: " << e.what() << std::endl;
 		return "";
 	}
 	catch (const std::exception& e) {
-		// ´¦ÀíÆäËû±ê×¼Òì³£
+		// å¤„ç†å…¶ä»–æ ‡å‡†å¼‚å¸¸
 		std::cerr << "Execute command [ HGet " << key << " " << hkey
 			<< " ] failure! Std error: " << e.what() << std::endl;
 		return "";
@@ -257,7 +275,7 @@ bool RedisMgr::HDel(const std::string& key, const std::string& hkey) {
 	}
 }
 
-// Ğ¡Ğ´±ğÃû£¬¼æÈİÓÃ»§¿ÉÄÜÊ¹ÓÃµÄ²»Í¬ÃüÃû
+// å°å†™åˆ«åï¼Œå…¼å®¹ç”¨æˆ·å¯èƒ½ä½¿ç”¨çš„ä¸åŒå‘½å
 bool RedisMgr::Hdel(const std::string& key, const std::string& hkey) {
 	return HDel(key, hkey);
 }
@@ -275,13 +293,13 @@ bool RedisMgr::Del(const std::string& key)
 		}
 	}
 	catch (const sw::redis::Error& e) {
-		// ´¦ÀíRedis²Ù×÷´íÎó
+		// å¤„ç†Redisæ“ä½œé”™è¯¯
 		std::cerr << "Execute command [ Del " << key << " " << key
 			<< " ] failure! Error: " << e.what() << std::endl;
 		return false;
 	}
 	catch (const std::exception& e) {
-		// ´¦ÀíÆäËû±ê×¼Òì³£
+		// å¤„ç†å…¶ä»–æ ‡å‡†å¼‚å¸¸
 		std::cerr << "Execute command [ HGet " << key << " " << key
 			<< " ] failure! Std error: " << e.what() << std::endl;
 		return false;
@@ -291,7 +309,7 @@ bool RedisMgr::Del(const std::string& key)
 
 bool RedisMgr::ExistsKey(const std::string& key) {
 	try {
-		// Ê¹ÓÃredis++µÄexists·½·¨
+		// ä½¿ç”¨redis++çš„existsæ–¹æ³•
 		bool exists = redis_->exists(key);
 
 		if (exists) {
@@ -304,13 +322,13 @@ bool RedisMgr::ExistsKey(const std::string& key) {
 		return exists;
 	}
 	catch (const sw::redis::Error& e) {
-		// ´¦ÀíRedis²Ù×÷´íÎó
+		// å¤„ç†Redisæ“ä½œé”™è¯¯
 		std::cerr << "Check key existence failed for [ Key " << key
 			<< " ]! Error: " << e.what() << std::endl;
 		return false;
 	}
 	catch (const std::exception& e) {
-		// ´¦ÀíÆäËû±ê×¼Òì³£
+		// å¤„ç†å…¶ä»–æ ‡å‡†å¼‚å¸¸
 		std::cerr << "Check key existence failed for [ Key " << key
 			<< " ]! Std error: " << e.what() << std::endl;
 		return false;

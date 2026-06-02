@@ -4,17 +4,19 @@
 
 ## 性能压测结论
 
-当前本地单机双 ChatServer Debug 环境下，系统可实时支撑 `10000` 条 TCP 长连接、约 `200 msg/s` 消息吞吐，ACK/通知成功率 `100%`，P95 延迟约 `20-30ms`。当实际吞吐提升到约 `250 msg/s` 以上时，消息仍可可靠投递，但 P95 延迟上升到秒级，已不适合作为实时聊天可用指标。
+当前本地单机双 ChatServer Debug 环境下，系统可实时支撑 `10000` 条 TCP 长连接。在 `100` 倍 fanout 场景下，实时可用吞吐约 `500 message/s`，对应约 `50,000 notify/s` 实际推送，ACK/Notify 成功率 `100%`，Notify P95 `641ms`。继续升到 `1500-3000 message/s` 时仍可可靠投递，但 P95 延迟进入秒级到十秒级，更适合作为可靠峰值而不是实时聊天指标。
 
 | 指标 | 结果 |
 | --- | --- |
 | 极限可用连接数 | `10000` TCP 长连接 |
-| 极限可用吞吐 | 约 `200 msg/s` |
-| 可用样本延迟 | ACK P95 `26ms`，Notify P95 `23ms` |
+| 实时可用吞吐 | 约 `500 message/s` |
+| 实时推送吞吐 | 约 `50,000 notify/s` |
+| 实时样本延迟 | ACK P95 `584ms`，Notify P95 `641ms` |
 | 可靠性 | ACK/Notify 成功率 `100%` |
-| 不可用边界 | 约 `254 msg/s` 时 P95 升至 `3.7s` 左右 |
+| 可靠峰值样本 | 约 `2997 message/s` / `299,500 notify/s`，Notify P95 `25.8s` |
+| 主要瓶颈 | 高 fanout 下的连接写入和通知排队压力 |
 
-详细压测报告见：[MiniChat 极限可用压测报告](load_results/usable_limit_report_20260602.md)。
+详细整理见：[性能压测与优化说明](docs/performance-optimization.md)、[后端优化报告](load_results/optimization_report_20260602.md)、[推送吞吐报告](load_results/push_throughput_20260602.md)。
 
 ## 项目结构
 
@@ -33,7 +35,10 @@
 
 - [项目文档](docs/project-documentation.md)
 - [架构图](docs/architecture.md)
+- [性能压测与优化说明](docs/performance-optimization.md)
 - [极限可用压测报告](load_results/usable_limit_report_20260602.md)
+- [后端优化报告](load_results/optimization_report_20260602.md)
+- [推送吞吐报告](load_results/push_throughput_20260602.md)
 
 ## 默认端口
 

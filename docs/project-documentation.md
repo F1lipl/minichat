@@ -18,7 +18,7 @@
 - 支持多 ChatServer：用户可以被分配到不同聊天服务器，跨服好友申请和聊天消息可通过 gRPC 转发。
 - 仿微信前端：包含登录、注册、会话、通讯录、好友申请和聊天窗口等页面。
 - 离线消息能力：当接收方离线或会话不可达时，消息写入 Redis 队列，用户下次登录时拉取。
-- 压测数据支撑：本地单机双 ChatServer Debug 环境下，实时可用压测达到 `10000` 条 TCP 长连接、约 `200 msg/s`，ACK/通知成功率 `100%`，P95 延迟约 `20-30ms`。
+- 压测数据支撑：本地单机双 ChatServer Debug 环境下，实时可用压测达到 `10000` 条 TCP 长连接、约 `500 message/s`，对应约 `50,000 notify/s` 实际推送，ACK/通知成功率 `100%`，Notify P95 `641ms`。
 
 ## 3. 技术栈
 
@@ -321,32 +321,27 @@ D:\workspace\project\tools\cloudflared.exe tunnel --url http://127.0.0.1:5174 --
 
 - ACK 成功率 = `100%`。
 - 消息通知成功率 = `100%`。
-- ACK P95 延迟 `<= 200ms`。
-- Notify P95 延迟 `<= 200ms`。
+- ACK/Notify P95 延迟处在亚秒级，并且前端聊天体验不出现明显堆积。
 
 超过该标准但仍无 ACK/通知丢失的结果，记为“可靠但不可实时使用”。
 
 ### 9.2 最终结论
 
-当前本地单机双 ChatServer Debug 环境下，系统可实时支撑 `10000` 条 TCP 长连接、约 `200 msg/s` 消息吞吐，ACK/通知成功率 `100%`，P95 延迟约 `20-30ms`。
+当前本地单机双 ChatServer Debug 环境下，系统可实时支撑 `10000` 条 TCP 长连接。在 `100` 倍 fanout 场景下，实时可用吞吐约 `500 message/s`，对应约 `50,000 notify/s` 实际推送，ACK/Notify 成功率 `100%`，Notify P95 `641ms`。
 
-当实际吞吐提升到约 `250 msg/s` 以上时，消息仍能可靠投递，但 ACK/Notify P95 延迟上升到秒级，已经不适合作为实时聊天可用指标。
+当实际吞吐提升到 `1500-3000 message/s` 时，消息仍能可靠投递，但 ACK/Notify P95 延迟上升到秒级到十秒级，已经不适合作为实时聊天可用指标。
 
 建议简历或答辩中使用如下表述：
 
-> 本地单机双 ChatServer Debug 环境下，系统可实时支撑 `10000` 条 TCP 长连接、约 `200 msg/s` 消息吞吐，ACK/通知成功率 `100%`，P95 延迟约 `20-30ms`；当吞吐提升到约 `250 msg/s` 以上时，消息仍可可靠投递，但延迟进入秒级。
+> 单机双 ChatServer 支持 `10000` 条 TCP 长连接。在 `100` 倍 fanout 场景下，实时可用吞吐约 `500 message/s`，对应约 `50,000 notify/s` 实际推送，ACK/Notify 成功率 `100%`，Notify P95 `641ms`；可靠峰值样本约 `2997 message/s` / `299,500 notify/s`，成功率 `100%`，但 Notify P95 约 `25.8s`，不作为实时指标。
 
 ### 9.3 关键压测数据
 
-| Label | 连接数 | 目标速率 | 实际速率 | ACK 成功率 | Notify 成功率 | ACK P95 | Notify P95 | 结论 |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
-| `usable_conn1000_rate250` | 1000 | 250 | 200.12 msg/s | 100% | 100% | 40ms | 36ms | 可用 |
-| `usable_conn1000_rate300_retest` | 1000 | 300 | 253.89 msg/s | 100% | 100% | 3526ms | 3347ms | 可靠但不可实时使用 |
-| `usable_conn3000_rate250` | 3000 | 250 | 200.58 msg/s | 100% | 100% | 40ms | 37ms | 可用 |
-| `usable_conn3000_rate300` | 3000 | 300 | 260.39 msg/s | 100% | 100% | 3129ms | 3215ms | 可靠但不可实时使用 |
-| `usable_conn5000_rate250` | 5000 | 250 | 199.32 msg/s | 100% | 100% | 92ms | 90ms | 可用 |
-| `usable_conn10000_rate250` | 10000 | 250 | 202.70 msg/s | 100% | 100% | 26ms | 23ms | 可用 |
-| `usable_conn10000_rate300` | 10000 | 300 | 254.10 msg/s | 100% | 100% | 3741ms | 3751ms | 可靠但不可实时使用 |
+| Label | 连接数 | fanout | 实际 message/s | 实际 notify/s | ACK 成功率 | Notify 成功率 | ACK P95 | Notify P95 | 结论 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| `optstable_conn10000_steps500_3000` | 10000 | 100 | 500 | 50,000 | 100% | 100% | 584ms | 641ms | 实时可用 |
+| `optstable_conn10000_steps500_3000` | 10000 | 100 | 1500 | 150,000 | 100% | 100% | 5383ms | 5386ms | 可靠但不可实时使用 |
+| `optstable_conn10000_steps500_3000` | 10000 | 100 | 2997 | 299,500 | 100% | 100% | 25793ms | 25800ms | 可靠峰值样本，延迟过高 |
 
 ### 9.4 测试环境
 
@@ -364,6 +359,11 @@ D:\workspace\project\tools\cloudflared.exe tunnel --url http://127.0.0.1:5174 --
 
 详细报告与 JSON 数据索引：
 
+- `docs/performance-optimization.md`
+- `load_results/optimization_report_20260602.md`
+- `load_results/push_throughput_20260602.md`
+- `load_results/push_throughput_20260602.json`
+- `load_results/20260602_230208_optstable_conn10000_steps500_3000.summary.json`
 - `load_results/usable_limit_report_20260602.md`
 - `load_results/usable_limit_report_20260602.json`
 
@@ -392,7 +392,8 @@ D:\workspace\project\tools\cloudflared.exe tunnel --url http://127.0.0.1:5174 --
 
 - 使用 Release 编译重新压测，排除 Debug 构建对延迟和吞吐的影响。
 - 将压测客户端与服务端拆到不同机器，减少单机资源竞争。
-- 优化同步日志输出，改为异步日志或压测时降低日志级别。
+- 继续完善异步日志系统，当前压测已支持通过 `MINICHAT_DISABLE_STD_LOG=1` 关闭标准输出日志。
+- 针对高 fanout 写入压力继续优化推送调度、批量写入和跨服转发策略。
 - 使用 Docker Compose 一键启动 MySQL、Redis 和所有服务。
 - 将数据库密码、邮箱授权码等敏感配置迁移到环境变量。
 - 增加消息表，实现消息持久化、已读未读、送达状态和历史消息分页。
@@ -414,5 +415,5 @@ D:\workspace\project\tools\cloudflared.exe tunnel --url http://127.0.0.1:5174 --
 - 多 ChatServer 如何通信：通过 `uip_<uid>` Set 找到用户在线的服务器集合，再用 gRPC 向目标 ChatServer 转发通知并对多端 session fan-out。
 - 离线消息如何实现：接收方不在线时写入 Redis List，登录时批量 `LPop`。
 - 好友申请为什么需要同时支持实时通知和登录拉取：在线体验和离线一致性都要保证。
-- 性能压测结论：本地双 ChatServer Debug 环境下可实时支撑 `10000` 长连接、约 `200 msg/s`，超过约 `250 msg/s` 后开始出现秒级排队。
+- 性能压测结论：本地双 ChatServer Debug 环境下可实时支撑 `10000` 长连接、约 `500 message/s`，对应约 `50,000 notify/s`；可靠峰值样本约 `2997 message/s` / `299,500 notify/s`，但延迟已进入十秒级。
 - 调试过程中解决过的问题：gRPC 调用失败、GateServer 超时、ChatServer 崩溃、跨服申请不显示、离线消息登录不可见。

@@ -1,0 +1,59 @@
+﻿{
+    "SourceSummary":  "D:\\workspace\\project\\load_results\\20260602_230208_optstable_conn10000_steps500_3000.summary.json",
+    "Scenario":  {
+                     "Users":  100,
+                     "SessionsPerUser":  100,
+                     "TotalConnections":  10000,
+                     "ChatPorts":  [
+                                       8090,
+                                       8091
+                                   ],
+                     "DurationSecPerStage":  6
+                 },
+    "ServerCpuPct":  {
+                         "Avg":  17.07,
+                         "Max":  73.15
+                     },
+    "ServerWorkingSetMB":  {
+                               "Avg":  492.46,
+                               "Max":  500.01
+                           },
+    "PushThroughput":  [
+                           {
+                               "TargetMsgPerSec":  500,
+                               "ActualMsgPerSec":  500,
+                               "FanoutPerMessage":  100,
+                               "ExpectedNotify":  300000,
+                               "Notified":  300000,
+                               "ActualPushPerSec":  50000,
+                               "ExpectedPushPerSec":  50000,
+                               "NotifySuccessRate":  1,
+                               "NotifyP95Ms":  641,
+                               "NotifyP99Ms":  897
+                           },
+                           {
+                               "TargetMsgPerSec":  1500,
+                               "ActualMsgPerSec":  1500,
+                               "FanoutPerMessage":  100,
+                               "ExpectedNotify":  900000,
+                               "Notified":  900000,
+                               "ActualPushPerSec":  150000,
+                               "ExpectedPushPerSec":  150000,
+                               "NotifySuccessRate":  1,
+                               "NotifyP95Ms":  5386,
+                               "NotifyP99Ms":  5745
+                           },
+                           {
+                               "TargetMsgPerSec":  3000,
+                               "ActualMsgPerSec":  2997,
+                               "FanoutPerMessage":  100,
+                               "ExpectedNotify":  1800000,
+                               "Notified":  1800000,
+                               "ActualPushPerSec":  299500.83,
+                               "ExpectedPushPerSec":  299500.83,
+                               "NotifySuccessRate":  1,
+                               "NotifyP95Ms":  25800,
+                               "NotifyP99Ms":  27905
+                           }
+                       ]
+}

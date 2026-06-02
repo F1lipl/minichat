@@ -2,6 +2,8 @@
 #include "Singleton.h"
 #include <queue>
 #include <thread>
+#include <vector>
+#include <atomic>
 #include "CSession.h"
 #include <queue>
 #include <map>
@@ -27,7 +29,9 @@ public:
 	std::vector<std::string> GetOnlineServers(int uid);
 private:
 	LogicSystem();
-	void DealMsg();
+	struct LogicQueue;
+	void DealMsg(size_t worker_index);
+	size_t SelectQueue(shared_ptr<LogicNode> msg) const;
 	void RegisterCallBacks();
 	void LoginHandler(shared_ptr<CSession> session, const short& msg_id, const string& msg_data);
 	void SearchInfo(std::shared_ptr<CSession> session, const short& msg_id, const string& msg_data);
@@ -41,11 +45,9 @@ private:
 	bool GetBaseInfo(std::string base_key, int uid, std::shared_ptr<UserInfo>& userinfo);
 	bool GetFriendApplyInfo(int to_uid, std::vector<std::shared_ptr<ApplyInfo>>& list);
 	bool GetFriendList(int self_id, std::vector<std::shared_ptr<UserInfo>>& user_list);
-	std::thread _worker_thread;
-	std::queue<shared_ptr<LogicNode>> _msg_que;
-	std::mutex _mutex;
-	std::condition_variable _consume;
-	bool _b_stop;
+	std::vector<std::unique_ptr<LogicQueue>> _logic_queues;
+	std::vector<std::thread> _worker_threads;
+	std::atomic<bool> _b_stop;
 	std::map<short, FunCallBack> _fun_callbacks;
 	std::shared_ptr<CServer> _p_server;
 };

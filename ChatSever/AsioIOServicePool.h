@@ -1,6 +1,7 @@
 #pragma once
 #include<boost/asio.hpp>
 #include<vector>
+#include<thread>
 #include"const.h"
 #include"Singleton.h"
 class AsioIOServicePool:public Singleton<AsioIOServicePool>
@@ -18,7 +19,7 @@ public:
 
 
 private:
-	AsioIOServicePool(std::size_t size = 2/*std::thread::hardware_concurrency()*/);
+	AsioIOServicePool(std::size_t size = 0);
 	std::vector<IOService>io_content_;
 	std::vector<WorkPtr>workers_;
 	std::vector<std::thread>threads_;
