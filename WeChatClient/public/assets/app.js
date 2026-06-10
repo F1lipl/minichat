@@ -12,8 +12,12 @@ const MSG = {
   TEXT_CHAT_MSG_REQ: 1017,
   TEXT_CHAT_MSG_RSP: 1018,
   NOTIFY_TEXT_CHAT_MSG_REQ: 1019,
-  HEARTBEAT_RSP: 1024
+  HEARTBEAT_RSP: 1024,
+  GET_CHAT_HISTORY_REQ: 1025,
+  GET_CHAT_HISTORY_RSP: 1026
 };
+
+const HISTORY_PAGE_SIZE = 30;
 
 const errorText = {
   0: "成功",
@@ -46,9 +50,11 @@ const state = {
   contacts: [],
   conversations: [],
   messages: {},
+  history: {},
   requests: [],
   searchResult: null,
-  lastSearch: ""
+  lastSearch: "",
+  pendingScroll: null
 };
 
 init();
@@ -306,6 +312,10 @@ async function handleLogin(event) {
     applyLoginLists(loginPayload);
     openEventStream();
     renderApp();
+    // Auto-load history for the chat that opens by default after login.
+    if (state.activeNav === "chat" && state.activeContactId) {
+      loadChatHistory(state.activeContactId, { initial: true });
+    }
     toast("登录成功");
   } catch (error) {
     setHint(hint, error.message, true);
@@ -397,6 +407,23 @@ function renderApp() {
   `;
 
   bindAppEvents();
+  applyPostRenderScroll();
+}
+
+function applyPostRenderScroll() {
+  const pending = state.pendingScroll;
+  state.pendingScroll = null;
+  // When paging older messages we keep the viewport anchored on the message the
+  // user was reading, instead of jumping to the bottom.
+  if (pending && pending.mode === "preserve") {
+    requestAnimationFrame(() => {
+      const scroll = app.querySelector("#messageScroll");
+      if (scroll) {
+        scroll.scrollTop = scroll.scrollHeight - pending.prevBottomOffset;
+      }
+    });
+    return;
+  }
   scrollMessagesToBottom();
 }
 
@@ -565,6 +592,13 @@ function renderChatPanel() {
   }
 
   const messages = state.messages[String(contact.uid)] || [];
+  const hist = state.history[String(contact.uid)] || {};
+  let historyControl = "";
+  if (hist.loaded && !hist.noMore) {
+    historyControl = `<div class="history-more"><button class="ghost-btn" data-action="load-history" data-uid="${contact.uid}" type="button">加载更多历史消息</button></div>`;
+  } else if (hist.noMore && messages.length) {
+    historyControl = `<div class="history-end">没有更多历史消息了</div>`;
+  }
   return `
     <main class="main-panel">
       <header class="chat-header">
@@ -579,7 +613,7 @@ function renderChatPanel() {
       </header>
 
       <div class="message-scroll" id="messageScroll">
-        <div class="message-day">今天</div>
+        ${historyControl}
         ${messages.length ? messages.map((message) => renderMessage(message, contact)).join("") : `<div class="empty-state">还没有消息</div>`}
       </div>
 
@@ -774,6 +808,9 @@ function bindAppEvents() {
     if (action === "open-chat") {
       openChat(uid);
     }
+    if (action === "load-history") {
+      await loadChatHistory(uid, { initial: false });
+    }
     if (action === "open-contact") {
       openContact(uid);
     }
@@ -856,6 +893,8 @@ function openChat(uid) {
   state.activeContactId = Number(contact.uid);
   persistLocalState();
   renderApp();
+  // Lazy-load the latest page of persisted history the first time a chat opens.
+  loadChatHistory(contact.uid, { initial: true });
 }
 
 async function addFriend(uid) {
@@ -956,6 +995,124 @@ async function chatRequest(msgId, replyMsgId, payload) {
   });
 }
 
+// Pull persisted chat history from the backend. `initial` loads the newest page
+// the first time a chat opens; otherwise it pages further back using the cursor.
+async function loadChatHistory(uid, { initial = false } = {}) {
+  if (!state.sessionId || !state.user?.uid || !uid) {
+    return;
+  }
+
+  const key = String(uid);
+  const hist = state.history[key] || (state.history[key] = {
+    loaded: false,
+    loading: false,
+    cursor: 0,
+    noMore: false
+  });
+
+  if (hist.loading) {
+    return;
+  }
+  if (initial && hist.loaded) {
+    return;
+  }
+  if (!initial && hist.noMore) {
+    return;
+  }
+
+  hist.loading = true;
+
+  // When paging older messages, remember the distance from the bottom so the
+  // viewport stays anchored after the older rows are prepended.
+  let prevBottomOffset = null;
+  if (!initial) {
+    const scroll = app.querySelector("#messageScroll");
+    if (scroll) {
+      prevBottomOffset = scroll.scrollHeight - scroll.scrollTop;
+    }
+    const moreBtn = app.querySelector("[data-action='load-history']");
+    if (moreBtn) {
+      moreBtn.disabled = true;
+      moreBtn.textContent = "加载中…";
+    }
+  }
+
+  try {
+    const reply = await chatRequest(MSG.GET_CHAT_HISTORY_REQ, MSG.GET_CHAT_HISTORY_RSP, {
+      fromuid: Number(state.user.uid),
+      touid: Number(uid),
+      last_msgid: initial ? 0 : Number(hist.cursor || 0),
+      limit: HISTORY_PAGE_SIZE
+    });
+    assertSuccess(reply.packet.payload);
+
+    const payload = reply.packet.payload || {};
+    const arr = Array.isArray(payload.msg_array) ? payload.msg_array : [];
+    mergeHistoryMessages(uid, arr);
+
+    hist.loaded = true;
+    hist.cursor = Number(payload.next_cursor || 0);
+    if (!hist.cursor || arr.length < HISTORY_PAGE_SIZE) {
+      hist.noMore = true;
+    }
+    persistLocalState();
+  } catch (error) {
+    toast(error.message, "error");
+  } finally {
+    hist.loading = false;
+  }
+
+  if (!initial && prevBottomOffset != null) {
+    state.pendingScroll = { mode: "preserve", prevBottomOffset };
+  }
+  renderApp();
+}
+
+// Merge a page of history rows into the local message store, deduping by id
+// (the client msg id, shared with live messages) and keeping chronological order.
+function mergeHistoryMessages(uid, arr) {
+  const key = String(uid);
+  const list = state.messages[key] || (state.messages[key] = []);
+  const existing = new Set(list.map((item) => String(item.id)));
+  const selfUid = Number(state.user.uid);
+
+  for (const item of arr) {
+    const id = item.msgid || `h${item.msg_id}`;
+    if (existing.has(String(id))) {
+      continue;
+    }
+    const fromuid = Number(item.fromuid);
+    list.push({
+      id,
+      msgId: Number(item.msg_id || 0),
+      fromuid,
+      touid: Number(item.touid),
+      content: item.content || "",
+      time: parseServerTime(item.create_time),
+      status: fromuid === selfUid ? "sent" : "received"
+    });
+    existing.add(String(id));
+  }
+
+  // Order by time, falling back to the DB message id for same-second messages.
+  list.sort((a, b) =>
+    (Number(a.time || 0) - Number(b.time || 0)) ||
+    (Number(a.msgId || 0) - Number(b.msgId || 0)));
+}
+
+// Parse a MySQL DATETIME string ("YYYY-MM-DD HH:MM:SS") as local time.
+function parseServerTime(value) {
+  if (!value) {
+    return Date.now();
+  }
+  const m = String(value).match(/(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2}):(\d{2})/);
+  if (!m) {
+    const t = Date.parse(value);
+    return Number.isNaN(t) ? Date.now() : t;
+  }
+  return new Date(+m[1], +m[2] - 1, +m[3], +m[4], +m[5], +m[6]).getTime();
+}
+
 function openEventStream() {
   if (state.eventSource) {
     state.eventSource.close();
@@ -1033,6 +1190,7 @@ function loadLocalState() {
   state.contacts = Array.isArray(data.contacts) ? data.contacts.map(normalizeUser).filter((item) => item.uid) : [];
   state.conversations = Array.isArray(data.conversations) ? data.conversations : [];
   state.messages = data.messages && typeof data.messages === "object" ? data.messages : {};
+  state.history = {};
   state.requests = Array.isArray(data.requests) ? data.requests : [];
   state.searchResult = null;
   state.lastSearch = "";
@@ -1250,6 +1408,7 @@ async function logout() {
   state.contacts = [];
   state.conversations = [];
   state.messages = {};
+  state.history = {};
   state.requests = [];
   state.activeContactId = null;
   state.activeNav = "chat";

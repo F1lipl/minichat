@@ -785,6 +785,24 @@ svg {
   font-size: 12px;
 }
 
+.history-more {
+  display: flex;
+  justify-content: center;
+  margin: 6px auto 14px;
+}
+
+.history-more .ghost-btn {
+  font-size: 12px;
+  padding: 4px 14px;
+}
+
+.history-end {
+  width: fit-content;
+  margin: 6px auto 14px;
+  color: #9aa0a6;
+  font-size: 12px;
+}
+
 .message-row {
   display: grid;
   grid-template-columns: 36px minmax(0, max-content);
