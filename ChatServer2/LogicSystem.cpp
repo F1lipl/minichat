@@ -5,6 +5,7 @@
 #include "RedisMgr.h"
 #include "UserMgr.h"
 #include "ChatGrpcClient.h"
+#include "MsgPersistMgr.h"
 //#include "DistLock.h"
 #include <string>
 #include <algorithm>
@@ -228,6 +229,9 @@ void LogicSystem::RegisterCallBacks() {
 		placeholders::_1, placeholders::_2, placeholders::_3);
 
 	_fun_callbacks[ID_TEXT_CHAT_MSG_REQ] = std::bind(&LogicSystem::DealChatTextMsg, this,
+		placeholders::_1, placeholders::_2, placeholders::_3);
+
+	_fun_callbacks[ID_GET_CHAT_HISTORY_REQ] = std::bind(&LogicSystem::GetChatHistory, this,
 		placeholders::_1, placeholders::_2, placeholders::_3);
 
 	_fun_callbacks[ID_HEART_BEAT_REQ] = std::bind(&LogicSystem::HeartBeatHandler, this,
@@ -555,6 +559,10 @@ void LogicSystem::DealChatTextMsg(std::shared_ptr<CSession> session, const short
 	std::string ack_str = rtvalue.toStyledString();
 	session->Send(ack_str, ID_TEXT_CHAT_MSG_RSP);
 
+	// Persist every message asynchronously (after the ACK, so storage IO stays
+	// off the request latency path) to build queryable chat history.
+	MsgPersistMgr::GetInstance()->PushTextMsgs(uid, touid, arrays);
+
 	auto online_servers = GetOnlineServers(touid);
 	if (online_servers.empty()) {
 		SaveOfflineTextMsg(uid, touid, arrays);
@@ -602,6 +610,51 @@ void LogicSystem::DealChatTextMsg(std::shared_ptr<CSession> session, const short
 	if (!delivered) {
 		SaveOfflineTextMsg(uid, touid, arrays);
 	}
+}
+
+void LogicSystem::GetChatHistory(std::shared_ptr<CSession> session, const short& msg_id, const string& msg_data) {
+	Json::Reader reader;
+	Json::Value root;
+	reader.parse(msg_data, root);
+
+	auto uid = root["fromuid"].asInt();
+	auto peer_uid = root["touid"].asInt();
+	// Cursor: fetch messages older than last_msgid; 0 (or absent) means latest page.
+	long long last_id = root.isMember("last_msgid") ? root["last_msgid"].asInt64() : 0;
+	int limit = root.isMember("limit") ? root["limit"].asInt() : CHAT_HISTORY_PAGE_SIZE;
+
+	Json::Value rtvalue;
+	Defer defer([&rtvalue, session]() {
+		session->Send(rtvalue.toStyledString(), ID_GET_CHAT_HISTORY_RSP);
+		});
+
+	rtvalue["error"] = ErrorCodes::Success;
+	rtvalue["fromuid"] = uid;
+	rtvalue["touid"] = peer_uid;
+
+	auto session_id = MsgPersistMgr::MakeSessionId(uid, peer_uid);
+	std::vector<std::shared_ptr<ChatMsgInfo>> history;
+	if (!MysqlMgr::GetInstance()->GetChatMsgList(session_id, last_id, limit, history)) {
+		rtvalue["error"] = ErrorCodes::Error_Json;
+		return;
+	}
+
+	Json::Value msg_array(Json::arrayValue);
+	for (const auto& msg : history) {
+		Json::Value item;
+		item["msg_id"] = static_cast<Json::Int64>(msg->msg_id);
+		item["fromuid"] = msg->from_uid;
+		item["touid"] = msg->to_uid;
+		item["msgid"] = msg->unique_id;
+		item["content"] = msg->content;
+		item["status"] = msg->status;
+		item["create_time"] = msg->create_time;
+		msg_array.append(item);
+	}
+	rtvalue["msg_array"] = msg_array;
+	// Oldest id in this page; the client passes it back as last_msgid to page up.
+	rtvalue["next_cursor"] = history.empty() ? 0
+		: static_cast<Json::Int64>(history.front()->msg_id);
 }
 
 void LogicSystem::HeartBeatHandler(std::shared_ptr<CSession> session, const short& msg_id, const string& msg_data) {

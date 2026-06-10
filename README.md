@@ -145,6 +145,18 @@ flowchart LR
 
 接收方不在线或转发失败时，消息以 JSON 形式 `RPUSH` 到 `offline_msg_<uid>`，用户下次登录时批量拉取（最多 200 条）并随登录响应返回前端，保证离线一致性。
 
+### 5.7 异步消息持久化与历史查询
+
+所有文本消息都会落库到 `chat_message` 表，形成可查询的聊天记录。关键在于**不破坏前面的性能优化**：文本消息热路径仍然「先回 ACK」，持久化由独立的 `MsgPersistMgr` 完成——它把消息推入内存队列，由专用 writer 线程**批量写入** MySQL，**磁盘 IO 完全不在请求延迟路径上**。
+
+- **会话规整**：单聊会话 ID 取 `min(uid)_max(uid)`，保证双向一致、只存一份；
+- **幂等去重**：`(session_id, unique_id)` 唯一键 + `INSERT IGNORE`，重复投递/跨服转发不会重复落库；
+- **游标分页**：历史查询按 `session_id + msg_id` 游标向前翻页（`WHERE msg_id < ? ORDER BY msg_id DESC LIMIT ?`），避免大表 `OFFSET` 退化；
+- **优雅退出**：进程关停时 flush 队列，尽量不丢缓冲中的消息；
+- 批量大小、worker 通过 `MINICHAT_PERSIST_BATCH` 可调。
+
+> 这是一个典型的「**加功能但不回退性能**」案例：把写库放到 ACK 之后、异步批量化，既补齐了聊天记录这一核心能力，又守住了之前压出来的实时吞吐。
+
 ---
 
 ## 六、性能压测与优化（项目重点）
@@ -248,6 +260,9 @@ flowchart LR
 | `user` | 用户基础信息 | `uid`、`name`、`email`、`pwd`、`nick`、`icon` |
 | `friend_apply` | 好友申请记录 | `from_uid`、`to_uid`、`status` |
 | `friend` | 双向好友关系 | `self_id`、`friend_id`、`back` |
+| `chat_message` | 聊天消息持久化（异步落库） | `msg_id`、`session_id`、`from_uid`、`to_uid`、`unique_id`、`content`、`create_time` |
+
+> 建表语句见 [`docs/sql/chat_message.sql`](docs/sql/chat_message.sql)。
 
 **Redis 核心 Key**
 
@@ -319,7 +334,7 @@ $env:MINICHAT_CHAT_GRPC_POOL_SIZE = "128"  # 跨服 gRPC 连接池大小
 - **异步日志系统**，替代同步标准输出；
 - **更细粒度的推送调度 / 批量写入**，缓解高 fanout 写入压力；
 - **聊天服务去重**：将两个 ChatServer 合并为「单工程 + 多配置」，消除源码复制；
-- **消息持久化**：新增 `message` 表，支持已读未读、送达状态与历史分页；
+- **消息可靠性增强**：在已落地的异步消息持久化基础上，继续做已读回执、送达状态与多端已读同步；
 - **网关增强**：接口鉴权、限流、统一错误码与请求日志；
 - **工程化**：Docker Compose 一键启动、敏感配置迁移至环境变量、补充自动化测试。
 

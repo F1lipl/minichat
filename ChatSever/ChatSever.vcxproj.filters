@@ -51,6 +51,9 @@
     <ClCompile Include="MsgNode.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="MsgPersistMgr.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
     <ClCompile Include="ChatServiceImpl.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -99,6 +102,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="CSession.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MsgPersistMgr.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="MsgNode.h">

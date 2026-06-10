@@ -58,3 +58,12 @@ bool MysqlMgr::GetFriendList(int self_id, std::vector<std::shared_ptr<UserInfo> 
 	return _dao.GetFriendList(self_id, user_info);
 }
 
+bool MysqlMgr::SaveChatMsgs(const std::vector<ChatMsgInfo>& msgs) {
+	return _dao.SaveChatMsgs(msgs);
+}
+
+bool MysqlMgr::GetChatMsgList(const std::string& session_id, long long last_id, int limit,
+	std::vector<std::shared_ptr<ChatMsgInfo>>& msg_list) {
+	return _dao.GetChatMsgList(session_id, last_id, limit, msg_list);
+}
+

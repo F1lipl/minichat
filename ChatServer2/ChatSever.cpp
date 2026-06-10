@@ -10,6 +10,7 @@
 #include "ConfigMgr.h"
 #include"RedisMgr.h"
 #include"MysqlMgr.h"
+#include"MsgPersistMgr.h"
 #include"ChatServiceImpl.h"
 using namespace std;
 using namespace std;
@@ -81,6 +82,8 @@ int main()
 		CServer s(io_context, atoi(port_str.c_str()));
 		io_context.run();
 
+		// Flush any buffered chat messages before exiting.
+		MsgPersistMgr::GetInstance()->Close();
 		RedisMgr::GetInstance()->HDel(LOGIN_COUNT, server_name);
 		RedisMgr::GetInstance()->close_connect();
 		grpc_server_thread.join();

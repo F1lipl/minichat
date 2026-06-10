@@ -185,6 +185,8 @@ service StatusService {
 | `1021` | `ID_NOTIFY_OFF_LINE_REQ` | 通知下线 |
 | `1023` | `ID_HEART_BEAT_REQ` | 心跳请求 |
 | `1024` | `ID_HEARTBEAT_RSP` | 心跳响应 |
+| `1025` | `ID_GET_CHAT_HISTORY_REQ` | 拉取历史聊天记录（游标分页） |
+| `1026` | `ID_GET_CHAT_HISTORY_RSP` | 历史聊天记录响应 |
 
 ## 5. 端口规划
 
@@ -267,8 +269,9 @@ service StatusService {
 | `user_id` | 用户 ID 自增辅助表 | `id` |
 | `friend_apply` | 好友申请记录 | `id`、`from_uid`、`to_uid`、`status` |
 | `friend` | 好友关系表 | `self_id`、`friend_id`、`back` |
+| `chat_message` | 聊天消息持久化表 | `msg_id`、`session_id`、`from_uid`、`to_uid`、`unique_id`、`content`、`status`、`create_time` |
 
-说明：当前文本消息没有持久化到 MySQL 消息表，离线消息主要依赖 Redis 队列。后续如果要增强可靠性，可以新增 `message` 表记录消息投递状态。
+说明：文本消息通过 `MsgPersistMgr` 异步批量落库到 `chat_message` 表（落库在 ACK 之后、不在请求延迟路径上），用于历史消息查询；`(session_id, unique_id)` 唯一键配合 `INSERT IGNORE` 实现幂等去重。离线消息仍由 Redis 队列承担登录时的快速拉取。建表语句见 `docs/sql/chat_message.sql`。
 
 ### 7.2 Redis 主要 Key
 
@@ -396,7 +399,7 @@ D:\workspace\project\tools\cloudflared.exe tunnel --url http://127.0.0.1:5174 --
 - 针对高 fanout 写入压力继续优化推送调度、批量写入和跨服转发策略。
 - 使用 Docker Compose 一键启动 MySQL、Redis 和所有服务。
 - 将数据库密码、邮箱授权码等敏感配置迁移到环境变量。
-- 增加消息表，实现消息持久化、已读未读、送达状态和历史消息分页。
+- 在已落地的异步消息持久化（`chat_message` 表 + 历史分页接口）基础上，继续实现已读未读、送达状态和多端已读同步，并把历史查询接入前端聊天界面。
 - 给 GateServer 增加接口鉴权、限流和请求日志。
 - 给 ChatServer 增加断线重连、会话恢复和重复消息去重。
 - 增加统一日志格式和错误码文档。

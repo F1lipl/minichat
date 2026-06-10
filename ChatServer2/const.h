@@ -34,17 +34,17 @@ using tcp = boost::asio::ip::tcp;
 
 enum ErrorCodes {
 	Success = 0,
-	Error_Json = 1001,  //Json½âÎö´íÎó
-	RPCFailed = 1002,  //RPCÇëÇó´íÎó
-	VarifyExpired = 1003, //ÑéÖ¤Âë¹ýÆÚ
-	VarifyCodeErr = 1004, //ÑéÖ¤Âë´íÎó
-	UserExist = 1005,       //ÓÃ»§ÒÑ¾­´æÔÚ
-	PasswdErr = 1006,    //ÃÜÂë´íÎó
-	EmailNotMatch = 1007,  //ÓÊÏä²»Æ¥Åä
-	PasswdUpFailed = 1008,  //¸üÐÂÃÜÂëÊ§°Ü
-	PasswdInvalid = 1009,   //ÃÜÂë¸üÐÂÊ§°Ü
+	Error_Json = 1001,  //Jsonï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	RPCFailed = 1002,  //RPCï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	VarifyExpired = 1003, //ï¿½ï¿½Ö¤ï¿½ï¿½ï¿½ï¿½ï¿½
+	VarifyCodeErr = 1004, //ï¿½ï¿½Ö¤ï¿½ï¿½ï¿½ï¿½ï¿½
+	UserExist = 1005,       //ï¿½Ã»ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½
+	PasswdErr = 1006,    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	EmailNotMatch = 1007,  //ï¿½ï¿½ï¿½ä²»Æ¥ï¿½ï¿½
+	PasswdUpFailed = 1008,  //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½
+	PasswdInvalid = 1009,   //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê§ï¿½ï¿½
 	TokenInvalid = 1010,   //TokenÊ§Ð§
-	UidInvalid = 1011,  //uidÎÞÐ§
+	UidInvalid = 1011,  //uidï¿½ï¿½Ð§
 };
 
 
@@ -52,10 +52,10 @@ class ConfigMgr;
 extern ConfigMgr gCfgMgr;
 class Defer {
 public:
-	// ½ÓÊÜÒ»¸ölambda±í´ïÊ½»òÕßº¯ÊýÖ¸Õë
+	// ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½lambdaï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ßºï¿½ï¿½ï¿½Ö¸ï¿½ï¿½
 	Defer(std::function<void()> func) : func_(func) {}
 
-	// Îö¹¹º¯ÊýÖÐÖ´ÐÐ´«ÈëµÄº¯Êý
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö´ï¿½Ð´ï¿½ï¿½ï¿½Äºï¿½ï¿½ï¿½
 	~Defer() {
 		func_();
 	}
@@ -65,11 +65,11 @@ private:
 
 #define CODEPREFIX  "code_"
 #define MAX_LENGTH  1024*2
-//Í·²¿×Ü³¤¶È
+//Í·ï¿½ï¿½ï¿½Ü³ï¿½ï¿½ï¿½
 #define HEAD_TOTAL_LEN 4
-//Í·²¿id³¤¶È
+//Í·ï¿½ï¿½idï¿½ï¿½ï¿½ï¿½
 #define HEAD_ID_LEN 2
-//Í·²¿Êý¾Ý³¤¶È
+//Í·ï¿½ï¿½ï¿½ï¿½ï¿½Ý³ï¿½ï¿½ï¿½
 #define HEAD_DATA_LEN 2
 #define MAX_RECVQUE  10000
 #define MAX_SENDQUE 1000
@@ -77,22 +77,24 @@ private:
 
 enum MSG_IDS {
 	MSG_HELLO_WORD = 1001,
-	MSG_CHAT_LOGIN = 1005, //ÓÃ»§µÇÂ½
-	MSG_CHAT_LOGIN_RSP = 1006, //ÓÃ»§µÇÂ½»Ø°ü
-	ID_SEARCH_USER_REQ = 1007, //ÓÃ»§ËÑË÷ÇëÇó
-	ID_SEARCH_USER_RSP = 1008, //ËÑË÷ÓÃ»§»Ø°ü
-	ID_ADD_FRIEND_REQ = 1009, //ÉêÇëÌí¼ÓºÃÓÑÇëÇó
-	ID_ADD_FRIEND_RSP = 1010, //ÉêÇëÌí¼ÓºÃÓÑ»Ø¸´
-	ID_NOTIFY_ADD_FRIEND_REQ = 1011,  //Í¨ÖªÓÃ»§Ìí¼ÓºÃÓÑÉêÇë
-	ID_AUTH_FRIEND_REQ = 1013,  //ÈÏÖ¤ºÃÓÑÇëÇó
-	ID_AUTH_FRIEND_RSP = 1014,  //ÈÏÖ¤ºÃÓÑ»Ø¸´
-	ID_NOTIFY_AUTH_FRIEND_REQ = 1015, //Í¨ÖªÓÃ»§ÈÏÖ¤ºÃÓÑÉêÇë
-	ID_TEXT_CHAT_MSG_REQ = 1017, //ÎÄ±¾ÁÄÌìÐÅÏ¢ÇëÇó
-	ID_TEXT_CHAT_MSG_RSP = 1018, //ÎÄ±¾ÁÄÌìÐÅÏ¢»Ø¸´
-	ID_NOTIFY_TEXT_CHAT_MSG_REQ = 1019, //Í¨ÖªÓÃ»§ÎÄ±¾ÁÄÌìÐÅÏ¢
-	ID_NOTIFY_OFF_LINE_REQ = 1021, //Í¨ÖªÓÃ»§ÏÂÏß
-	ID_HEART_BEAT_REQ = 1023,      //ÐÄÌøÇëÇó
-	ID_HEARTBEAT_RSP = 1024,       //ÐÄÌø»Ø¸´
+	MSG_CHAT_LOGIN = 1005, //ï¿½Ã»ï¿½ï¿½ï¿½Â½
+	MSG_CHAT_LOGIN_RSP = 1006, //ï¿½Ã»ï¿½ï¿½ï¿½Â½ï¿½Ø°ï¿½
+	ID_SEARCH_USER_REQ = 1007, //ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	ID_SEARCH_USER_RSP = 1008, //ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ï¿½Ø°ï¿½
+	ID_ADD_FRIEND_REQ = 1009, //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Óºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	ID_ADD_FRIEND_RSP = 1010, //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Óºï¿½ï¿½Ñ»Ø¸ï¿½
+	ID_NOTIFY_ADD_FRIEND_REQ = 1011,  //Í¨Öªï¿½Ã»ï¿½ï¿½ï¿½ï¿½Óºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	ID_AUTH_FRIEND_REQ = 1013,  //ï¿½ï¿½Ö¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	ID_AUTH_FRIEND_RSP = 1014,  //ï¿½ï¿½Ö¤ï¿½ï¿½ï¿½Ñ»Ø¸ï¿½
+	ID_NOTIFY_AUTH_FRIEND_REQ = 1015, //Í¨Öªï¿½Ã»ï¿½ï¿½ï¿½Ö¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	ID_TEXT_CHAT_MSG_REQ = 1017, //ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½
+	ID_TEXT_CHAT_MSG_RSP = 1018, //ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢ï¿½Ø¸ï¿½
+	ID_NOTIFY_TEXT_CHAT_MSG_REQ = 1019, //Í¨Öªï¿½Ã»ï¿½ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
+	ID_NOTIFY_OFF_LINE_REQ = 1021, //Í¨Öªï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½
+	ID_HEART_BEAT_REQ = 1023,      //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	ID_HEARTBEAT_RSP = 1024,       //ï¿½ï¿½ï¿½ï¿½ï¿½Ø¸ï¿½
+	ID_GET_CHAT_HISTORY_REQ = 1025, // pull persisted chat history (cursor paged)
+	ID_GET_CHAT_HISTORY_RSP = 1026, // chat history response
 };\
 
 #define USERIPPREFIX  "uip_"
@@ -104,9 +106,11 @@ enum MSG_IDS {
 #define LOCK_PREFIX "lock_"
 #define USER_SESSION_PREFIX "usession_"
 #define OFFLINE_MSG_PREFIX "offline_msg_"
+#define CHAT_HISTORY_PAGE_SIZE 30
+#define CHAT_HISTORY_MAX_LIMIT 100
 #define LOCK_COUNT "lockcount"
 
-//·Ö²¼Ê½ËøµÄ³ÖÓÐÊ±¼ä
+//ï¿½Ö²ï¿½Ê½ï¿½ï¿½ï¿½Ä³ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
 #define LOCK_TIME_OUT 10
-//·Ö²¼Ê½ËøµÄÖØÊÔÊ±¼ä
+//ï¿½Ö²ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½
 #define ACQUIRE_TIME_OUT 5
