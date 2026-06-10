@@ -1,0 +1,3 @@
+# 上传文件与本地配置不入库
+storage/
+config.json

@@ -1,0 +1,11 @@
+{
+  "port": 8070,
+  "storage_dir": "./storage",
+  "max_upload_mb": 20,
+  "allowed_ext": [
+    "jpg", "jpeg", "png", "gif", "webp", "bmp",
+    "pdf", "txt", "md", "doc", "docx", "xls", "xlsx",
+    "ppt", "pptx", "zip", "rar", "7z", "csv", "json",
+    "mp3", "mp4", "wav"
+  ]
+}

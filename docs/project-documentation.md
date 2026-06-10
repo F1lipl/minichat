@@ -29,10 +29,11 @@
 | HTTP 网关 | C++、Boost.Asio、Boost.Beast、JsonCpp |
 | 聊天服务 | C++、Boost.Asio、自定义 TCP 协议、JsonCpp |
 | RPC 通信 | gRPC、Protocol Buffers |
+| 文件上传服务 | Go（标准库 net/http，零第三方依赖） |
 | 验证码服务 | Node.js、@grpc/grpc-js、Nodemailer |
 | 数据库 | MySQL |
 | 缓存和状态 | Redis |
-| 构建环境 | Visual Studio C++ 工程、npm |
+| 构建环境 | Visual Studio C++ 工程、npm、go build |
 
 ## 4. 服务模块说明
 
@@ -188,6 +189,30 @@ service StatusService {
 | `1025` | `ID_GET_CHAT_HISTORY_REQ` | 拉取历史聊天记录（游标分页） |
 | `1026` | `ID_GET_CHAT_HISTORY_RSP` | 历史聊天记录响应 |
 
+### 4.6 FileServer
+
+目录：`FileServer`
+
+FileServer 是用 Go 标准库实现的文件上传/下载微服务（零第三方依赖），负责图片与文件的上传、本地磁盘存储与回源下载。
+
+默认端口：`8070`
+
+HTTP 接口：
+
+| 方法 | 路径 | 说明 |
+| --- | --- | --- |
+| `POST` | `/upload` | multipart 上传（字段 `file`），校验大小与类型白名单，返回 `file_id` 等元信息 |
+| `GET` | `/files/<id>` | 按 id 回源；图片 `inline` 预览，其它类型 `attachment` 下载并保留原始文件名 |
+| `GET` | `/health` | 健康检查 |
+
+设计要点：
+
+- 浏览器只与 WeChatClient 桥接层通信，上传/下载由桥接层**流式代理**到 FileServer，无需暴露文件端口、无 CORS。
+- 文件消息**不新增聊天协议**：上传成功后以一条普通文本消息发送，消息体是文件引用 JSON（`{ kind, id, name, size, type }`），因此自动复用跨服转发、离线投递和消息持久化。
+- 安全：扩展名白名单 + 大小上限双重拦截；文件 id 为随机 hex，下载严格校验字符集，防路径穿越；元信息旁车文件还原 `Content-Type` 与原始文件名。
+
+详见 `FileServer/README.md`。
+
 ## 5. 端口规划
 
 | 服务 | 地址 | 端口 | 协议 | 说明 |
@@ -200,6 +225,7 @@ service StatusService {
 | ChatServer1 RPC | `127.0.0.1` | `50055` | gRPC | 跨服消息通知 |
 | ChatServer2 | `0.0.0.0` | `8091` | TCP | 聊天客户端接入 |
 | ChatServer2 RPC | `127.0.0.1` | `50056` | gRPC | 跨服消息通知 |
+| FileServer | `127.0.0.1` | `8070` | HTTP | 文件/图片上传与下载 |
 | MySQL | `127.0.0.1` | `3308` | TCP | 业务数据存储 |
 | Redis | `127.0.0.1` | `6380` | TCP | 验证码、token、在线状态、离线消息 |
 
@@ -387,6 +413,8 @@ D:\workspace\project\tools\cloudflared.exe tunnel --url http://127.0.0.1:5174 --
 - 文本消息发送。
 - 跨 ChatServer 消息通知。
 - 离线文本消息缓存和登录拉取。
+- 文本消息持久化与历史消息游标分页查询。
+- 图片与文件发送（Go FileServer，图片内联预览、文件卡片下载）。
 - 心跳保活。
 - 仿微信前端页面。
 - 临时公网访问。

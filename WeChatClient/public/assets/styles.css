@@ -852,6 +852,68 @@ svg {
   border-left: 6px solid var(--bubble);
 }
 
+.image-bubble {
+  display: inline-block;
+  max-width: min(320px, 52vw);
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .08);
+}
+
+.image-bubble img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 320px;
+  object-fit: cover;
+}
+
+.file-bubble {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: min(320px, 52vw);
+  padding: 10px 13px;
+  border-radius: 6px;
+  background: var(--incoming);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+  text-decoration: none;
+  color: inherit;
+}
+
+.message-row.is-me .file-bubble {
+  background: var(--bubble);
+}
+
+.file-bubble-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, .06);
+  flex-shrink: 0;
+}
+
+.file-bubble-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.file-bubble-name {
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-bubble-size {
+  color: var(--subtle);
+  font-size: 12px;
+}
+
 .message-meta {
   margin-top: 4px;
   color: var(--subtle);

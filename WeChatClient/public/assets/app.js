@@ -18,6 +18,10 @@ const MSG = {
 };
 
 const HISTORY_PAGE_SIZE = 30;
+// Sentinel prefix marking a chat message whose body is a file reference (JSON).
+// Uses control chars so it can't collide with user-typed text.
+const FILE_MARKER = "minichat-file";
+const MAX_UPLOAD_MB = 20;
 
 const errorText = {
   0: "成功",
@@ -509,7 +513,7 @@ function renderConversationList() {
             <strong>${escapeHtml(displayName(contact))}</strong>
             ${conversation.unread ? `<span class="badge">${conversation.unread > 99 ? "99+" : conversation.unread}</span>` : ""}
           </span>
-          <span class="item-sub">${escapeHtml(conversation.lastText || "开始聊天")}</span>
+          <span class="item-sub">${escapeHtml(previewText(conversation.lastText))}</span>
         </span>
         <span class="item-time">${formatListTime(conversation.lastTime)}</span>
       </button>
@@ -620,7 +624,8 @@ function renderChatPanel() {
       <form class="composer" id="composerForm">
         <div class="composer-tools">
           <button class="icon-btn" type="button" title="表情">${icon("smile")}</button>
-          <button class="icon-btn" type="button" title="附件">${icon("paperclip")}</button>
+          <button class="icon-btn" data-action="attach-file" type="button" title="发送图片或文件">${icon("paperclip")}</button>
+          <input type="file" id="fileInput" hidden>
         </div>
         <textarea id="messageInput" placeholder="输入消息"></textarea>
         <div class="composer-actions">
@@ -635,9 +640,13 @@ function renderChatPanel() {
 function renderMessage(message, contact) {
   const isMe = Number(message.fromuid) === Number(state.user.uid);
   const avatar = isMe ? state.user : contact;
+  const fileMeta = parseFileContent(message.content);
+  const bubble = fileMeta
+    ? renderFileBubble(fileMeta)
+    : `<div class="bubble">${escapeHtml(message.content)}</div>`;
   const body = `
     <div>
-      <div class="bubble">${escapeHtml(message.content)}</div>
+      ${bubble}
       <div class="message-meta">${formatTime(message.time)}${message.status === "failed" ? " 发送失败" : ""}</div>
     </div>
   `;
@@ -647,6 +656,26 @@ function renderMessage(message, contact) {
     <div class="message-row${isMe ? " is-me" : ""}">
       ${isMe ? `${body}${avatarNode}` : `${avatarNode}${body}`}
     </div>
+  `;
+}
+
+function renderFileBubble(meta) {
+  const url = `/api/file/${encodeURIComponent(meta.id)}`;
+  if (meta.kind === "image") {
+    return `
+      <a class="image-bubble" href="${url}" target="_blank" rel="noopener">
+        <img src="${url}" alt="${escapeAttr(meta.name || "image")}" loading="lazy">
+      </a>
+    `;
+  }
+  return `
+    <a class="file-bubble" href="${url}" download="${escapeAttr(meta.name || "file")}">
+      <span class="file-bubble-icon">${icon("paperclip")}</span>
+      <span class="file-bubble-info">
+        <span class="file-bubble-name">${escapeHtml(meta.name || "文件")}</span>
+        <span class="file-bubble-size">${formatFileSize(meta.size)}</span>
+      </span>
+    </a>
   `;
 }
 
@@ -811,6 +840,9 @@ function bindAppEvents() {
     if (action === "load-history") {
       await loadChatHistory(uid, { initial: false });
     }
+    if (action === "attach-file") {
+      app.querySelector("#fileInput")?.click();
+    }
     if (action === "open-contact") {
       openContact(uid);
     }
@@ -842,6 +874,16 @@ function bindAppEvents() {
   };
 
   app.querySelector("#composerForm")?.addEventListener("submit", sendMessage);
+  app.querySelector("#fileInput")?.addEventListener("change", handleFileSelected);
+}
+
+async function handleFileSelected(event) {
+  const input = event.currentTarget;
+  const file = input.files && input.files[0];
+  input.value = "";
+  if (file) {
+    await uploadAndSendFile(file);
+  }
 }
 
 async function searchUser() {
@@ -983,6 +1025,104 @@ async function sendMessage(event) {
     renderApp();
     toast(error.message, "error");
   }
+}
+
+// Upload a file to the FileServer (via the bridge), then send it as a chat
+// message whose body is a file reference. File messages reuse the text-message
+// channel, so they persist and fan out across servers like any other message.
+async function uploadAndSendFile(file) {
+  const contact = getContact(state.activeContactId);
+  if (!file || !contact) {
+    return;
+  }
+  if (file.size > MAX_UPLOAD_MB * 1024 * 1024) {
+    toast(`文件超过 ${MAX_UPLOAD_MB}MB 限制`, "error");
+    return;
+  }
+
+  const msgid = crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`;
+  toast("上传中…");
+
+  let meta;
+  try {
+    const form = new FormData();
+    form.append("file", file);
+    const response = await fetch("/api/file/upload", { method: "POST", body: form });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok || Number(data.error) !== 0) {
+      throw new Error(data.message || "上传失败");
+    }
+    meta = {
+      kind: data.is_image ? "image" : "file",
+      id: data.file_id,
+      name: data.name,
+      size: data.size,
+      type: data.type
+    };
+  } catch (error) {
+    toast(error.message, "error");
+    return;
+  }
+
+  const content = FILE_MARKER + JSON.stringify(meta);
+  const localMessage = {
+    id: msgid,
+    fromuid: Number(state.user.uid),
+    touid: Number(contact.uid),
+    content,
+    time: Date.now(),
+    status: "sending"
+  };
+  appendMessage(contact.uid, localMessage);
+  renderApp();
+
+  try {
+    const reply = await chatRequest(MSG.TEXT_CHAT_MSG_REQ, MSG.TEXT_CHAT_MSG_RSP, {
+      fromuid: Number(state.user.uid),
+      touid: Number(contact.uid),
+      text_array: [{ msgid, content }]
+    });
+    assertSuccess(reply.packet.payload);
+    updateMessageStatus(contact.uid, msgid, "sent");
+    renderApp();
+  } catch (error) {
+    updateMessageStatus(contact.uid, msgid, "failed");
+    renderApp();
+    toast(error.message, "error");
+  }
+}
+
+// If a message body is a file reference, return its parsed metadata, else null.
+function parseFileContent(content) {
+  if (typeof content !== "string" || !content.startsWith(FILE_MARKER)) {
+    return null;
+  }
+  try {
+    const meta = JSON.parse(content.slice(FILE_MARKER.length));
+    return meta && meta.id ? meta : null;
+  } catch (_) {
+    return null;
+  }
+}
+
+// Short preview text for the conversation list (raw file JSON would be ugly).
+function previewText(content) {
+  const meta = parseFileContent(content);
+  if (!meta) {
+    return content || "开始聊天";
+  }
+  return meta.kind === "image" ? "[图片]" : `[文件] ${meta.name || ""}`;
+}
+
+function formatFileSize(bytes) {
+  const n = Number(bytes || 0);
+  if (n < 1024) {
+    return `${n} B`;
+  }
+  if (n < 1024 * 1024) {
+    return `${(n / 1024).toFixed(1)} KB`;
+  }
+  return `${(n / 1024 / 1024).toFixed(1)} MB`;
 }
 
 async function chatRequest(msgId, replyMsgId, payload) {

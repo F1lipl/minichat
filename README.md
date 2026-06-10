@@ -9,6 +9,7 @@
   <img src="https://img.shields.io/badge/gRPC-跨服通信-244c5a?logo=grpc&logoColor=white" alt="gRPC">
   <img src="https://img.shields.io/badge/MySQL-持久化-4479A1?logo=mysql&logoColor=white" alt="MySQL">
   <img src="https://img.shields.io/badge/Redis-状态%2F缓存-DC382D?logo=redis&logoColor=white" alt="Redis">
+  <img src="https://img.shields.io/badge/Go-文件服务-00ADD8?logo=go&logoColor=white" alt="Go">
   <img src="https://img.shields.io/badge/Node.js-桥接%2F验证码-339933?logo=nodedotjs&logoColor=white" alt="Node.js">
 </p>
 
@@ -47,6 +48,7 @@ MiniChat 是一个**仿微信的分布式即时通讯系统**，采用微服务�
 | **网络编程** | 基于 Boost.Asio 的全异步 IO + IO 线程池；手写 TCP 应用层协议，自行处理**粘包 / 半包** |
 | **高并发** | 业务逻辑**分片队列 + 多 worker 消费**，锁仅保护入队 / 出队，回调执行前释放锁 |
 | **分布式** | 多 ChatServer 集群，借助 Redis 在线集合 + gRPC 实现**跨服消息 fan-out** 与多端登录 |
+| **多语言栈** | C++ 为核心，Node 做桥接/验证码，**Go 实现文件上传微服务**，按职责选型 |
 | **连接池** | 自实现 MySQL 连接池，含**后台心跳探活与自动重连**；Redis / gRPC 连接池均可配置 |
 | **可靠性** | 接收方离线时消息落 Redis 队列，登录时批量拉取，保证**离线一致性** |
 | **性能工程** | 有**真实可复现的压测数据**支撑（含 CPU / 内存采样、P95 / P99 延迟），结论克制诚实 |
@@ -62,6 +64,7 @@ MiniChat 是一个**仿微信的分布式即时通讯系统**，采用微服务�
 | --- | --- |
 | HTTP 网关 / 聊天服务 / 状态服务 | C++17、Boost.Asio、Boost.Beast、JsonCpp |
 | 服务间通信 | gRPC、Protocol Buffers |
+| 文件上传服务 | Go（标准库，零第三方依赖） |
 | 验证码服务 | Node.js、@grpc/grpc-js、Nodemailer（SMTP） |
 | 前端桥接 | Node.js、HTTP Server、TCP Socket、SSE |
 | 前端页面 | 原生 HTML / CSS / JavaScript（仿微信 UI） |
@@ -86,6 +89,9 @@ flowchart LR
   Gate -->|gRPC 服务发现| Status["StatusServer<br/>C++ gRPC :50052"]
   Verify -->|SMTP| Mail["邮箱服务"]
 
+  Client -->|上传 / 下载代理| File["FileServer<br/>Go HTTP :8070"]
+  File --> Disk["本地磁盘<br/>文件 + 元信息"]
+
   Chat1 <-->|gRPC 跨服转发| Chat2
 
   Gate --> MySQL[("MySQL :3308<br/>user / friend_apply / friend")]
@@ -106,6 +112,7 @@ flowchart LR
 | **VarifyServer** | 验证码 gRPC 服务：生成验证码、写 Redis（TTL 60s）、SMTP 发信 | `50051` |
 | **StatusServer** | 服务发现：选择 ChatServer、生成并下发 token | `50052` |
 | **ChatServer1 / 2** | 聊天长连接、好友关系、消息收发、跨服转发、离线消息 | `8090 / 8091`（gRPC `50055 / 50056`） |
+| **FileServer** | Go 文件上传/下载服务：图片与文件存储、回源 | `8070` |
 | **MySQL / Redis** | 业务持久化 / 状态与缓存 | `3308 / 6380` |
 
 > **为什么需要 Node 桥接层？** 浏览器无法直接使用项目的原生 TCP 协议连接 ChatServer，因此由 WeChatClient 用 Node TCP Socket 连接聊天服务，并通过 SSE 将服务端推送转发给浏览器。
@@ -156,6 +163,17 @@ flowchart LR
 - 批量大小、worker 通过 `MINICHAT_PERSIST_BATCH` 可调。
 
 > 这是一个典型的「**加功能但不回退性能**」案例：把写库放到 ACK 之后、异步批量化，既补齐了聊天记录这一核心能力，又守住了之前压出来的实时吞吐。
+
+### 5.8 文件 / 图片发送（Go 微服务）
+
+独立的 Go `FileServer`（标准库、零第三方依赖）负责文件上传与回源下载，前端在聊天里直接发图片和文件：
+
+- **不污染聊天协议**：文件先上传拿到 `file_id`，再以一条**普通文本消息**发送（消息体是文件引用 JSON）。因此文件消息**自动复用**已有的跨服转发、离线投递和消息持久化——C++ 聊天服务一行没改；
+- **浏览器只连桥接层**：上传/下载都经 WeChatClient 流式代理到 FileServer，无需暴露文件服务端口、无 CORS；大文件**双向流式转发**不在桥接层缓冲；
+- **安全**：扩展名白名单 + 大小上限（`MaxBytesReader` 双重拦截）；文件 id 为随机 hex，下载严格校验字符集，杜绝路径穿越；
+- **体验**：图片消息内联预览、点击查看大图；其它文件渲染为可下载卡片（保留原始文件名，RFC 5987 编码支持中文名）。
+
+> 设计亮点：**用现有消息通道承载文件引用**，以最小侵入把一个新语言栈（Go）的微服务接入了 C++ 为主的系统，同时让文件消息免费获得持久化与跨服能力。
 
 ---
 
@@ -286,6 +304,7 @@ minichat/
 ├── StatusServer/     # C++ gRPC 状态服务：服务发现 + token
 ├── ChatSever/        # C++ 聊天服务实例 chatserver1
 ├── ChatServer2/      # C++ 聊天服务实例 chatserver2
+├── FileServer/       # Go 文件上传/下载微服务（标准库，零依赖）
 ├── docs/             # 架构图、项目文档、性能优化说明
 └── load_results/     # 压测结果、采样数据与报告
 ```
@@ -308,7 +327,8 @@ minichat/
 3. 启动 StatusServer        (C++)
 4. 启动 ChatServer1 / 2     (C++)
 5. 启动 GateServer          (C++)
-6. 启动 WeChatClient        (npm start)
+6. 启动 FileServer          (go run . 或 ./fileserver)
+7. 启动 WeChatClient        (npm start)
 ```
 
 **访问**：浏览器打开 `http://127.0.0.1:5174`。

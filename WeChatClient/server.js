@@ -99,6 +99,10 @@ const runtimeConfig = {
     selfName: chatIni.SelfServer?.Name || "chatserver2",
     host: normalizeHost(chatIni.SelfServer?.Host || "127.0.0.1"),
     port: Number(chatIni.SelfServer?.Port || 8091)
+  },
+  file: {
+    host: process.env.FILE_HOST || "127.0.0.1",
+    port: Number(process.env.FILE_PORT || 8070)
   }
 };
 
@@ -379,6 +383,45 @@ function proxyGate(route, body) {
   });
 }
 
+// Stream-proxy a request to the Go FileServer in both directions, so large
+// uploads/downloads never get buffered in this bridge.
+function proxyFile(clientReq, clientRes, targetPath, method) {
+  const options = {
+    hostname: runtimeConfig.file.host,
+    port: runtimeConfig.file.port,
+    path: targetPath,
+    method,
+    headers: {}
+  };
+  if (method === "POST") {
+    if (clientReq.headers["content-type"]) {
+      options.headers["content-type"] = clientReq.headers["content-type"];
+    }
+    if (clientReq.headers["content-length"]) {
+      options.headers["content-length"] = clientReq.headers["content-length"];
+    }
+  }
+
+  const upstream = http.request(options, (fileRes) => {
+    clientRes.writeHead(fileRes.statusCode || 200, fileRes.headers);
+    fileRes.pipe(clientRes);
+  });
+
+  upstream.on("error", () => {
+    if (!clientRes.headersSent) {
+      sendJson(clientRes, 502, { error: -1, message: "文件服务不可用" });
+    } else {
+      clientRes.destroy();
+    }
+  });
+
+  if (method === "POST") {
+    clientReq.pipe(upstream);
+  } else {
+    upstream.end();
+  }
+}
+
 async function handleApi(req, res, url) {
   if (req.method === "GET" && url.pathname === "/api/config") {
     sendJson(res, 200, {
@@ -393,6 +436,24 @@ async function handleApi(req, res, url) {
   if (req.method === "GET" && url.pathname.startsWith("/api/chat/events/")) {
     const sessionId = decodeURIComponent(url.pathname.split("/").pop());
     streamEvents(req, res, sessionId);
+    return true;
+  }
+
+  // Upload proxy: stream the multipart body straight to the Go FileServer so the
+  // browser only ever talks to this bridge (no CORS, no exposed file port).
+  if (req.method === "POST" && url.pathname === "/api/file/upload") {
+    proxyFile(req, res, "/upload", "POST");
+    return true;
+  }
+
+  // Download proxy: stream a stored file back, preserving type and filename.
+  if (req.method === "GET" && url.pathname.startsWith("/api/file/")) {
+    const id = decodeURIComponent(url.pathname.slice("/api/file/".length));
+    if (!/^[0-9a-f]{1,64}$/.test(id)) {
+      sendJson(res, 404, { error: -1, message: "文件不存在" });
+      return true;
+    }
+    proxyFile(req, res, `/files/${id}`, "GET");
     return true;
   }
 
