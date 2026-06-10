@@ -47,7 +47,7 @@ MiniChat 是一个**仿微信的分布式即时通讯系统**，采用微服务�
 | --- | --- |
 | **网络编程** | 基于 Boost.Asio 的全异步 IO + IO 线程池；手写 TCP 应用层协议，自行处理**粘包 / 半包** |
 | **高并发** | 业务逻辑**分片队列 + 多 worker 消费**，锁仅保护入队 / 出队，回调执行前释放锁 |
-| **分布式** | 多 ChatServer 集群，借助 Redis 在线集合 + gRPC 实现**跨服消息 fan-out** 与多端登录 |
+| **分布式** | 多 ChatServer 集群，借助 Redis 在线集合 + gRPC 实现**跨服消息 fan-out**、群聊与多端登录 |
 | **多语言栈** | C++ 为核心，Node 做桥接/验证码，**Go 实现文件上传微服务**，按职责选型 |
 | **连接池** | 自实现 MySQL 连接池，含**后台心跳探活与自动重连**；Redis / gRPC 连接池均可配置 |
 | **可靠性** | 接收方离线时消息落 Redis 队列，登录时批量拉取，保证**离线一致性** |
@@ -175,6 +175,18 @@ flowchart LR
 
 > 设计亮点：**用现有消息通道承载文件引用**，以最小侵入把一个新语言栈（Go）的微服务接入了 C++ 为主的系统，同时让文件消息免费获得持久化与跨服能力。
 
+### 5.9 群聊（跨服 fan-out）
+
+支持建群、群成员、群消息，**群成员可分布在不同 ChatServer 上且都能实时收到**：
+
+- **复用而非新建**：群消息没有新增 gRPC，而是把消息体包一层「群标记 + JSON（群id/发送者/原始内容）」，对每个成员沿用一对一的投递原语——本服本地推送 / 跨服 `NotifyTextChatMsg` / 离线落 Redis。因此**没有改动 protobuf**，群消息也免费获得了跨服转发、离线投递、消息持久化与历史分页；
+- **群消息 fan-out**：发送时从 MySQL 取成员列表，按每个成员的 `uip_<uid>` 在线集合分别投递到其所在服务器；
+- **存储复用**：群消息持久化复用 `chat_message` 表，`session_id = group_<群id>`，历史查询与一对一同一套游标分页逻辑；
+- **群文件/图片免费支持**：群标记里嵌套文件引用，与 5.8 的文件机制天然组合；
+- **建群即时可见**：建群后向在线成员推送一个「群事件」标记，成员客户端据此实时刷新群列表，无需重新登录。
+
+> 设计亮点延续了同一思路：**在自定义协议的内容层做标记、复用已有投递与存储原语**，用最小的 C++ 改动（零 protobuf 变更）实现了分布式群聊。
+
 ---
 
 ## 六、性能压测与优化（项目重点）
@@ -278,9 +290,11 @@ flowchart LR
 | `user` | 用户基础信息 | `uid`、`name`、`email`、`pwd`、`nick`、`icon` |
 | `friend_apply` | 好友申请记录 | `from_uid`、`to_uid`、`status` |
 | `friend` | 双向好友关系 | `self_id`、`friend_id`、`back` |
-| `chat_message` | 聊天消息持久化（异步落库） | `msg_id`、`session_id`、`from_uid`、`to_uid`、`unique_id`、`content`、`create_time` |
+| `chat_message` | 聊天消息持久化（异步落库，群消息复用，session_id=group_<id>） | `msg_id`、`session_id`、`from_uid`、`to_uid`、`unique_id`、`content`、`create_time` |
+| `chat_group` | 群信息 | `group_id`、`name`、`owner_uid`、`create_time` |
+| `chat_group_member` | 群成员关系 | `group_id`、`uid`、`join_time` |
 
-> 建表语句见 [`docs/sql/chat_message.sql`](docs/sql/chat_message.sql)。
+> 建表语句见 [`docs/sql/chat_message.sql`](docs/sql/chat_message.sql) 与 [`docs/sql/chat_group.sql`](docs/sql/chat_group.sql)。
 
 **Redis 核心 Key**
 

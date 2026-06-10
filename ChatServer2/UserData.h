@@ -30,6 +30,15 @@ struct ApplyInfo {
 	int _status;
 };
 
+// A chat group summary, returned in the group list.
+struct GroupInfo {
+	GroupInfo() : group_id(0), owner_uid(0), member_count(0) {}
+	long long group_id;
+	std::string name;
+	int owner_uid;
+	int member_count;
+};
+
 // A single persisted chat message (used for both async persistence and history query).
 struct ChatMsgInfo {
 	ChatMsgInfo() : msg_id(0), from_uid(0), to_uid(0), status(0) {}

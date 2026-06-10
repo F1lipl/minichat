@@ -39,6 +39,13 @@ private:
 	void AuthFriendApply(std::shared_ptr<CSession> session, const short& msg_id, const string& msg_data);
 	void DealChatTextMsg(std::shared_ptr<CSession> session, const short& msg_id, const string& msg_data);
 	void GetChatHistory(std::shared_ptr<CSession> session, const short& msg_id, const string& msg_data);
+	void CreateGroupHandler(std::shared_ptr<CSession> session, const short& msg_id, const string& msg_data);
+	void GetGroupListHandler(std::shared_ptr<CSession> session, const short& msg_id, const string& msg_data);
+	void GetGroupMembersHandler(std::shared_ptr<CSession> session, const short& msg_id, const string& msg_data);
+	void DealGroupTextMsg(std::shared_ptr<CSession> session, const short& msg_id, const string& msg_data);
+	// Deliver a wrapped text_array (group message or group event) to one member,
+	// across servers, falling back to offline storage when allowed.
+	void DeliverWrappedToMember(int from_uid, int member_uid, const Json::Value& wrapped_array, bool allow_offline);
 	void HeartBeatHandler(std::shared_ptr<CSession> session, const short& msg_id, const string& msg_data);
 	bool isPureDigit(const std::string& str);
 	void GetUserByUid(std::string uid_str, Json::Value& rtvalue);

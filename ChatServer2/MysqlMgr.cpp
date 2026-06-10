@@ -67,3 +67,19 @@ bool MysqlMgr::GetChatMsgList(const std::string& session_id, long long last_id, 
 	return _dao.GetChatMsgList(session_id, last_id, limit, msg_list);
 }
 
+long long MysqlMgr::CreateGroup(const std::string& name, int owner_uid, const std::vector<int>& members) {
+	return _dao.CreateGroup(name, owner_uid, members);
+}
+
+bool MysqlMgr::GetUserGroups(int uid, std::vector<std::shared_ptr<GroupInfo>>& groups) {
+	return _dao.GetUserGroups(uid, groups);
+}
+
+bool MysqlMgr::GetGroupMembers(long long group_id, std::vector<int>& uids) {
+	return _dao.GetGroupMembers(group_id, uids);
+}
+
+bool MysqlMgr::IsGroupMember(long long group_id, int uid) {
+	return _dao.IsGroupMember(group_id, uid);
+}
+

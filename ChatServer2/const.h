@@ -95,6 +95,14 @@ enum MSG_IDS {
 	ID_HEARTBEAT_RSP = 1024,       //�����ظ�
 	ID_GET_CHAT_HISTORY_REQ = 1025, // pull persisted chat history (cursor paged)
 	ID_GET_CHAT_HISTORY_RSP = 1026, // chat history response
+	ID_CREATE_GROUP_REQ = 1027,     // create a group with selected members
+	ID_CREATE_GROUP_RSP = 1028,
+	ID_GET_GROUP_LIST_REQ = 1029,   // list groups the user belongs to
+	ID_GET_GROUP_LIST_RSP = 1030,
+	ID_GET_GROUP_MEMBERS_REQ = 1031,// list members of a group
+	ID_GET_GROUP_MEMBERS_RSP = 1032,
+	ID_GROUP_TEXT_MSG_REQ = 1033,   // send a text/file message to a group
+	ID_GROUP_TEXT_MSG_RSP = 1034,
 };\
 
 #define USERIPPREFIX  "uip_"
@@ -108,6 +116,12 @@ enum MSG_IDS {
 #define OFFLINE_MSG_PREFIX "offline_msg_"
 #define CHAT_HISTORY_PAGE_SIZE 30
 #define CHAT_HISTORY_MAX_LIMIT 100
+#define GROUP_SESSION_PREFIX "group_"
+// Sentinels (shared with the web client) that tag a group message / group event
+// carried inside the normal text-message channel. Plain ASCII, matching the
+// file-message marker scheme.
+#define GROUP_MSG_MARKER "minichat-gmsg"
+#define GROUP_EVENT_MARKER "minichat-gevt"
 #define LOCK_COUNT "lockcount"
 
 //�ֲ�ʽ���ĳ���ʱ��

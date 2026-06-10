@@ -14,13 +14,25 @@ const MSG = {
   NOTIFY_TEXT_CHAT_MSG_REQ: 1019,
   HEARTBEAT_RSP: 1024,
   GET_CHAT_HISTORY_REQ: 1025,
-  GET_CHAT_HISTORY_RSP: 1026
+  GET_CHAT_HISTORY_RSP: 1026,
+  CREATE_GROUP_REQ: 1027,
+  CREATE_GROUP_RSP: 1028,
+  GET_GROUP_LIST_REQ: 1029,
+  GET_GROUP_LIST_RSP: 1030,
+  GET_GROUP_MEMBERS_REQ: 1031,
+  GET_GROUP_MEMBERS_RSP: 1032,
+  GROUP_TEXT_MSG_REQ: 1033,
+  GROUP_TEXT_MSG_RSP: 1034
 };
 
 const HISTORY_PAGE_SIZE = 30;
 // Sentinel prefix marking a chat message whose body is a file reference (JSON).
 // Uses control chars so it can't collide with user-typed text.
 const FILE_MARKER = "minichat-file";
+// Group markers, shared with the C++ server (see const.h): a group message or
+// group event rides inside the normal text-message channel.
+const GROUP_MSG_MARKER = "minichat-gmsg";
+const GROUP_EVENT_MARKER = "minichat-gevt";
 const MAX_UPLOAD_MB = 20;
 
 const errorText = {
@@ -50,14 +62,20 @@ const state = {
   connection: "offline",
   user: null,
   activeNav: "chat",
+  chatType: "user",
   activeContactId: null,
+  activeGroupId: null,
   contacts: [],
   conversations: [],
+  groups: [],
+  groupConversations: [],
+  groupMembers: {},
   messages: {},
   history: {},
   requests: [],
   searchResult: null,
   lastSearch: "",
+  showCreateGroup: false,
   pendingScroll: null
 };
 
@@ -316,9 +334,10 @@ async function handleLogin(event) {
     applyLoginLists(loginPayload);
     openEventStream();
     renderApp();
-    // Auto-load history for the chat that opens by default after login.
-    if (state.activeNav === "chat" && state.activeContactId) {
-      loadChatHistory(state.activeContactId, { initial: true });
+    // Pull the user's groups, then auto-load history for the default open chat.
+    loadGroupList();
+    if (state.activeNav === "chat" && state.chatType === "user" && state.activeContactId) {
+      loadHistoryFor({ type: "user", uid: state.activeContactId }, { initial: true });
     }
     toast("登录成功");
   } catch (error) {
@@ -403,11 +422,12 @@ async function requestCode(inputId, hintId) {
 
 function renderApp() {
   app.innerHTML = `
-    <div class="app-shell ${state.activeNav === "chat" && state.activeContactId ? "chat-open" : ""}">
+    <div class="app-shell ${state.activeNav === "chat" && (state.activeContactId || state.activeGroupId) ? "chat-open" : ""}">
       ${renderRail()}
       ${renderSidePanel()}
       ${renderMainPanel()}
     </div>
+    ${state.showCreateGroup ? renderCreateGroupModal() : ""}
   `;
 
   bindAppEvents();
@@ -473,6 +493,7 @@ function renderSidePanel() {
         </div>
         <div class="side-title">
           <h2>${escapeHtml(title)}</h2>
+          ${state.activeNav === "chat" ? `<button class="ghost-btn icon-btn" data-action="new-group" type="button" title="新建群聊">${icon("plus")}</button>` : ""}
           ${connectionBadge()}
         </div>
       </div>
@@ -480,6 +501,39 @@ function renderSidePanel() {
         ${renderSideList()}
       </div>
     </section>
+  `;
+}
+
+function renderCreateGroupModal() {
+  const friends = [...state.contacts].sort((a, b) => displayName(a).localeCompare(displayName(b), "zh-CN"));
+  const memberOptions = friends.length
+    ? friends.map((c) => `
+        <label class="member-pick">
+          <input type="checkbox" name="group-member" value="${c.uid}">
+          ${avatarHtml(c, "small-avatar")}
+          <span>${escapeHtml(displayName(c))}</span>
+        </label>
+      `).join("")
+    : `<div class="empty-state">先添加好友才能拉人建群</div>`;
+
+  return `
+    <div class="modal-mask" data-action="create-group-cancel">
+      <div class="modal" data-action="modal-noop">
+        <div class="modal-head">
+          <h3>新建群聊</h3>
+          <button class="icon-btn" data-action="create-group-cancel" type="button" title="关闭">${icon("x")}</button>
+        </div>
+        <div class="modal-body">
+          <input id="groupNameInput" class="modal-input" placeholder="群名称" maxlength="60">
+          <div class="member-pick-title">选择成员</div>
+          <div class="member-pick-list">${memberOptions}</div>
+        </div>
+        <div class="modal-foot">
+          <button class="ghost-btn" data-action="create-group-cancel" type="button">取消</button>
+          <button class="primary-btn" data-action="create-group-submit" type="button">创建</button>
+        </div>
+      </div>
+    </div>
   `;
 }
 
@@ -497,28 +551,59 @@ function renderSideList() {
 }
 
 function renderConversationList() {
-  const conversations = sortedConversations();
-  if (!conversations.length) {
-    return `<div class="empty-state">还没有会话<br>搜索用户或从通讯录发起聊天</div>`;
+  // Merge 1-1 conversations and group conversations into one time-sorted list.
+  const userItems = sortedConversations().map((c) => {
+    const contact = getContact(c.uid) || normalizeUser({ uid: c.uid });
+    return {
+      kind: "user",
+      id: c.uid,
+      name: displayName(contact),
+      avatar: avatarHtml(contact, "avatar"),
+      active: state.chatType === "user" && Number(state.activeContactId) === Number(c.uid),
+      lastText: c.lastText,
+      lastTime: c.lastTime,
+      unread: c.unread
+    };
+  });
+  const groupItems = sortedGroupConversations().map((g) => ({
+    kind: "group",
+    id: g.group_id,
+    name: g.name || `群 ${g.group_id}`,
+    avatar: groupAvatarHtml(g.name),
+    active: state.chatType === "group" && Number(state.activeGroupId) === Number(g.group_id),
+    lastText: g.lastText,
+    lastTime: g.lastTime,
+    unread: g.unread
+  }));
+
+  const items = [...userItems, ...groupItems]
+    .sort((a, b) => Number(b.lastTime || 0) - Number(a.lastTime || 0));
+
+  if (!items.length) {
+    return `<div class="empty-state">还没有会话<br>搜索用户、发起聊天，或新建群聊</div>`;
   }
 
-  return conversations.map((conversation) => {
-    const contact = getContact(conversation.uid) || normalizeUser({ uid: conversation.uid });
-    const active = Number(state.activeContactId) === Number(conversation.uid) ? " is-active" : "";
+  return items.map((item) => {
+    const action = item.kind === "group" ? "open-group" : "open-chat";
     return `
-      <button class="list-item${active}" data-action="open-chat" data-uid="${conversation.uid}" type="button">
-        ${avatarHtml(contact, "avatar")}
+      <button class="list-item${item.active ? " is-active" : ""}" data-action="${action}" data-uid="${item.id}" type="button">
+        ${item.avatar}
         <span class="item-main">
           <span class="item-title">
-            <strong>${escapeHtml(displayName(contact))}</strong>
-            ${conversation.unread ? `<span class="badge">${conversation.unread > 99 ? "99+" : conversation.unread}</span>` : ""}
+            <strong>${escapeHtml(item.name)}</strong>
+            ${item.unread ? `<span class="badge">${item.unread > 99 ? "99+" : item.unread}</span>` : ""}
           </span>
-          <span class="item-sub">${escapeHtml(previewText(conversation.lastText))}</span>
+          <span class="item-sub">${escapeHtml(previewText(item.lastText))}</span>
         </span>
-        <span class="item-time">${formatListTime(conversation.lastTime)}</span>
+        <span class="item-time">${formatListTime(item.lastTime)}</span>
       </button>
     `;
   }).join("");
+}
+
+function groupAvatarHtml(name) {
+  const initial = Array.from(String(name || "群"))[0] || "群";
+  return `<span class="avatar group-avatar">${escapeHtml(initial)}</span>`;
 }
 
 function renderContactList() {
@@ -585,7 +670,39 @@ function renderMainPanel() {
   return renderSettingsPanel();
 }
 
+function historyControlHtml(key, hasMessages) {
+  const hist = state.history[key] || {};
+  if (hist.loaded && !hist.noMore) {
+    return `<div class="history-more"><button class="ghost-btn" data-action="load-history" type="button">加载更多历史消息</button></div>`;
+  }
+  if (hist.noMore && hasMessages) {
+    return `<div class="history-end">没有更多历史消息了</div>`;
+  }
+  return "";
+}
+
+function composerHtml() {
+  return `
+    <form class="composer" id="composerForm">
+      <div class="composer-tools">
+        <button class="icon-btn" type="button" title="表情">${icon("smile")}</button>
+        <button class="icon-btn" data-action="attach-file" type="button" title="发送图片或文件">${icon("paperclip")}</button>
+        <input type="file" id="fileInput" hidden>
+      </div>
+      <textarea id="messageInput" placeholder="输入消息"></textarea>
+      <div class="composer-actions">
+        <span>Enter 发送，Shift + Enter 换行</span>
+        <button class="primary-btn" type="submit">${icon("send")}发送</button>
+      </div>
+    </form>
+  `;
+}
+
 function renderChatPanel() {
+  if (state.chatType === "group") {
+    return renderGroupChatPanel();
+  }
+
   const contact = getContact(state.activeContactId);
   if (!contact) {
     return `
@@ -596,13 +713,6 @@ function renderChatPanel() {
   }
 
   const messages = state.messages[String(contact.uid)] || [];
-  const hist = state.history[String(contact.uid)] || {};
-  let historyControl = "";
-  if (hist.loaded && !hist.noMore) {
-    historyControl = `<div class="history-more"><button class="ghost-btn" data-action="load-history" data-uid="${contact.uid}" type="button">加载更多历史消息</button></div>`;
-  } else if (hist.noMore && messages.length) {
-    historyControl = `<div class="history-end">没有更多历史消息了</div>`;
-  }
   return `
     <main class="main-panel">
       <header class="chat-header">
@@ -617,23 +727,71 @@ function renderChatPanel() {
       </header>
 
       <div class="message-scroll" id="messageScroll">
-        ${historyControl}
+        ${historyControlHtml(String(contact.uid), messages.length > 0)}
         ${messages.length ? messages.map((message) => renderMessage(message, contact)).join("") : `<div class="empty-state">还没有消息</div>`}
       </div>
 
-      <form class="composer" id="composerForm">
-        <div class="composer-tools">
-          <button class="icon-btn" type="button" title="表情">${icon("smile")}</button>
-          <button class="icon-btn" data-action="attach-file" type="button" title="发送图片或文件">${icon("paperclip")}</button>
-          <input type="file" id="fileInput" hidden>
-        </div>
-        <textarea id="messageInput" placeholder="输入消息"></textarea>
-        <div class="composer-actions">
-          <span>Enter 发送，Shift + Enter 换行</span>
-          <button class="primary-btn" type="submit">${icon("send")}发送</button>
-        </div>
-      </form>
+      ${composerHtml()}
     </main>
+  `;
+}
+
+function renderGroupChatPanel() {
+  const group = getGroup(state.activeGroupId);
+  if (!group) {
+    return `
+      <main class="main-panel">
+        <div class="empty-state">选择一个会话开始聊天</div>
+      </main>
+    `;
+  }
+
+  const key = `g${group.group_id}`;
+  const messages = state.messages[key] || [];
+  return `
+    <main class="main-panel">
+      <header class="chat-header">
+        <button class="ghost-btn mobile-back" data-action="mobile-back" type="button">${icon("x")}返回</button>
+        <div class="chat-title">
+          <h2>${escapeHtml(group.name)}</h2>
+          <p>${escapeHtml(group.member_count || "")} 名成员</p>
+        </div>
+        <div class="chat-tools">
+          <button class="icon-btn" data-action="open-group-members" data-uid="${group.group_id}" type="button" title="查看群成员">${icon("users")}</button>
+        </div>
+      </header>
+
+      <div class="message-scroll" id="messageScroll">
+        ${historyControlHtml(key, messages.length > 0)}
+        ${messages.length ? messages.map((message) => renderGroupMessage(message, group)).join("") : `<div class="empty-state">还没有消息</div>`}
+      </div>
+
+      ${composerHtml()}
+    </main>
+  `;
+}
+
+function renderGroupMessage(message, group) {
+  const isMe = Number(message.fromuid) === Number(state.user.uid);
+  const senderName = groupMemberName(group.group_id, message.fromuid);
+  const avatarUser = isMe ? state.user : { uid: message.fromuid, name: senderName };
+  const fileMeta = parseFileContent(message.content);
+  const bubble = fileMeta
+    ? renderFileBubble(fileMeta)
+    : `<div class="bubble">${escapeHtml(message.content)}</div>`;
+  const sender = isMe ? "" : `<div class="group-sender">${escapeHtml(senderName)}</div>`;
+  const body = `
+    <div>
+      ${sender}
+      ${bubble}
+      <div class="message-meta">${formatTime(message.time)}${message.status === "failed" ? " 发送失败" : ""}</div>
+    </div>
+  `;
+  const avatarNode = avatarHtml(avatarUser, "small-avatar");
+  return `
+    <div class="message-row${isMe ? " is-me" : ""}">
+      ${isMe ? `${body}${avatarNode}` : `${avatarNode}${body}`}
+    </div>
   `;
 }
 
@@ -837,11 +995,26 @@ function bindAppEvents() {
     if (action === "open-chat") {
       openChat(uid);
     }
+    if (action === "open-group") {
+      openGroup(uid);
+    }
     if (action === "load-history") {
-      await loadChatHistory(uid, { initial: false });
+      await loadHistoryFor(activeChatTarget(), { initial: false });
     }
     if (action === "attach-file") {
       app.querySelector("#fileInput")?.click();
+    }
+    if (action === "new-group") {
+      openCreateGroup();
+    }
+    if (action === "create-group-cancel") {
+      closeCreateGroup();
+    }
+    if (action === "create-group-submit") {
+      await submitCreateGroup();
+    }
+    if (action === "open-group-members") {
+      loadGroupMembers(uid, { toastList: true });
     }
     if (action === "open-contact") {
       openContact(uid);
@@ -932,11 +1105,29 @@ function openChat(uid) {
   mergeContact(contact, { silent: true });
   ensureConversation(contact.uid).unread = 0;
   state.activeNav = "chat";
+  state.chatType = "user";
   state.activeContactId = Number(contact.uid);
+  state.activeGroupId = null;
   persistLocalState();
   renderApp();
   // Lazy-load the latest page of persisted history the first time a chat opens.
-  loadChatHistory(contact.uid, { initial: true });
+  loadHistoryFor({ type: "user", uid: contact.uid }, { initial: true });
+}
+
+function openGroup(group_id) {
+  const group = getGroup(group_id);
+  if (!group) {
+    return;
+  }
+  ensureGroupConversation(group.group_id).unread = 0;
+  state.activeNav = "chat";
+  state.chatType = "group";
+  state.activeGroupId = Number(group.group_id);
+  state.activeContactId = null;
+  persistLocalState();
+  renderApp();
+  loadGroupMembers(group.group_id);
+  loadHistoryFor({ type: "group", group_id: group.group_id }, { initial: true });
 }
 
 async function addFriend(uid) {
@@ -991,9 +1182,19 @@ async function sendMessage(event) {
   event.preventDefault();
   const textarea = app.querySelector("#messageInput");
   const text = textarea?.value.trim();
-  const contact = getContact(state.activeContactId);
+  if (!text) {
+    return;
+  }
+  if (state.chatType === "group") {
+    if (textarea) {
+      textarea.value = "";
+    }
+    await sendGroupContent(text);
+    return;
+  }
 
-  if (!text || !contact) {
+  const contact = getContact(state.activeContactId);
+  if (!contact) {
     return;
   }
 
@@ -1031,8 +1232,9 @@ async function sendMessage(event) {
 // message whose body is a file reference. File messages reuse the text-message
 // channel, so they persist and fan out across servers like any other message.
 async function uploadAndSendFile(file) {
-  const contact = getContact(state.activeContactId);
-  if (!file || !contact) {
+  const isGroup = state.chatType === "group";
+  const contact = isGroup ? null : getContact(state.activeContactId);
+  if (!file || (!isGroup && !contact) || (isGroup && !state.activeGroupId)) {
     return;
   }
   if (file.size > MAX_UPLOAD_MB * 1024 * 1024) {
@@ -1040,9 +1242,7 @@ async function uploadAndSendFile(file) {
     return;
   }
 
-  const msgid = crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`;
   toast("上传中…");
-
   let meta;
   try {
     const form = new FormData();
@@ -1065,15 +1265,24 @@ async function uploadAndSendFile(file) {
   }
 
   const content = FILE_MARKER + JSON.stringify(meta);
-  const localMessage = {
+  if (isGroup) {
+    await sendGroupContent(content);
+    return;
+  }
+  await sendUserContent(contact, content);
+}
+
+// Send an already-built content body to a 1-1 chat with optimistic echo.
+async function sendUserContent(contact, content) {
+  const msgid = crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`;
+  appendMessage(contact.uid, {
     id: msgid,
     fromuid: Number(state.user.uid),
     touid: Number(contact.uid),
     content,
     time: Date.now(),
     status: "sending"
-  };
-  appendMessage(contact.uid, localMessage);
+  });
   renderApp();
 
   try {
@@ -1125,6 +1334,233 @@ function formatFileSize(bytes) {
   return `${(n / 1024 / 1024).toFixed(1)} MB`;
 }
 
+// ---- Group chat ------------------------------------------------------------
+
+function getGroup(group_id) {
+  return state.groups.find((g) => Number(g.group_id) === Number(group_id)) || null;
+}
+
+function ensureGroupConversation(group_id, name) {
+  const numeric = Number(group_id);
+  let conv = state.groupConversations.find((item) => Number(item.group_id) === numeric);
+  if (!conv) {
+    conv = { group_id: numeric, name: name || "", lastText: "", lastTime: Date.now(), unread: 0 };
+    state.groupConversations.push(conv);
+  }
+  if (name) {
+    conv.name = name;
+  }
+  return conv;
+}
+
+function sortedGroupConversations() {
+  return [...state.groupConversations].sort((a, b) => Number(b.lastTime || 0) - Number(a.lastTime || 0));
+}
+
+function appendGroupMessage(group_id, message, options = {}) {
+  const key = `g${group_id}`;
+  state.messages[key] = state.messages[key] || [];
+  if (!state.messages[key].some((item) => item.id === message.id)) {
+    state.messages[key].push(message);
+  }
+  const conv = ensureGroupConversation(group_id);
+  conv.lastText = message.content;
+  conv.lastTime = message.time;
+  if (options.incoming && !(state.chatType === "group" && Number(state.activeGroupId) === Number(group_id))) {
+    conv.unread = Number(conv.unread || 0) + 1;
+  }
+  persistLocalState();
+}
+
+function updateGroupMessageStatus(group_id, id, status) {
+  const list = state.messages[`g${group_id}`] || [];
+  const item = list.find((m) => m.id === id);
+  if (item) {
+    item.status = status;
+    persistLocalState();
+  }
+}
+
+// Send a content body (plain text or file reference) to the active group.
+async function sendGroupContent(content) {
+  const group = getGroup(state.activeGroupId);
+  if (!group) {
+    return;
+  }
+  const msgid = crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random()}`;
+  appendGroupMessage(group.group_id, {
+    id: msgid,
+    fromuid: Number(state.user.uid),
+    content,
+    time: Date.now(),
+    status: "sending"
+  });
+  renderApp();
+
+  try {
+    const reply = await chatRequest(MSG.GROUP_TEXT_MSG_REQ, MSG.GROUP_TEXT_MSG_RSP, {
+      fromuid: Number(state.user.uid),
+      group_id: Number(group.group_id),
+      text_array: [{ msgid, content }]
+    });
+    assertSuccess(reply.packet.payload);
+    updateGroupMessageStatus(group.group_id, msgid, "sent");
+    renderApp();
+  } catch (error) {
+    updateGroupMessageStatus(group.group_id, msgid, "failed");
+    renderApp();
+    toast(error.message, "error");
+  }
+}
+
+async function loadGroupList() {
+  if (!state.sessionId || !state.user?.uid) {
+    return;
+  }
+  try {
+    const reply = await chatRequest(MSG.GET_GROUP_LIST_REQ, MSG.GET_GROUP_LIST_RSP, {
+      fromuid: Number(state.user.uid)
+    });
+    assertSuccess(reply.packet.payload);
+    const list = reply.packet.payload?.group_list || [];
+    state.groups = list.map((g) => ({
+      group_id: Number(g.group_id),
+      name: g.name || `群 ${g.group_id}`,
+      owner_uid: Number(g.owner_uid),
+      member_count: Number(g.member_count || 0)
+    }));
+    state.groups.forEach((g) => ensureGroupConversation(g.group_id, g.name));
+    persistLocalState();
+    renderApp();
+  } catch (error) {
+    toast(error.message, "error");
+  }
+}
+
+async function loadGroupMembers(group_id, { toastList = false } = {}) {
+  try {
+    const reply = await chatRequest(MSG.GET_GROUP_MEMBERS_REQ, MSG.GET_GROUP_MEMBERS_RSP, {
+      fromuid: Number(state.user.uid),
+      group_id: Number(group_id)
+    });
+    assertSuccess(reply.packet.payload);
+    const members = reply.packet.payload?.members || [];
+    state.groupMembers[String(group_id)] = members.map((m) => normalizeUser(m));
+    if (toastList) {
+      const names = state.groupMembers[String(group_id)].map((m) => displayName(m)).join("、");
+      toast(`群成员：${names}`);
+    }
+    renderApp();
+  } catch (error) {
+    toast(error.message, "error");
+  }
+}
+
+function groupMemberName(group_id, uid) {
+  if (Number(uid) === Number(state.user?.uid)) {
+    return displayName(state.user);
+  }
+  const members = state.groupMembers[String(group_id)] || [];
+  const found = members.find((m) => Number(m.uid) === Number(uid));
+  if (found) {
+    return displayName(found);
+  }
+  const contact = getContact(uid);
+  return contact ? displayName(contact) : `用户 ${uid}`;
+}
+
+function openCreateGroup() {
+  state.showCreateGroup = true;
+  renderApp();
+}
+
+function closeCreateGroup() {
+  state.showCreateGroup = false;
+  renderApp();
+}
+
+async function submitCreateGroup() {
+  const nameInput = app.querySelector("#groupNameInput");
+  const name = nameInput?.value.trim();
+  if (!name) {
+    toast("请输入群名称", "error");
+    return;
+  }
+  const checked = Array.from(app.querySelectorAll("input[name='group-member']:checked"))
+    .map((el) => Number(el.value));
+  if (!checked.length) {
+    toast("至少选择一个成员", "error");
+    return;
+  }
+
+  try {
+    const reply = await chatRequest(MSG.CREATE_GROUP_REQ, MSG.CREATE_GROUP_RSP, {
+      fromuid: Number(state.user.uid),
+      name,
+      members: checked
+    });
+    assertSuccess(reply.packet.payload);
+    const payload = reply.packet.payload || {};
+    state.showCreateGroup = false;
+    toast("群聊已创建");
+    // Refresh the authoritative group list, then open the new group.
+    await loadGroupList();
+    if (payload.group_id) {
+      openGroup(Number(payload.group_id));
+    }
+  } catch (error) {
+    toast(error.message, "error");
+  }
+}
+
+// ---- Group message marshalling --------------------------------------------
+
+function parseGroupContent(content) {
+  if (typeof content !== "string" || !content.startsWith(GROUP_MSG_MARKER)) {
+    return null;
+  }
+  try {
+    const obj = JSON.parse(content.slice(GROUP_MSG_MARKER.length));
+    return obj && obj.group_id ? obj : null;
+  } catch (_) {
+    return null;
+  }
+}
+
+function parseGroupEvent(content) {
+  if (typeof content !== "string" || !content.startsWith(GROUP_EVENT_MARKER)) {
+    return null;
+  }
+  try {
+    const obj = JSON.parse(content.slice(GROUP_EVENT_MARKER.length));
+    return obj && obj.group_id ? obj : null;
+  } catch (_) {
+    return null;
+  }
+}
+
+function handleIncomingGroupMessage(groupMsg, item) {
+  const group_id = Number(groupMsg.group_id);
+  const fromuid = Number(groupMsg.from_uid);
+  ensureGroupConversation(group_id, groupMsg.name);
+  appendGroupMessage(group_id, {
+    id: item.msgid || `${Date.now()}-${Math.random()}`,
+    fromuid,
+    content: groupMsg.content || "",
+    time: Number(item.time || Date.now()),
+    status: "received"
+  }, { incoming: true });
+  // We don't know this group yet (created elsewhere) -> refresh the list.
+  if (!getGroup(group_id)) {
+    loadGroupList();
+  }
+}
+
+function handleGroupEvent(evt) {
+  toast(`你被加入群聊「${evt.name || ""}」`);
+  loadGroupList();
+}
+
 async function chatRequest(msgId, replyMsgId, payload) {
   return apiPost("/api/chat/request", {
     sessionId: state.sessionId,
@@ -1135,14 +1571,27 @@ async function chatRequest(msgId, replyMsgId, payload) {
   });
 }
 
-// Pull persisted chat history from the backend. `initial` loads the newest page
-// the first time a chat opens; otherwise it pages further back using the cursor.
-async function loadChatHistory(uid, { initial = false } = {}) {
-  if (!state.sessionId || !state.user?.uid || !uid) {
+// Storage key for a conversation: 1-1 chats key by uid, groups by `g<id>`.
+function messageKeyFor(target) {
+  return target.type === "group" ? `g${target.group_id}` : String(target.uid);
+}
+
+// The chat currently open, as a target descriptor (or null).
+function activeChatTarget() {
+  if (state.chatType === "group") {
+    return state.activeGroupId ? { type: "group", group_id: Number(state.activeGroupId) } : null;
+  }
+  return state.activeContactId ? { type: "user", uid: Number(state.activeContactId) } : null;
+}
+
+// Pull persisted history for a 1-1 or group chat. `initial` loads the newest
+// page the first time a chat opens; otherwise it pages back using the cursor.
+async function loadHistoryFor(target, { initial = false } = {}) {
+  if (!state.sessionId || !state.user?.uid || !target) {
     return;
   }
 
-  const key = String(uid);
+  const key = messageKeyFor(target);
   const hist = state.history[key] || (state.history[key] = {
     loaded: false,
     loading: false,
@@ -1177,21 +1626,27 @@ async function loadChatHistory(uid, { initial = false } = {}) {
     }
   }
 
+  const payload = {
+    fromuid: Number(state.user.uid),
+    last_msgid: initial ? 0 : Number(hist.cursor || 0),
+    limit: HISTORY_PAGE_SIZE
+  };
+  if (target.type === "group") {
+    payload.group_id = Number(target.group_id);
+  } else {
+    payload.touid = Number(target.uid);
+  }
+
   try {
-    const reply = await chatRequest(MSG.GET_CHAT_HISTORY_REQ, MSG.GET_CHAT_HISTORY_RSP, {
-      fromuid: Number(state.user.uid),
-      touid: Number(uid),
-      last_msgid: initial ? 0 : Number(hist.cursor || 0),
-      limit: HISTORY_PAGE_SIZE
-    });
+    const reply = await chatRequest(MSG.GET_CHAT_HISTORY_REQ, MSG.GET_CHAT_HISTORY_RSP, payload);
     assertSuccess(reply.packet.payload);
 
-    const payload = reply.packet.payload || {};
-    const arr = Array.isArray(payload.msg_array) ? payload.msg_array : [];
-    mergeHistoryMessages(uid, arr);
+    const data = reply.packet.payload || {};
+    const arr = Array.isArray(data.msg_array) ? data.msg_array : [];
+    mergeHistoryMessages(key, arr);
 
     hist.loaded = true;
-    hist.cursor = Number(payload.next_cursor || 0);
+    hist.cursor = Number(data.next_cursor || 0);
     if (!hist.cursor || arr.length < HISTORY_PAGE_SIZE) {
       hist.noMore = true;
     }
@@ -1210,8 +1665,7 @@ async function loadChatHistory(uid, { initial = false } = {}) {
 
 // Merge a page of history rows into the local message store, deduping by id
 // (the client msg id, shared with live messages) and keeping chronological order.
-function mergeHistoryMessages(uid, arr) {
-  const key = String(uid);
+function mergeHistoryMessages(key, arr) {
   const list = state.messages[key] || (state.messages[key] = []);
   const existing = new Set(list.map((item) => String(item.id)));
   const selfUid = Number(state.user.uid);
@@ -1329,12 +1783,18 @@ function loadLocalState() {
   const data = raw ? safeJson(raw, fallback) : fallback;
   state.contacts = Array.isArray(data.contacts) ? data.contacts.map(normalizeUser).filter((item) => item.uid) : [];
   state.conversations = Array.isArray(data.conversations) ? data.conversations : [];
+  state.groups = Array.isArray(data.groups) ? data.groups : [];
+  state.groupConversations = Array.isArray(data.groupConversations) ? data.groupConversations : [];
+  state.groupMembers = {};
   state.messages = data.messages && typeof data.messages === "object" ? data.messages : {};
   state.history = {};
   state.requests = Array.isArray(data.requests) ? data.requests : [];
   state.searchResult = null;
   state.lastSearch = "";
   state.activeNav = "chat";
+  state.chatType = "user";
+  state.activeGroupId = null;
+  state.showCreateGroup = false;
   state.activeContactId = sortedConversations()[0]?.uid || state.contacts[0]?.uid || null;
 }
 
@@ -1365,6 +1825,8 @@ function persistLocalState() {
   localStorage.setItem(localKey(), JSON.stringify({
     contacts: state.contacts,
     conversations: state.conversations,
+    groups: state.groups,
+    groupConversations: state.groupConversations,
     messages: state.messages,
     requests: state.requests
   }));
@@ -1454,21 +1916,35 @@ function normalizeRequestStatus(status) {
   return "pending";
 }
 
+// Process an incoming text payload (live or pulled offline). Each item may be a
+// 1-1 message, a wrapped group message, or a group event; route accordingly.
 function appendIncomingTextMessages(payload = {}) {
   const fromuid = Number(payload.fromuid);
   if (!fromuid) {
     return;
   }
 
-  const contact = getContact(fromuid) || normalizeUser({ uid: fromuid, name: `用户 ${fromuid}` });
-  mergeContact(contact, { silent: true });
-
   for (const item of payload.text_array || []) {
+    const raw = item.content || item.msgcontent || "";
+
+    const groupMsg = parseGroupContent(raw);
+    if (groupMsg) {
+      handleIncomingGroupMessage(groupMsg, item);
+      continue;
+    }
+    const groupEvt = parseGroupEvent(raw);
+    if (groupEvt) {
+      handleGroupEvent(groupEvt);
+      continue;
+    }
+
+    const contact = getContact(fromuid) || normalizeUser({ uid: fromuid, name: `用户 ${fromuid}` });
+    mergeContact(contact, { silent: true });
     appendMessage(fromuid, {
       id: item.msgid || `${Date.now()}-${Math.random()}`,
       fromuid,
       touid: Number(payload.touid),
-      content: item.content || item.msgcontent || "",
+      content: raw,
       time: Number(item.time || payload.time || Date.now()),
       status: "received"
     }, { incoming: true });
@@ -1522,7 +1998,9 @@ function sortedConversations() {
 }
 
 function unreadTotal() {
-  return state.conversations.reduce((total, item) => total + Number(item.unread || 0), 0);
+  const userUnread = state.conversations.reduce((total, item) => total + Number(item.unread || 0), 0);
+  const groupUnread = state.groupConversations.reduce((total, item) => total + Number(item.unread || 0), 0);
+  return userUnread + groupUnread;
 }
 
 function pendingRequestCount() {
@@ -1547,10 +2025,16 @@ async function logout() {
   state.user = null;
   state.contacts = [];
   state.conversations = [];
+  state.groups = [];
+  state.groupConversations = [];
+  state.groupMembers = {};
   state.messages = {};
   state.history = {};
   state.requests = [];
   state.activeContactId = null;
+  state.activeGroupId = null;
+  state.chatType = "user";
+  state.showCreateGroup = false;
   state.activeNav = "chat";
   renderAuth();
 }

@@ -27,11 +27,19 @@ public:
 	// Non-blocking: only a lock + push + notify, safe to call on the hot path.
 	void PushTextMsgs(int from_uid, int to_uid, const Json::Value& text_array);
 
+	// Persist messages under an explicit session id (used for group chats, where
+	// the session is the group rather than a uid pair).
+	void PushMessages(const std::string& session_id, int from_uid, int to_uid,
+		const Json::Value& text_array);
+
 	// Stop the worker thread and flush whatever is still buffered.
 	void Close();
 
 	// 1-1 session id is order independent: smaller uid first, e.g. "12_34".
 	static std::string MakeSessionId(int uid_a, int uid_b);
+
+	// Group session id, e.g. "group_42".
+	static std::string GroupSessionId(long long group_id);
 
 private:
 	MsgPersistMgr();

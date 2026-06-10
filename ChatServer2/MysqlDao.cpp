@@ -583,3 +583,155 @@ bool MysqlDao::GetChatMsgList(const std::string& session_id, long long last_id, 
 		return false;
 	}
 }
+
+// Create a group and insert its members (owner included) in one transaction.
+// Returns the new group id, or -1 on failure.
+long long MysqlDao::CreateGroup(const std::string& name, int owner_uid, const std::vector<int>& members) {
+	auto con = pool_->getConnection();
+	if (con == nullptr) {
+		return -1;
+	}
+
+	Defer defer([this, &con]() {
+		pool_->returnConnection(std::move(con));
+		});
+
+	try {
+		con->_con->setAutoCommit(false);
+
+		std::unique_ptr<sql::PreparedStatement> pstmt(con->_con->prepareStatement(
+			"INSERT INTO chat_group(name, owner_uid) VALUES (?, ?)"));
+		pstmt->setString(1, name);
+		pstmt->setInt(2, owner_uid);
+		pstmt->executeUpdate();
+
+		// Fetch the auto-increment group id.
+		std::unique_ptr<sql::Statement> idStmt(con->_con->createStatement());
+		std::unique_ptr<sql::ResultSet> idRes(idStmt->executeQuery("SELECT LAST_INSERT_ID() AS id"));
+		long long group_id = 0;
+		if (idRes->next()) {
+			group_id = idRes->getInt64("id");
+		}
+
+		// The owner plus every selected member (deduped, owner first).
+		std::unique_ptr<sql::PreparedStatement> memStmt(con->_con->prepareStatement(
+			"INSERT IGNORE INTO chat_group_member(group_id, uid) VALUES (?, ?)"));
+		memStmt->setInt64(1, group_id);
+		memStmt->setInt(2, owner_uid);
+		memStmt->executeUpdate();
+		for (int uid : members) {
+			if (uid == owner_uid) {
+				continue;
+			}
+			memStmt->setInt64(1, group_id);
+			memStmt->setInt(2, uid);
+			memStmt->executeUpdate();
+		}
+
+		con->_con->commit();
+		return group_id;
+	}
+	catch (sql::SQLException& e) {
+		if (con) {
+			con->_con->rollback();
+		}
+		std::cerr << "SQLException: " << e.what();
+		std::cerr << " (MySQL error code: " << e.getErrorCode();
+		std::cerr << ", SQLState: " << e.getSQLState() << " )" << std::endl;
+		return -1;
+	}
+}
+
+// Groups the user belongs to, with a member count for each.
+bool MysqlDao::GetUserGroups(int uid, std::vector<std::shared_ptr<GroupInfo>>& groups) {
+	auto con = pool_->getConnection();
+	if (con == nullptr) {
+		return false;
+	}
+
+	Defer defer([this, &con]() {
+		pool_->returnConnection(std::move(con));
+		});
+
+	try {
+		std::unique_ptr<sql::PreparedStatement> pstmt(con->_con->prepareStatement(
+			"SELECT g.group_id, g.name, g.owner_uid, "
+			"(SELECT COUNT(*) FROM chat_group_member m2 WHERE m2.group_id = g.group_id) AS member_count "
+			"FROM chat_group g JOIN chat_group_member m ON g.group_id = m.group_id "
+			"WHERE m.uid = ? ORDER BY g.group_id DESC"));
+		pstmt->setInt(1, uid);
+
+		std::unique_ptr<sql::ResultSet> res(pstmt->executeQuery());
+		while (res->next()) {
+			auto info = std::make_shared<GroupInfo>();
+			info->group_id = res->getInt64("group_id");
+			info->name = res->getString("name");
+			info->owner_uid = res->getInt("owner_uid");
+			info->member_count = res->getInt("member_count");
+			groups.push_back(info);
+		}
+		return true;
+	}
+	catch (sql::SQLException& e) {
+		std::cerr << "SQLException: " << e.what();
+		std::cerr << " (MySQL error code: " << e.getErrorCode();
+		std::cerr << ", SQLState: " << e.getSQLState() << " )" << std::endl;
+		return false;
+	}
+}
+
+bool MysqlDao::GetGroupMembers(long long group_id, std::vector<int>& uids) {
+	auto con = pool_->getConnection();
+	if (con == nullptr) {
+		return false;
+	}
+
+	Defer defer([this, &con]() {
+		pool_->returnConnection(std::move(con));
+		});
+
+	try {
+		std::unique_ptr<sql::PreparedStatement> pstmt(con->_con->prepareStatement(
+			"SELECT uid FROM chat_group_member WHERE group_id = ?"));
+		pstmt->setInt64(1, group_id);
+
+		std::unique_ptr<sql::ResultSet> res(pstmt->executeQuery());
+		while (res->next()) {
+			uids.push_back(res->getInt("uid"));
+		}
+		return true;
+	}
+	catch (sql::SQLException& e) {
+		std::cerr << "SQLException: " << e.what();
+		std::cerr << " (MySQL error code: " << e.getErrorCode();
+		std::cerr << ", SQLState: " << e.getSQLState() << " )" << std::endl;
+		return false;
+	}
+}
+
+bool MysqlDao::IsGroupMember(long long group_id, int uid) {
+	auto con = pool_->getConnection();
+	if (con == nullptr) {
+		return false;
+	}
+
+	Defer defer([this, &con]() {
+		pool_->returnConnection(std::move(con));
+		});
+
+	try {
+		std::unique_ptr<sql::PreparedStatement> pstmt(con->_con->prepareStatement(
+			"SELECT 1 FROM chat_group_member WHERE group_id = ? AND uid = ? LIMIT 1"));
+		pstmt->setInt64(1, group_id);
+		pstmt->setInt(2, uid);
+
+		std::unique_ptr<sql::ResultSet> res(pstmt->executeQuery());
+		return res->next();
+	}
+	catch (sql::SQLException& e) {
+		std::cerr << "SQLException: " << e.what();
+		std::cerr << " (MySQL error code: " << e.getErrorCode();
+		std::cerr << ", SQLState: " << e.getSQLState() << " )" << std::endl;
+		return false;
+	}
+}

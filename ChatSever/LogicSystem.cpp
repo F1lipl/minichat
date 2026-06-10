@@ -234,6 +234,18 @@ void LogicSystem::RegisterCallBacks() {
 	_fun_callbacks[ID_GET_CHAT_HISTORY_REQ] = std::bind(&LogicSystem::GetChatHistory, this,
 		placeholders::_1, placeholders::_2, placeholders::_3);
 
+	_fun_callbacks[ID_CREATE_GROUP_REQ] = std::bind(&LogicSystem::CreateGroupHandler, this,
+		placeholders::_1, placeholders::_2, placeholders::_3);
+
+	_fun_callbacks[ID_GET_GROUP_LIST_REQ] = std::bind(&LogicSystem::GetGroupListHandler, this,
+		placeholders::_1, placeholders::_2, placeholders::_3);
+
+	_fun_callbacks[ID_GET_GROUP_MEMBERS_REQ] = std::bind(&LogicSystem::GetGroupMembersHandler, this,
+		placeholders::_1, placeholders::_2, placeholders::_3);
+
+	_fun_callbacks[ID_GROUP_TEXT_MSG_REQ] = std::bind(&LogicSystem::DealGroupTextMsg, this,
+		placeholders::_1, placeholders::_2, placeholders::_3);
+
 	_fun_callbacks[ID_HEART_BEAT_REQ] = std::bind(&LogicSystem::HeartBeatHandler, this,
 		placeholders::_1, placeholders::_2, placeholders::_3);
 
@@ -619,6 +631,7 @@ void LogicSystem::GetChatHistory(std::shared_ptr<CSession> session, const short&
 
 	auto uid = root["fromuid"].asInt();
 	auto peer_uid = root["touid"].asInt();
+	long long group_id = root.isMember("group_id") ? root["group_id"].asInt64() : 0;
 	// Cursor: fetch messages older than last_msgid; 0 (or absent) means latest page.
 	long long last_id = root.isMember("last_msgid") ? root["last_msgid"].asInt64() : 0;
 	int limit = root.isMember("limit") ? root["limit"].asInt() : CHAT_HISTORY_PAGE_SIZE;
@@ -631,8 +644,14 @@ void LogicSystem::GetChatHistory(std::shared_ptr<CSession> session, const short&
 	rtvalue["error"] = ErrorCodes::Success;
 	rtvalue["fromuid"] = uid;
 	rtvalue["touid"] = peer_uid;
+	if (group_id > 0) {
+		rtvalue["group_id"] = static_cast<Json::Int64>(group_id);
+	}
 
-	auto session_id = MsgPersistMgr::MakeSessionId(uid, peer_uid);
+	// A group conversation keys history by the group; 1-1 by the uid pair.
+	auto session_id = group_id > 0
+		? MsgPersistMgr::GroupSessionId(group_id)
+		: MsgPersistMgr::MakeSessionId(uid, peer_uid);
 	std::vector<std::shared_ptr<ChatMsgInfo>> history;
 	if (!MysqlMgr::GetInstance()->GetChatMsgList(session_id, last_id, limit, history)) {
 		rtvalue["error"] = ErrorCodes::Error_Json;
@@ -655,6 +674,247 @@ void LogicSystem::GetChatHistory(std::shared_ptr<CSession> session, const short&
 	// Oldest id in this page; the client passes it back as last_msgid to page up.
 	rtvalue["next_cursor"] = history.empty() ? 0
 		: static_cast<Json::Int64>(history.front()->msg_id);
+}
+
+namespace {
+	// Wrap an inner message body so a member's client can route it to the group
+	// and know the sender. The inner body may itself be plain text or a file ref.
+	std::string BuildGroupWrapped(long long group_id, int from_uid, const std::string& inner) {
+		Json::Value w;
+		w["group_id"] = static_cast<Json::Int64>(group_id);
+		w["from_uid"] = from_uid;
+		w["content"] = inner;
+		return std::string(GROUP_MSG_MARKER) + w.toStyledString();
+	}
+
+	// A lightweight group event (e.g. "you were added to a group") that tells the
+	// client to refresh its group list rather than render a chat message.
+	std::string BuildGroupEvent(const char* type, long long group_id, const std::string& name) {
+		Json::Value w;
+		w["type"] = type;
+		w["group_id"] = static_cast<Json::Int64>(group_id);
+		w["name"] = name;
+		return std::string(GROUP_EVENT_MARKER) + w.toStyledString();
+	}
+}
+
+void LogicSystem::DeliverWrappedToMember(int from_uid, int member_uid,
+	const Json::Value& wrapped_array, bool allow_offline) {
+	Json::Value notify;
+	notify["error"] = ErrorCodes::Success;
+	notify["fromuid"] = from_uid;
+	notify["touid"] = member_uid;
+	notify["text_array"] = wrapped_array;
+	std::string notify_str = notify.toStyledString();
+
+	auto online_servers = GetOnlineServers(member_uid);
+	if (online_servers.empty()) {
+		if (allow_offline) {
+			RedisMgr::GetInstance()->RPush(OfflineMsgKey(member_uid), notify_str);
+		}
+		return;
+	}
+
+	auto self_name = ConfigMgr::Inst()["SelfServer"]["Name"];
+	bool delivered = false;
+	for (const auto& server_name : online_servers) {
+		if (server_name == self_name) {
+			auto sessions = UserMgr::GetInstance()->GetSessions(member_uid);
+			if (sessions.empty()) {
+				RemoveOnlineServer(member_uid);
+				continue;
+			}
+			for (auto& recv_session : sessions) {
+				if (recv_session) {
+					recv_session->Send(notify_str, ID_NOTIFY_TEXT_CHAT_MSG_REQ);
+					delivered = true;
+				}
+			}
+			continue;
+		}
+
+		// Reuse the existing cross-server text notify; the wrapped content carries
+		// all the group context, so no new gRPC method is needed.
+		TextChatMsgReq text_msg_req;
+		text_msg_req.set_fromuid(from_uid);
+		text_msg_req.set_touid(member_uid);
+		for (const auto& item : wrapped_array) {
+			auto* text_msg = text_msg_req.add_textmsgs();
+			text_msg->set_msgid(item["msgid"].asString());
+			text_msg->set_msgcontent(item["content"].asString());
+		}
+		Json::Value ignore;
+		auto grpc_rsp = ChatGrpcClient::GetInstance()->NotifyTextChatMsg(server_name, text_msg_req, ignore);
+		if (grpc_rsp.error() == ErrorCodes::Success) {
+			delivered = true;
+		}
+	}
+
+	if (!delivered && allow_offline) {
+		RedisMgr::GetInstance()->RPush(OfflineMsgKey(member_uid), notify_str);
+	}
+}
+
+void LogicSystem::CreateGroupHandler(std::shared_ptr<CSession> session, const short& msg_id, const string& msg_data) {
+	Json::Reader reader;
+	Json::Value root;
+	reader.parse(msg_data, root);
+
+	auto owner_uid = root["fromuid"].asInt();
+	auto name = root["name"].asString();
+
+	std::vector<int> members;
+	if (root.isMember("members") && root["members"].isArray()) {
+		for (const auto& item : root["members"]) {
+			members.push_back(item.asInt());
+		}
+	}
+
+	Json::Value rtvalue;
+	Defer defer([&rtvalue, session]() {
+		session->Send(rtvalue.toStyledString(), ID_CREATE_GROUP_RSP);
+		});
+
+	if (name.empty()) {
+		rtvalue["error"] = ErrorCodes::Error_Json;
+		return;
+	}
+
+	auto group_id = MysqlMgr::GetInstance()->CreateGroup(name, owner_uid, members);
+	if (group_id <= 0) {
+		rtvalue["error"] = ErrorCodes::Error_Json;
+		return;
+	}
+
+	rtvalue["error"] = ErrorCodes::Success;
+	rtvalue["group_id"] = static_cast<Json::Int64>(group_id);
+	rtvalue["name"] = name;
+	rtvalue["owner_uid"] = owner_uid;
+	rtvalue["member_count"] = static_cast<int>(members.size() + 1);
+
+	// Notify the other online members so their group list refreshes live.
+	Json::Value event_array(Json::arrayValue);
+	Json::Value event_item;
+	event_item["msgid"] = "gevt-" + std::to_string(group_id);
+	event_item["content"] = BuildGroupEvent("added", group_id, name);
+	event_array.append(event_item);
+	for (int uid : members) {
+		if (uid == owner_uid) {
+			continue;
+		}
+		DeliverWrappedToMember(owner_uid, uid, event_array, false);
+	}
+}
+
+void LogicSystem::GetGroupListHandler(std::shared_ptr<CSession> session, const short& msg_id, const string& msg_data) {
+	Json::Reader reader;
+	Json::Value root;
+	reader.parse(msg_data, root);
+
+	auto uid = root["fromuid"].asInt();
+
+	Json::Value rtvalue;
+	Defer defer([&rtvalue, session]() {
+		session->Send(rtvalue.toStyledString(), ID_GET_GROUP_LIST_RSP);
+		});
+
+	std::vector<std::shared_ptr<GroupInfo>> groups;
+	if (!MysqlMgr::GetInstance()->GetUserGroups(uid, groups)) {
+		rtvalue["error"] = ErrorCodes::Error_Json;
+		return;
+	}
+
+	rtvalue["error"] = ErrorCodes::Success;
+	Json::Value group_array(Json::arrayValue);
+	for (const auto& g : groups) {
+		Json::Value item;
+		item["group_id"] = static_cast<Json::Int64>(g->group_id);
+		item["name"] = g->name;
+		item["owner_uid"] = g->owner_uid;
+		item["member_count"] = g->member_count;
+		group_array.append(item);
+	}
+	rtvalue["group_list"] = group_array;
+}
+
+void LogicSystem::GetGroupMembersHandler(std::shared_ptr<CSession> session, const short& msg_id, const string& msg_data) {
+	Json::Reader reader;
+	Json::Value root;
+	reader.parse(msg_data, root);
+
+	long long group_id = root["group_id"].asInt64();
+
+	Json::Value rtvalue;
+	Defer defer([&rtvalue, session]() {
+		session->Send(rtvalue.toStyledString(), ID_GET_GROUP_MEMBERS_RSP);
+		});
+
+	std::vector<int> uids;
+	if (!MysqlMgr::GetInstance()->GetGroupMembers(group_id, uids)) {
+		rtvalue["error"] = ErrorCodes::Error_Json;
+		return;
+	}
+
+	rtvalue["error"] = ErrorCodes::Success;
+	rtvalue["group_id"] = static_cast<Json::Int64>(group_id);
+	Json::Value member_array(Json::arrayValue);
+	for (int uid : uids) {
+		std::shared_ptr<UserInfo> info;
+		if (!GetBaseInfo(USER_BASE_INFO + std::to_string(uid), uid, info) || !info) {
+			continue;
+		}
+		Json::Value item;
+		item["uid"] = info->uid;
+		item["name"] = info->name;
+		item["nick"] = info->nick;
+		item["icon"] = info->icon;
+		member_array.append(item);
+	}
+	rtvalue["members"] = member_array;
+}
+
+void LogicSystem::DealGroupTextMsg(std::shared_ptr<CSession> session, const short& msg_id, const string& msg_data) {
+	Json::Reader reader;
+	Json::Value root;
+	reader.parse(msg_data, root);
+
+	auto from_uid = root["fromuid"].asInt();
+	long long group_id = root["group_id"].asInt64();
+	const Json::Value arrays = root["text_array"];
+
+	// ACK the sender first (keeps storage / fan-out off the latency path).
+	Json::Value rtvalue;
+	rtvalue["error"] = ErrorCodes::Success;
+	rtvalue["group_id"] = static_cast<Json::Int64>(group_id);
+	rtvalue["fromuid"] = from_uid;
+	rtvalue["text_array"] = arrays;
+	session->Send(rtvalue.toStyledString(), ID_GROUP_TEXT_MSG_RSP);
+
+	if (!MysqlMgr::GetInstance()->IsGroupMember(group_id, from_uid)) {
+		return;
+	}
+
+	// Persist once, keyed by the group session, with the raw (inner) content.
+	MsgPersistMgr::GetInstance()->PushMessages(
+		MsgPersistMgr::GroupSessionId(group_id), from_uid, 0, arrays);
+
+	// Build the wrapped delivery payload once (same for every member).
+	Json::Value wrapped_array(Json::arrayValue);
+	for (const auto& item : arrays) {
+		Json::Value w;
+		w["msgid"] = item["msgid"].asString();
+		w["content"] = BuildGroupWrapped(group_id, from_uid, item["content"].asString());
+		wrapped_array.append(w);
+	}
+
+	std::vector<int> members;
+	MysqlMgr::GetInstance()->GetGroupMembers(group_id, members);
+	for (int member_uid : members) {
+		if (member_uid == from_uid) {
+			continue;
+		}
+		DeliverWrappedToMember(from_uid, member_uid, wrapped_array, true);
+	}
 }
 
 void LogicSystem::HeartBeatHandler(std::shared_ptr<CSession> session, const short& msg_id, const string& msg_data) {

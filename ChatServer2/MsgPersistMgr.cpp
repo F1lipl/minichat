@@ -36,12 +36,19 @@ std::string MsgPersistMgr::MakeSessionId(int uid_a, int uid_b) {
 	return std::to_string(low) + "_" + std::to_string(high);
 }
 
+std::string MsgPersistMgr::GroupSessionId(long long group_id) {
+	return std::string(GROUP_SESSION_PREFIX) + std::to_string(group_id);
+}
+
 void MsgPersistMgr::PushTextMsgs(int from_uid, int to_uid, const Json::Value& text_array) {
+	PushMessages(MakeSessionId(from_uid, to_uid), from_uid, to_uid, text_array);
+}
+
+void MsgPersistMgr::PushMessages(const std::string& session_id, int from_uid, int to_uid,
+	const Json::Value& text_array) {
 	if (!text_array.isArray() || text_array.empty()) {
 		return;
 	}
-
-	auto session_id = MakeSessionId(from_uid, to_uid);
 
 	std::vector<ChatMsgInfo> records;
 	records.reserve(text_array.size());

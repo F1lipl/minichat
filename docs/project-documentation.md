@@ -188,6 +188,16 @@ service StatusService {
 | `1024` | `ID_HEARTBEAT_RSP` | 心跳响应 |
 | `1025` | `ID_GET_CHAT_HISTORY_REQ` | 拉取历史聊天记录（游标分页） |
 | `1026` | `ID_GET_CHAT_HISTORY_RSP` | 历史聊天记录响应 |
+| `1027` | `ID_CREATE_GROUP_REQ` | 创建群聊 |
+| `1028` | `ID_CREATE_GROUP_RSP` | 创建群聊响应 |
+| `1029` | `ID_GET_GROUP_LIST_REQ` | 拉取群列表 |
+| `1030` | `ID_GET_GROUP_LIST_RSP` | 群列表响应 |
+| `1031` | `ID_GET_GROUP_MEMBERS_REQ` | 拉取群成员 |
+| `1032` | `ID_GET_GROUP_MEMBERS_RSP` | 群成员响应 |
+| `1033` | `ID_GROUP_TEXT_MSG_REQ` | 发送群消息 |
+| `1034` | `ID_GROUP_TEXT_MSG_RSP` | 群消息响应 |
+
+> 群消息的实时投递复用 `ID_NOTIFY_TEXT_CHAT_MSG_REQ`：消息体包一层「群标记 + JSON」，接收端客户端据此路由到对应群。建群后向在线成员推送「群事件」标记以实时刷新群列表。
 
 ### 4.6 FileServer
 
@@ -295,7 +305,9 @@ HTTP 接口：
 | `user_id` | 用户 ID 自增辅助表 | `id` |
 | `friend_apply` | 好友申请记录 | `id`、`from_uid`、`to_uid`、`status` |
 | `friend` | 好友关系表 | `self_id`、`friend_id`、`back` |
-| `chat_message` | 聊天消息持久化表 | `msg_id`、`session_id`、`from_uid`、`to_uid`、`unique_id`、`content`、`status`、`create_time` |
+| `chat_message` | 聊天消息持久化表（群消息复用，session_id=group_<群id>） | `msg_id`、`session_id`、`from_uid`、`to_uid`、`unique_id`、`content`、`status`、`create_time` |
+| `chat_group` | 群信息表 | `group_id`、`name`、`owner_uid`、`create_time` |
+| `chat_group_member` | 群成员关系表 | `group_id`、`uid`、`join_time` |
 
 说明：文本消息通过 `MsgPersistMgr` 异步批量落库到 `chat_message` 表（落库在 ACK 之后、不在请求延迟路径上），用于历史消息查询；`(session_id, unique_id)` 唯一键配合 `INSERT IGNORE` 实现幂等去重。离线消息仍由 Redis 队列承担登录时的快速拉取。建表语句见 `docs/sql/chat_message.sql`。
 
@@ -415,6 +427,7 @@ D:\workspace\project\tools\cloudflared.exe tunnel --url http://127.0.0.1:5174 --
 - 离线文本消息缓存和登录拉取。
 - 文本消息持久化与历史消息游标分页查询。
 - 图片与文件发送（Go FileServer，图片内联预览、文件卡片下载）。
+- 群聊：建群、群成员、群消息跨服 fan-out、群离线消息、群历史、群文件/图片。
 - 心跳保活。
 - 仿微信前端页面。
 - 临时公网访问。

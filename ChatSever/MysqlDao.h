@@ -260,6 +260,10 @@ public:
 	bool SaveChatMsgs(const std::vector<ChatMsgInfo>& msgs);
 	bool GetChatMsgList(const std::string& session_id, long long last_id, int limit,
 		std::vector<std::shared_ptr<ChatMsgInfo>>& msg_list);
+	long long CreateGroup(const std::string& name, int owner_uid, const std::vector<int>& members);
+	bool GetUserGroups(int uid, std::vector<std::shared_ptr<GroupInfo>>& groups);
+	bool GetGroupMembers(long long group_id, std::vector<int>& uids);
+	bool IsGroupMember(long long group_id, int uid);
 private:
 	std::unique_ptr<MySqlPool> pool_;
 };
